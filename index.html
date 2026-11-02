@@ -77,10 +77,11 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 #stage canvas{position:absolute;left:0;top:0;pointer-events:none}
 /* ---------- verre ---------- */
 .glass{background-color:var(--glass);
-  background-image:linear-gradient(140deg,var(--hi2) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,0) 62%,var(--hi2) 100%);
-  -webkit-backdrop-filter:saturate(165%) blur(16px) brightness(1.03);backdrop-filter:saturate(165%) blur(16px) brightness(1.03);
-  border:1px solid var(--glass-brd);border-radius:26px;
-  box-shadow:var(--shadow),inset 0 1.5px 0 var(--hi),inset 0 -1px 0 var(--hi2),inset 0 0 18px var(--hi2)}
+  background-image:var(--gl-rim,none),linear-gradient(140deg,var(--hi2) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,0) 62%,var(--hi2) 100%);
+  background-repeat:no-repeat;background-size:100% 100%;background-origin:border-box;
+  -webkit-backdrop-filter:saturate(185%) blur(14px) brightness(1.04);backdrop-filter:saturate(185%) blur(14px) brightness(1.04);
+  border:1px solid var(--glass-brd);border-color:color-mix(in srgb,var(--glass-brd) 45%,transparent);border-radius:26px;
+  box-shadow:var(--shadow),inset 0 0 18px var(--hi2)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass{background-color:var(--glass-strong)}}
 #expanel.glass,#layers.glass,#toast.glass,#sheet.glass{background-color:var(--glass-panel)}
 #sheet.glass{background-color:var(--glass-strong)}
@@ -1564,8 +1565,66 @@ html.glass-lite .nb-pbl{display:none}
 .cw-nu button{aspect-ratio:1;border-radius:8px;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
 .cw-nu button.on{box-shadow:0 0 0 2.5px var(--accent),0 0 0 4.5px var(--glass-strong)}
 #recentopts button[data-nw]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
-html:not(.dock-mini) #dock #grpColors #btnColor{grid-column:span 2;width:calc(var(--sw) * 2 + 3px);border-radius:999px;background:linear-gradient(90deg,#ff3b30,#ff9f0a,#ffd60a,#30d158,#0a84ff,#bf5af2,#ff375f)}
-html:not(.dock-mini) #dock #grpColors #btnColor i{width:calc(100% - 10px);height:calc(var(--sw) * .66);border-radius:999px;transform:none}
+html:not(.dock-mini) #dock #grpColors #btnColor{grid-column:span 2;width:calc(var(--sw) * 2 + 3px);border-radius:999px;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 6px;background:var(--fill);box-shadow:inset 0 0 0 1px var(--line)}
+html:not(.dock-mini) #dock #grpColors #btnColor i{width:34px;height:22px;flex:none;border-radius:999px;transform:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)!important}
+html:not(.dock-mini) #dock #grpColors #btnColor::after{content:"";width:17px;height:17px;flex:none;border-radius:50%;background:conic-gradient(#ff3b30,#ffd60a,#30d158,#0a84ff,#bf5af2,#ff3b30);-webkit-mask:radial-gradient(circle,transparent 3.5px,#000 4px);mask:radial-gradient(circle,transparent 3.5px,#000 4px)}
+/* ---------- 1.14.1 : sélection en verre liquide, discrète (plus de contour bleu) ---------- */
+#grpColors .swatch:not(#btnColor).on{box-shadow:none}
+#grpColors .swatch:not(#btnColor)::before,.cr-grid button::before,.cw-nu button::before{content:"";position:absolute;pointer-events:none;opacity:0;transform:scale(.84);transition:opacity .22s ease,transform .34s var(--spring);
+  background:radial-gradient(120% 120% at 30% 16%,rgba(255,255,255,.62),rgba(255,255,255,.08) 55%,rgba(255,255,255,.26));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -2px 3px rgba(40,60,90,.10),0 3px 10px -3px rgba(30,50,80,.28);
+  -webkit-backdrop-filter:blur(5px) saturate(1.5);backdrop-filter:blur(5px) saturate(1.5)}
+#grpColors .swatch:not(#btnColor)::before{inset:-1px;border-radius:50%}
+.cr-grid button::before{inset:-4px;border-radius:50%}
+.cw-nu button::before{inset:-3px;border-radius:11px}
+.cr-grid button,.cw-nu button{position:relative}
+#grpColors .swatch:not(#btnColor).on::before,.cr-grid button.on::before,.cw-nu button.on::before{opacity:1;transform:none}
+#grpColors .swatch:not(#btnColor).on i{transform:scale(1.05)}
+#grpColors .swatch:not(#btnColor)::after{content:"";position:absolute;left:27%;top:.5px;width:46%;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);opacity:0;transition:opacity .22s ease;pointer-events:none}
+#grpColors .swatch:not(#btnColor).on::after{opacity:.9}
+.cr-grid button.on,.cw-nu button.on{box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+html:not(.dock-mini) #dock #grpColors #btnColor.on{background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.32));box-shadow:inset 0 0 0 1px rgba(255,255,255,.8),inset 0 1.5px 1px rgba(255,255,255,.95),0 0 0 1px var(--line),0 3px 10px -3px rgba(30,50,80,.28);-webkit-backdrop-filter:blur(5px) saturate(1.5);backdrop-filter:blur(5px) saturate(1.5)}
+:root[data-theme=dark] #grpColors .swatch:not(#btnColor)::before,:root[data-theme=dark] .cr-grid button::before,:root[data-theme=dark] .cw-nu button::before{background:radial-gradient(120% 120% at 30% 16%,rgba(255,255,255,.30),rgba(255,255,255,.04) 55%,rgba(255,255,255,.12));box-shadow:inset 0 0 0 1px rgba(255,255,255,.38),inset 0 1.5px 1px rgba(255,255,255,.5),inset 0 -2px 3px rgba(0,0,0,.28),0 3px 10px -3px rgba(0,0,0,.55)}
+:root[data-theme=dark] html:not(.dock-mini) #dock #grpColors #btnColor.on,:root[data-theme=dark]:not(.dock-mini) #dock #grpColors #btnColor.on{background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.08));box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),inset 0 1.5px 1px rgba(255,255,255,.5),0 0 0 1px var(--line),0 3px 10px -3px rgba(0,0,0,.55)}
+html.glass-lite #grpColors .swatch::before,html.glass-lite .cr-grid button::before,html.glass-lite .cw-nu button::before,html.glass-lite #btnColor.on{-webkit-backdrop-filter:none;backdrop-filter:none}
+/* ---------- 1.15.0 : liquid glass v2 (voir le moteur LG) ---------- */
+:root{--gl-lens-bg:rgba(243,246,251,.995);--gl-glow:rgba(255,255,255,.55);--gl-lens-fill:rgba(255,255,255,.14);--gl-lens-edge:rgba(45,48,53,.28);--gl-lens-bevel:inset 0 3px 7px rgba(45,48,53,.10),inset 0 -1px 2px rgba(255,255,255,.8);--gl-lens-shadow:0 10px 26px rgba(0,0,0,.16),0 2px 6px rgba(0,0,0,.09);--gl-lens-brightness:1}
+:root[data-theme=dark]{--gl-lens-bg:rgba(62,66,76,.995);--gl-glow:rgba(255,255,255,.16);--gl-lens-fill:rgba(255,255,255,.09);--gl-lens-edge:rgba(255,255,255,.25);--gl-lens-bevel:inset 0 0 0 transparent;--gl-lens-shadow:0 10px 26px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.32);--gl-lens-brightness:1.06}
+html[data-gl-press] :is(.ib,.tool,.size,.swatch,.br,.tile,.btn):active{transform:none}
+:is(.ib,.tool,.size,.btn,.tile):not(.lg-button)[data-pressed]{background-image:radial-gradient(ellipse 85% 85% at var(--gl-x,50%) var(--gl-y,50%),var(--gl-glow),transparent)}
+:is(.ib,.tool,.size,.swatch,.br,.tile,.btn,.nb-arrow,.nb-sw,.f-back,.f-ic,.f-chip,.nbc-card,.lt-b){will-change:scale,translate}
+.seg{position:relative;touch-action:pan-y}
+.seg>button{position:relative;z-index:1}
+.seg[data-gl-lens]>button.on{background:transparent;box-shadow:none}
+.gl-lens{position:absolute;left:0;top:0;z-index:2;pointer-events:none;overflow:hidden;transform-origin:center;will-change:translate,scale;
+  background:color-mix(in srgb,var(--seg-on) calc((1 - var(--lift,0)) * 100%),var(--gl-lens-bg));
+  box-shadow:0 1px 3px rgba(0,0,0,.14),inset 0 1px 0 var(--hi),0 0 0 calc(var(--lift,0) * .5px) var(--gl-lens-edge);
+  -webkit-backdrop-filter:saturate(calc(1 + var(--lift,0) * .6)) brightness(var(--gl-lens-brightness));backdrop-filter:saturate(calc(1 + var(--lift,0) * .6)) brightness(var(--gl-lens-brightness))}
+.seg[data-gl-lifted] .gl-lens{box-shadow:var(--gl-lens-bevel),var(--gl-lens-shadow),0 0 0 .5px var(--gl-lens-edge)}
+.gl-lens::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--gl-rim,none) center/100% 100% no-repeat;opacity:var(--lift,0)}
+.gl-zoom{position:absolute;pointer-events:none}
+.gl-zb{position:absolute;display:inline-flex;align-items:center;justify-content:center;color:var(--ink2);white-space:nowrap;box-sizing:border-box}
+.gl-zb.on{color:var(--ink)}
+.gl-zb .ic{width:19px;height:19px;flex:none}
+.sw input:active+i::after{width:37px;background:rgba(255,255,255,.86);box-shadow:0 2px 8px rgba(0,0,0,.28),inset 0 0 0 .5px rgba(255,255,255,.9)}
+.sw input:checked:active+i::after{transform:translateX(11px)}
+/* ---------- 1.16.0 : composants de la bibliothèque Liquid Glass (glass-lib.js) ---------- */
+html[data-dg] .dg-orig{display:none!important}
+.dg-host{display:inline-flex;align-items:center;vertical-align:middle;max-width:100%}
+.dg-host.dg-sw{flex:none}
+.dg-host.dg-range{display:block;flex:1;min-width:0;width:100%}
+.dg-host.dg-seg.dg-full{display:flex;width:100%}
+.dg-host.dg-seg.dg-nav{flex:0 1 auto;min-width:0}
+.dg-host.dg-icons:not(.dg-nav) .lg-nav__label{display:none}
+.dg-svg{display:inline-grid;place-items:center}
+.dg-svg svg{width:19px;height:19px;flex:none}
+.btn.lg-button{font-size:var(--dg-fs,15px);font-weight:var(--dg-fw,600);padding:0 18px;letter-spacing:0}
+.ib.lg-button{padding:0;font-size:var(--dg-fs,15px)}
+.lg-button[disabled]{opacity:.5}
+/* ---------- 1.16.1 : sélecteur de modes du haut : icônes seules, sauf le mode actif qui garde son nom ---------- */
+.seg.nav button:not(.on) span{max-width:0;opacity:0;margin-left:-6px}
+.seg.nav button.on span{display:inline-block;max-width:150px;opacity:1;margin-left:0}
+.seg.nav .gl-zb:not(.on) span{display:inline-block;overflow:hidden;max-width:0;opacity:0;margin-left:-6px}
 </style>
 </head>
 <body>
@@ -1763,7 +1822,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.14.0";
+const APP_VERSION = "1.16.1";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -1932,7 +1991,7 @@ settings.grad = Object.assign({ k: 'l', end: 'none', zone: 'area' }, settings.gr
 if (settings.grad.end !== 'none' && !/^#[0-9a-f]{6}$/i.test(String(settings.grad.end))) settings.grad.end = 'none';
 if (!Number.isFinite(+settings.smooth)) settings.smooth = [0, 45, 80][settings.stab] !== undefined ? [0, 45, 80][settings.stab] : 45;   /* lissage 0–100, repris de l'ancien stabilisateur */
 settings.smooth = Math.max(0, Math.min(200, Math.round(+settings.smooth)));
-settings.qshape = settings.qshape !== false; settings.qsAny = settings.qsAny !== false; settings.qsDelay = [500, 800, 1200].includes(+settings.qsDelay) ? +settings.qsDelay : 800;
+settings.glasslib = settings.glasslib !== false; settings.qshape = settings.qshape !== false; settings.qsAny = settings.qsAny !== false; settings.qsDelay = [500, 800, 1200].includes(+settings.qsDelay) ? +settings.qsDelay : 800;
 settings.sgrad = Object.assign({ on: false, end: '#ff5fa2', len: 'mid', rep: false }, settings.sgrad || {});      /* traits en dégradé : couleur de fin libre, longueur du dégradé, aller-retour */
 if (!/^#[0-9a-f]{6}$/i.test(String(settings.sgrad.end))) settings.sgrad.end = '#ff5fa2'; if (!['short', 'mid', 'long'].includes(settings.sgrad.len)) settings.sgrad.len = 'mid'; settings.sgrad.on = !!settings.sgrad.on; settings.sgrad.rep = !!settings.sgrad.rep;
 document.documentElement.classList.toggle('lefty', !!settings.lefty);
@@ -3235,6 +3294,7 @@ function settingsPane(tab) {
     <div class="sec">Interface</div>
     <div class="row"><label class="t">Apparence<span class="hint">Auto suit le réglage de l’iPad. La feuille reste blanche en mode sombre : tes couleurs ne sont jamais faussées.</span></label>${segHtml('theme', [['auto', 'Auto'], ['light', 'Clair'], ['dark', 'Sombre']], settings.theme)}</div>
     <div class="row"><label class="t">Effets de verre<span class="hint">Les barres et panneaux flous demandent de la puissance à l’écran. « Légers » les remplace par un fond uni, plus fluide sur un appareil qui peine. Le diagnostic (Réglages, À propos) te dit lequel choisir.</span></label>${segHtml('glass', [['full', 'Complets'], ['lite', 'Légers']], settings.glass)}</div>
+    <div class="row"><label class="t">Bibliothèque Liquid Glass<span class="hint">Le vrai verre liquide (fichier glass-lib.js) : boutons, sélecteurs, interrupteurs et curseurs à lentille. Désactive-le pour revenir au verre intégré, sans le fichier.</span></label>${swHtml('glasslib', settings.glasslib)}</div>
     <div class="row"><label class="t">Mode main gauche<span class="hint">Les outils passent à droite et les panneaux à gauche.</span></label>${swHtml('lefty', settings.lefty)}</div>
     <div class="row"><label class="t">Barre d’outils<span class="hint">Complète, mini (outil actif, taille et couleur) ou masquée avec la barre du haut pour dessiner en plein écran. Le bouton en haut de la barre d’outils change aussi de mode.</span></label>${segHtml('dock', [['full', 'Complète'], ['mini', 'Mini'], ['hidden', 'Masquée']], settings.dock)}</div>
     <div class="row"><label class="t">Animations<span class="hint">Petits effets à l’ouverture des fenêtres, aux boutons et aux outils.</span></label>${swHtml('anim', settings.anim)}</div>`;
@@ -3331,7 +3391,8 @@ sheet.addEventListener('change', e => {
   const o = e.target.dataset.opt; if (!o) return;
   settings[o] = e.target.checked; LS.set('settings', settings);
   if (o === 'grid') requestRender(); if (o === 'diag') diagRender();
-  if (o === 'anim') document.documentElement.classList.toggle('noanim', !settings.anim);
+  if (o === 'anim') { document.documentElement.classList.toggle('noanim', !settings.anim); LG.flag(); }
+  if (o === 'glasslib') GL.sync();
   if (o === 'lefty') { document.documentElement.classList.toggle('lefty', !!settings.lefty); requestAnimationFrame(() => { if (V().fit) fitView(); else { V().fitS = fitScale().s; requestRender(); } }); }
 });
 sheet.addEventListener('click', async e => {
@@ -4412,7 +4473,7 @@ async function init() {
   window.addEventListener('orientationchange', () => setTimeout(onResize, 300));
   document.addEventListener('visibilitychange', () => { if (document.hidden) flushAll(); else checkUpdate(); });
   window.addEventListener('pagehide', flushAll); window.addEventListener('beforeunload', flushAll); document.addEventListener('freeze', flushAll);
-  setTimeout(checkUpdate, 3000); setTimeout(maybeShowNews, 900);
+  setTimeout(checkUpdate, 3000); setTimeout(maybeShowNews, 900); setTimeout(() => GL.sync(), 700);
   window.__dessiner = { S, P, settings };     /* pratique pour déboguer depuis la console Safari */
 }
 /* =====================================================================
@@ -4834,6 +4895,18 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
+  { v: '1.16.1', date: '16 nov. 2026', items: [
+    ['Menu du haut plus léger', 'Dans le sélecteur Dessin, Animation et Jeux multijoueur, seules les icônes restent visibles, sauf pour le mode où tu te trouves qui garde son nom. Le nom se déploie et se replie en douceur quand tu changes de mode, avec ou sans la bibliothèque Liquid Glass.']] },
+  { v: '1.16.0', date: '15 nov. 2026', items: [
+    ['La vraie bibliothèque Liquid Glass', 'L’app charge maintenant glass-lib.js (la bibliothèque de liquidglass.theatom.lk, déjà essayée dans AH) : les boutons de la barre du haut et des panneaux, les sélecteurs (modes, réglages), les interrupteurs et les curseurs sont de vrais composants de verre liquide, avec lentille qu’on fait glisser, réfraction et ressorts.'],
+    ['Retour au verre intégré en un geste', 'Réglages, Affichage : l’interrupteur « Bibliothèque Liquid Glass » la coupe tout de suite. Sans le fichier glass-lib.js, l’app garde le verre intégré de la version précédente.']] },
+  { v: '1.15.0', date: '14 nov. 2026', items: [
+    ['Liquid glass v2', 'Le verre de l’app est refait d’après la bibliothèque Liquid Glass (liquidglass.theatom.lk) : un biseau lumineux calculé pour chaque barre et chaque panneau, une saturation plus vive, et une lumière qui tombe du haut à gauche.'],
+    ['Les boutons gonflent sous le doigt', 'Au lieu de rétrécir, un bouton gonfle, penche vers ton doigt si tu glisses, s’éclaire là où tu touches, puis se relâche avec un petit rebond.'],
+    ['Sélecteurs à lentille', 'Dans le sélecteur de modes de la barre du haut et dans les réglages, la sélection devient une lentille de verre que tu peux faire glisser d’un choix à l’autre, avec une copie agrandie des étiquettes. L’interrupteur s’allonge en lentille quand tu l’appuies.']] },
+  { v: '1.14.1', date: '13 nov. 2026', items: [
+    ['Bouton couleur plus sobre', 'Dans le dock complet, le bouton couleur large n’a plus de contour arc-en-ciel : un fond neutre, la couleur actuelle à gauche et une petite roue à droite, qui annonce la roue des couleurs.'],
+    ['Sélection en verre liquide', 'Le contour bleu autour de la couleur choisie est remplacé par une fine bulle de verre translucide, avec un léger reflet. Même style pour les couleurs récentes et le nuancier. Coupé avec « Effets de verre légers ».']] },
   { v: '1.14.0', date: '12 nov. 2026', items: [
     ['Formes parfaites sur tous les traits', 'Garde le stylet immobile à la fin d’un trait : même si ce n’est ni une droite ni un cercle, il devient plus net. Un arc devient un arc parfait, une courbe libre une courbe lissée qui garde sa forme et ses extrémités, une boucle irrégulière une forme fermée lisse. Les droites, cercles, rectangles, triangles… marchent comme avant. Réglage « Lisser tous les autres traits » dans Lissage et formes parfaites.'],
     ['Couleurs : la roue tout de suite', 'Le panneau couleur s’ouvre directement sur la roue des couleurs, avec un curseur de luminosité et le nuancier de la couleur choisie. Le bouton couleur du dock complet est plus large, de la taille de deux pastilles.']] },
@@ -6471,6 +6544,238 @@ document.addEventListener('click', e => {
     el.classList.remove('fx'); void el.offsetWidth; el.classList.add('fx'); setTimeout(() => el.classList.remove('fx'), 420);
   });
 }, true);
+/* =====================================================================
+   Liquid glass v2 : d'après @zakisheriff/liquid-glass (https://liquidglass.theatom.lk)
+   Technique reprise ici en JavaScript simple, sans React : biseau lumineux calculé pour
+   chaque taille, ressorts analytiques, appui qui gonfle, lentille des sélecteurs.
+
+   MIT License
+
+   Copyright (c) 2026 Zaki Sheriff
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+   ===================================================================== */
+const LG = (() => {
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const reduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const on = () => settings.anim !== false && !reduced();
+  const root = document.documentElement;
+
+  /* ---------- ressorts : chaque ressort est résolu exactement à chaque image (pas de dérive), sur une seule boucle partagée ---------- */
+  const act = new Set(); let frame = 0, last = 0;
+  const stepSpring = (s, dt) => {
+    const x = s.v - s.t, vel = s.vel, half = s.c / 2, disc = half * half - s.k;
+    if (Math.abs(disc) < 1e-6) { const d = Math.exp(-half * dt), b = vel + half * x; s.v = s.t + d * (x + b * dt); s.vel = d * (vel - half * b * dt); }
+    else if (disc > 0) { const rt = Math.sqrt(disc), r1 = -half + rt, r2 = -half - rt, a = (vel - r2 * x) / (r1 - r2), b = x - a, e1 = Math.exp(r1 * dt), e2 = Math.exp(r2 * dt); s.v = s.t + a * e1 + b * e2; s.vel = a * r1 * e1 + b * r2 * e2; }
+    else { const w = Math.sqrt(-disc), d = Math.exp(-half * dt), co = Math.cos(w * dt), si = Math.sin(w * dt); s.v = s.t + d * (x * co + ((vel + half * x) / w) * si); s.vel = d * (vel * co - ((half * vel + s.k * x) / w) * si); }
+  };
+  const loop = time => {
+    frame = 0; const dt = Math.min(0.064, Math.max(0, (time - last) / 1000)); last = time;
+    for (const s of [...act]) {
+      stepSpring(s, dt);
+      if (Math.abs(s.v - s.t) < 1e-4 && Math.abs(s.vel) < 1e-3) { s.v = s.t; s.vel = 0; act.delete(s); }
+      s.fn(s.v, s.vel);
+    }
+    if (act.size && !frame) frame = requestAnimationFrame(loop);
+  };
+  const wake = () => { if (frame) return; last = performance.now(); frame = requestAnimationFrame(loop); };
+  const springFrom = (response, damping) => { const w = 2 * Math.PI / response; return { k: w * w, c: 2 * damping * w }; };
+  const SP = { press: springFrom(0.22, 0.86), release: springFrom(0.42, 0.5), drag: springFrom(0.12, 0.92), snap: springFrom(0.36, 0.72), lift: springFrom(0.26, 0.78), settle: springFrom(0.45, 0.46), follow: springFrom(0.2, 0.82) };
+  const spring = (init, cfg, fn) => {
+    const s = { v: init, t: init, vel: 0, k: cfg.k, c: cfg.c, fn };
+    return {
+      get v() { return s.v; }, get t() { return s.t; },
+      set(t, instant) { s.t = t; if (instant || !on() || document.hidden) { s.v = t; s.vel = 0; act.delete(s); fn(t, 0); return; } act.add(s); wake(); },
+      tune(cfg) { s.k = cfg.k; s.c = cfg.c; }, stop() { act.delete(s); }
+    };
+  };
+  const rubber = (off, dim, c = 0.55) => { const sg = Math.sign(off), x = Math.abs(off); return sg * (1 - 1 / ((x * c) / dim + 1)) * dim; };
+
+  /* ---------- biseau lumineux : la lumière tombe du haut à gauche et est rattrapée sur les deux diagonales ---------- */
+  const rims = new Map();
+  function bake(w, h, r, bezel, lens, k) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2), key = [w, h, r, bezel, lens ? 1 : 0, k, dpr].join('|');
+    if (rims.has(key)) return rims.get(key);
+    let den = dpr; while (w * h * den * den > 400000 && den > 0.35) den *= 0.75;
+    const cw = Math.max(1, Math.ceil(w * den)), ch = Math.max(1, Math.ceil(h * den)), cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+    const cx = cv.getContext('2d'), im = cx.createImageData(cw, ch), px1 = 1 / den, hw = w / 2, hh = h / 2, flat = Math.max(bezel * 1.7, 5);
+    for (let y = 0; y < ch; y++) for (let x = 0; x < cw; x++) {
+      const px = ((x + 0.5) * w) / cw - w / 2, py = ((y + 0.5) * h) / ch - h / 2, qx = Math.abs(px) - (hw - r), qy = Math.abs(py) - (hh - r), ox = Math.max(qx, 0), oy = Math.max(qy, 0), len = Math.hypot(ox, oy), d = r - (len + Math.min(Math.max(qx, qy), 0));
+      if (d > flat || d < -px1) continue;
+      let nx, ny; if (len > 0) { nx = (ox / len) * Math.sign(px); ny = (oy / len) * Math.sign(py); } else if (qx > qy) { nx = Math.sign(px); ny = 0; } else { nx = 0; ny = Math.sign(py); }
+      const facing = -(nx + ny) * Math.SQRT1_2, light = 0.22 + 0.78 * Math.pow(Math.abs(facing), 2.2) * (facing > 0 ? 1 : 0.62);
+      const line = Math.exp(-Math.pow((d - 0.55) / 0.55, 2)), inner = Math.exp(-Math.pow(d / (bezel * 0.55), 2)) * 0.14, aa = clamp(d / px1 + 1, 0, 1);
+      const a = clamp((line * (lens ? 0.95 : 0.7) + inner) * light * aa, 0, 1) * k, o = (y * cw + x) * 4;
+      im.data[o] = im.data[o + 1] = im.data[o + 2] = 255; im.data[o + 3] = Math.round(a * 255);
+    }
+    cx.putImageData(im, 0, 0); const url = 'url("' + cv.toDataURL() + '")';
+    if (rims.size > 80) rims.clear(); rims.set(key, url); return url;
+  }
+  const dark = () => root.getAttribute('data-theme') === 'dark';
+  const radiusOf = el => parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+  function paint(el) {
+    const w = el.offsetWidth, h = el.offsetHeight; if (w < 8 || h < 8) return;
+    const r = Math.min(radiusOf(el), w / 2, h / 2), url = bake(w, h, Math.round(r * 2) / 2, clamp(Math.min(w, h) * 0.36, 5, 16), false, dark() ? 0.62 : 1);
+    if (el._lgRim !== url) { el._lgRim = url; el.style.setProperty('--gl-rim', url); }
+  }
+  const queue = new Set(); let queued = 0;
+  const flush = () => { queued = 0; for (const el of queue) paint(el); queue.clear(); };
+  const ask = el => { queue.add(el); if (!queued) queued = requestAnimationFrame(flush); };
+  const ro = new ResizeObserver(es => { for (const e of es) ask(e.target); });
+  const surfaces = new Set();
+  const watch = el => { if (surfaces.has(el)) return; surfaces.add(el); ro.observe(el); };
+  const refresh = () => { rims.clear(); for (const el of surfaces) { el._lgRim = null; ask(el); } };
+
+  /* ---------- appui : la forme gonfle sous le doigt, penche vers le glissement, s'allume là où on touche, puis se relâche avec un rebond ---------- */
+  const PRESS = '.ib,.tool,.size,.swatch,.br,.tile,.btn,.nb-arrow,.nb-sw,.f-back,.f-ic,.f-chip,.nbc-card,.lt-b';
+  const presses = new WeakMap();
+  function pressOf(el) {
+    let p = presses.get(el); if (p) return p;
+    p = { v: { sx: 1, sy: 1, tx: 0, ty: 0 }, pointer: null };
+    const paintP = () => {
+      const v = p.v;
+      if (!p.pointer && Math.abs(v.sx - 1) < 1e-3 && Math.abs(v.sy - 1) < 1e-3 && Math.abs(v.tx) < 0.02 && Math.abs(v.ty) < 0.02) { el.style.removeProperty('scale'); el.style.removeProperty('translate'); return; }
+      el.style.scale = v.sx + ' ' + v.sy; el.style.translate = v.tx + 'px ' + v.ty + 'px';
+    };
+    p.springs = ['sx', 'sy', 'tx', 'ty'].map(key => spring(key[0] === 's' ? 1 : 0, SP.release, val => { p.v[key] = val; paintP(); }));
+    p.to = (targets, feel) => p.springs.forEach((s, i) => { s.tune(feel); s.set(targets[i]); });
+    presses.set(el, p); return p;
+  }
+  function pressDown(e) {
+    if (!on() || !e.isPrimary || e.button !== 0) return;
+    const el = e.target.closest && e.target.closest(PRESS); if (!el || el.disabled || el.classList.contains('lg-button') || el.getAttribute('aria-disabled') === 'true') return;                /* un bouton de la bibliothèque a son propre appui */
+    const p = pressOf(el); if (p.pointer) return;
+    const box = el.getBoundingClientRect(), w = el.offsetWidth || 1, h = el.offsetHeight || 1;
+    const natural = Math.min(0.22, Math.max(0.07, 9 / Math.sqrt(w * h))), base = 1 + natural * (e.pointerType === 'mouse' ? 0.75 : 1);
+    p.pointer = { id: e.pointerId, x: e.clientX, y: e.clientY, box, base, w, h };
+    el.dataset.pressed = ''; light(el, e, box); p.to([base, base, 0, 0], SP.press);
+    const move = ev => { if (ev.pointerId === p.pointer?.id) track(el, p, ev); };
+    const up = ev => { if (ev && ev.pointerId !== p.pointer?.id) return; p.pointer = null; delete el.dataset.pressed; window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up); p.to([1, 1, 0, 0], SP.release); };
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
+  }
+  function light(el, e, box) { el.style.setProperty('--gl-x', ((e.clientX - box.left) / box.width * 100) + '%'); el.style.setProperty('--gl-y', ((e.clientY - box.top) / box.height * 100) + '%'); }
+  function track(el, p, e) {
+    const { box, base, w, h } = p.pointer; light(el, e, box);
+    const dx = e.clientX - p.pointer.x, dy = e.clientY - p.pointer.y, dist = Math.hypot(dx, dy), cx = dist ? (dx / dist) ** 2 : 0, cy = dist ? (dy / dist) ** 2 : 0;
+    const span = Math.min(w * cx + h * cy, 64), reach = rubber(dist, span * 0.2 * 2, 0.55), ex = (reach * cx) / w, ey = (reach * cy) / h;      /* goutte retenue : la forme s'étire vers le doigt sans se détacher */
+    const tx = Math.sign(dx) * (reach * cx * base) / 2 + rubber(dx, 6, 0.4), ty = Math.sign(dy) * (reach * cy * base) / 2 + rubber(dy, 6, 0.4);
+    p.to([base * (1 + ex - ey * 0.35), base * (1 + ey - ex * 0.35), tx, ty], SP.follow);
+  }
+
+  /* ---------- sélecteurs segmentés : la sélection devient une lentille qu'on peut faire glisser, avec une copie agrandie des étiquettes ---------- */
+  const segs = new WeakMap(), segList = new Set();
+  function segInit(seg) {
+    if (segs.has(seg) || seg.hasAttribute('data-nolens') || (root.hasAttribute('data-dg') && !seg.classList.contains('nav'))) return;                 /* bibliothèque active : ses composants prennent le relais */
+    const n = seg.querySelectorAll(':scope > button').length; if (n < 2) return;
+    const lens = document.createElement('i'); lens.className = 'gl-lens'; lens.setAttribute('aria-hidden', 'true'); const zoom = document.createElement('span'); zoom.className = 'gl-zoom'; lens.appendChild(zoom); seg.insertBefore(lens, seg.firstChild); seg.setAttribute('data-gl-lens', '');
+    const st = { lens, zoom, idx: -1, g: { x: 0, w: 0, top: 0, h: 0 }, press: null, sig: '' };
+    const draw = () => {
+      const g = st.g, k = st.lift.v;
+      lens.style.width = g.w + 'px'; lens.style.height = g.h + 'px'; lens.style.top = g.top + 'px'; lens.style.translate = g.x + 'px 0'; lens.style.setProperty('--lift', k.toFixed(3));
+      lens.style.scale = (1 + 0.1 * k) + ' ' + (1 + 0.06 * k + st.jel.v);
+      zoom.style.left = -g.x + 'px'; zoom.style.top = -g.top + 'px'; zoom.style.transformOrigin = (g.x + g.w / 2) + 'px ' + (g.top + g.h / 2) + 'px'; zoom.style.scale = String(1 + 0.12 * k);
+    };
+    st.sx = spring(0, SP.snap, v => { st.g.x = v; draw(); }); st.sw = spring(0, SP.snap, v => { st.g.w = v; draw(); });
+    st.lift = spring(0, SP.lift, () => draw()); st.jel = spring(0, springFrom(0.3, 0.3), () => draw());
+    st.draw = draw; segs.set(seg, st); segList.add(seg);
+    new MutationObserver(() => segSync(seg)).observe(seg, { attributes: true, attributeFilter: ['class'], subtree: true, childList: true, characterData: true });
+    new ResizeObserver(() => segSync(seg, true)).observe(seg); segSync(seg, true);
+  }
+  function segSync(seg, instant) {
+    const st = segs.get(seg); if (!st || !seg.isConnected) return;
+    const btns = [...seg.querySelectorAll(':scope > button')]; if (!btns.length || !seg.offsetWidth) return;
+    let idx = btns.findIndex(b => b.classList.contains('on')); st.lens.style.opacity = idx < 0 ? '0' : ''; if (idx < 0) idx = 0;
+    const b = btns[idx]; st.idx = idx;
+    const sig = btns.map(x => x.offsetWidth + ':' + x.textContent + ':' + (x.classList.contains('on') ? 1 : 0)).join('|');
+    if (sig !== st.sig) {
+      st.sig = sig; const cs = getComputedStyle(b); st.lens.style.borderRadius = cs.borderTopLeftRadius;
+      st.zoom.style.width = seg.offsetWidth + 'px'; st.zoom.style.height = seg.offsetHeight + 'px';
+      st.zoom.innerHTML = btns.map(x => { const c = getComputedStyle(x); return '<span class="gl-zb' + (x.classList.contains('on') ? ' on' : '') + '" style="left:' + x.offsetLeft + 'px;top:' + x.offsetTop + 'px;width:' + x.offsetWidth + 'px;height:' + x.offsetHeight + 'px;font-size:' + c.fontSize + ';font-weight:' + c.fontWeight + ';gap:' + c.columnGap + ';letter-spacing:' + c.letterSpacing + '">' + x.innerHTML + '</span>'; }).join('');
+      st.lens.style.setProperty('--gl-rim', bake(Math.max(8, b.offsetWidth), Math.max(8, b.offsetHeight), Math.min(parseFloat(cs.borderTopLeftRadius) || 8, b.offsetHeight / 2), 8, true, dark() ? 0.7 : 1));
+    }
+    st.g.top = b.offsetTop; st.g.h = b.offsetHeight;
+    if (st.press && st.press.moved) return;
+    const first = st.g.w === 0 || instant; st.sx.tune(SP.snap); st.sw.tune(SP.snap); st.sx.set(b.offsetLeft, first); st.sw.set(b.offsetWidth, first); st.draw();
+  }
+  function segDown(e) {
+    if (!on() || !e.isPrimary || e.button !== 0) return;
+    const btn = e.target.closest && e.target.closest('.seg[data-gl-lens] > button'); if (!btn) return;
+    const seg = btn.parentNode, st = segs.get(seg); if (!st) return;
+    st.press = { id: e.pointerId, x0: e.clientX, moved: false, lastX: e.clientX, lastT: performance.now() }; st.lift.tune(SP.lift); st.lift.set(1); seg.setAttribute('data-gl-lifted', '');
+    const nearest = cx => { const btns = [...seg.querySelectorAll(':scope > button')], r = seg.getBoundingClientRect(); let best = btns[0], bd = 1e9; for (const x of btns) { const c = r.left + x.offsetLeft + x.offsetWidth / 2, d = Math.abs(c - cx); if (d < bd) { bd = d; best = x; } } return best; };
+    const move = ev => {
+      if (ev.pointerId !== st.press?.id) return; const pr = st.press;
+      if (!pr.moved && Math.abs(ev.clientX - pr.x0) > 6) pr.moved = true;
+      if (!pr.moved) return;
+      const r = seg.getBoundingClientRect(), btns = [...seg.querySelectorAll(':scope > button')], lo = btns[0].offsetLeft, hi = btns[btns.length - 1].offsetLeft + btns[btns.length - 1].offsetWidth - st.g.w;
+      st.sx.tune(SP.drag); st.sx.set(clamp(ev.clientX - r.left - st.g.w / 2, lo, hi)); const nb = nearest(ev.clientX); st.sw.tune(SP.snap); st.sw.set(nb.offsetWidth);
+      const now = performance.now(), v = (ev.clientX - pr.lastX) / Math.max(8, now - pr.lastT) * 1000; pr.lastX = ev.clientX; pr.lastT = now; st.jel.set(0.16 * Math.tanh(Math.abs(v) / 900));
+    };
+    const up = ev => {
+      if (ev && ev.pointerId !== st.press?.id) return; const pr = st.press; st.press = null;
+      window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up);
+      st.lift.tune(SP.settle); st.lift.set(0); seg.removeAttribute('data-gl-lifted'); st.jel.set(0);
+      if (pr && pr.moved) {
+        const target = nearest(ev ? ev.clientX : pr.x0), swallow = ce => { ce.stopPropagation(); ce.preventDefault(); };
+        if (!target.classList.contains('on')) target.click(); else segSync(seg);                         /* d'abord notre validation… */
+        seg.addEventListener('click', swallow, { capture: true, once: true }); setTimeout(() => seg.removeEventListener('click', swallow, true), 80);       /* …puis on avale le clic natif qui suit le relâchement */
+      }
+    };
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
+  }
+
+  /* ---------- démarrage : surfaces de verre et sélecteurs, y compris ceux créés plus tard ---------- */
+  const scan = node => {
+    if (!node || node.nodeType !== 1) return;
+    if (node.matches('.glass')) watch(node); node.querySelectorAll('.glass').forEach(watch);
+    if (node.matches('.seg')) segInit(node); node.querySelectorAll('.seg').forEach(segInit);
+  };
+  const flag = () => root.toggleAttribute('data-gl-press', on());
+  function start() {
+    flag(); scan(document.body);
+    new MutationObserver(ms => { for (const m of ms) m.addedNodes.forEach(scan); }).observe(document.body, { childList: true, subtree: true });
+    new MutationObserver(refresh).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    document.addEventListener('pointerdown', e => { pressDown(e); segDown(e); }, true);
+    if (typeof matchMedia === 'function') matchMedia('(prefers-reduced-motion: reduce)').addEventListener?.('change', flag);
+  }
+  return { start, flag, bake, refresh, segs, segList, presses, SP, spring, surfaces, scan: () => scan(document.body) };
+})();
+window.LG = LG; LG.start();
+
+/* ---------- bibliothèque Liquid Glass (glass-lib.js) : chargée après le premier rendu, jamais bloquante ----------
+   Absente, ou désactivée dans Réglages : l'app garde le verre intégré (moteur LG ci-dessus). Les navigateurs automatisés ne la
+   chargent qu'avec ?glasslib=1, pour que les tests de la logique restent fiables. */
+const GL = (() => {
+  let state = 'idle';
+  const wanted = () => settings.glasslib !== false && !/[?&]glasslib=0/.test(location.search) && (!navigator.webdriver || /[?&]glasslib=1/.test(location.search));
+  function load() {
+    if (state === 'loading' || state === 'ready') return; state = 'loading';
+    const sc = document.createElement('script'); sc.src = 'glass-lib.js?v=' + APP_VERSION; sc.async = true;
+    sc.onload = () => { state = 'ready'; sync(); }; sc.onerror = () => { state = 'failed'; }; document.head.appendChild(sc);
+  }
+  function sync() {
+    if (wanted()) { if (window.DessinerGlass) window.DessinerGlass.start(); else if (state !== 'failed') load(); }
+    else if (window.DessinerGlass && window.DessinerGlass.active()) { window.DessinerGlass.stop(); LG.scan(); }
+  }
+  return { sync, state: () => state };
+})();
+
 init().finally(() => { window.__bootDone && window.__bootDone(); });                       /* l'écran de lancement s'en va quand le premier rendu est fait (même si init échoue) */
 
 /* =====================================================================
