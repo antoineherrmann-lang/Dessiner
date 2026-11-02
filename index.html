@@ -1625,6 +1625,35 @@ html[data-dg] .dg-orig{display:none!important}
 .seg.nav button:not(.on) span{max-width:0;opacity:0;margin-left:-6px}
 .seg.nav button.on span{display:inline-block;max-width:150px;opacity:1;margin-left:0}
 .seg.nav .gl-zb:not(.on) span{display:inline-block;overflow:hidden;max-width:0;opacity:0;margin-left:-6px}
+/* ---------- 1.17.0 : menu des modes en bouton rond qui se déploie (trois ronds, le nom dessous) ---------- */
+#modeSeg.modefab{position:relative;display:block;flex:none;width:var(--fab,44px);height:var(--fab,44px);margin:0;padding:0;overflow:visible;z-index:5}
+#modeSeg.modefab > .nav-ind{display:none}
+#modeSeg.modefab > button{position:absolute;top:0;left:0;width:var(--fab,44px);height:var(--fab,44px);padding:0;margin:0;gap:0;display:grid;place-items:center;border-radius:50%;
+  opacity:0;visibility:hidden;pointer-events:none;transform:scale(.4);color:var(--ink)}
+#modeSeg.modefab > button.on{opacity:1;visibility:visible;pointer-events:auto;transform:none;color:var(--accent)}
+#modeSeg.modefab > button span{display:none}
+#modeSeg.modefab > button:not(.lg-button){background:var(--fill);box-shadow:0 1px 4px rgba(20,35,55,.14),inset 0 1px 0 rgba(255,255,255,.45)}
+html[data-theme="dark"] #modeSeg.modefab > button:not(.lg-button){box-shadow:0 1px 4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08)}
+#modeSeg.modefab > button .ic{width:20px;height:20px}
+#modeSeg.modefab.open > button{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+#modeSeg.modefab.open > button:nth-of-type(2){left:var(--step,84px)}
+#modeSeg.modefab.open > button:nth-of-type(3){left:calc(var(--step,84px)*2)}
+#modeSeg.modefab.open > button.on{outline:2px solid var(--accent);outline-offset:-2px}
+#modeSeg .fab-caps{position:absolute;left:0;top:calc(var(--fab,44px) + 6px);width:calc(var(--step,84px)*3);height:22px;pointer-events:none;z-index:6}
+#modeSeg .fab-caps em{position:absolute;top:0;left:calc(var(--fab,44px)/2);font-style:normal;font-size:11.5px;font-weight:550;line-height:1;white-space:nowrap;padding:4px 9px;border-radius:999px;color:var(--ink);
+  background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(12px) saturate(1.5);backdrop-filter:blur(12px) saturate(1.5);box-shadow:0 1px 6px rgba(20,30,45,.14);
+  opacity:0;transform:translate(-50%,-6px) scale(.9);transition:opacity .18s,transform .38s cubic-bezier(.3,1.35,.5,1)}
+#modeSeg .fab-caps em:nth-child(2){left:calc(var(--step,84px) + var(--fab,44px)/2)}
+#modeSeg .fab-caps em:nth-child(3){left:calc(var(--step,84px)*2 + var(--fab,44px)/2)}
+#modeSeg.open:not(.closing) .fab-caps em{opacity:1;transform:translate(-50%,0) scale(1)}
+#modeSeg.open:not(.closing) .fab-caps em:nth-child(2){transition-delay:.05s}
+#modeSeg.open:not(.closing) .fab-caps em:nth-child(3){transition-delay:.1s}
+#modeSeg .fab-caps em.on{color:var(--accent);font-weight:700}
+html[data-theme="dark"] #modeSeg .fab-caps em{background:rgba(30,34,42,.82);box-shadow:0 1px 8px rgba(0,0,0,.4)}
+html.glass-lite #modeSeg .fab-caps em{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(255,255,255,.96)}
+html.glass-lite[data-theme="dark"] #modeSeg .fab-caps em{background:rgba(34,38,46,.97)}
+.noanim #modeSeg .fab-caps em{transition:none}
+#topbar.fab-open{z-index:12}
 </style>
 </head>
 <body>
@@ -1736,11 +1765,11 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
   <header id="topbar" class="glass">
     <div class="brand"><img id="brandIco" alt=""><span>Dessiner</span></div>
-    <nav class="seg nav" id="modeSeg" role="tablist" aria-label="Sections">
-      <button data-mode="free" class="on" role="tab" aria-selected="true"><svg class="ic"><use href="#i-brush"/></svg><span>Dessin</span></button>
+    <nav class="modefab" id="modeSeg" role="tablist" aria-label="Sections">
+      <button data-mode="free" class="ib on" role="tab" aria-selected="true"><svg class="ic"><use href="#i-brush"/></svg><span>Dessin</span></button>
       
-      <button data-mode="anim" role="tab" aria-selected="false"><svg class="ic"><use href="#i-anim"/></svg><span>Animation</span></button>
-      <button data-nav="games" role="tab" aria-selected="false"><svg class="ic"><use href="#i-users"/></svg><span>Jeux multijoueur</span></button>
+      <button data-mode="anim" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-anim"/></svg><span>Animation</span></button>
+      <button data-nav="games" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-users"/></svg><span>Jeux multijoueur</span></button>
     </nav>
     <div class="actions">
       <div class="ag" role="group" aria-label="Feuille">
@@ -1822,7 +1851,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.16.1";
+const APP_VERSION = "1.17.0";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -4895,9 +4924,11 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
-  { v: '1.16.1', date: '16 nov. 2026', items: [
+  { v: '1.17.0', date: '2 nov. 2026', items: [
+    ['Un menu des modes minimaliste', 'En haut, un seul bouton rond montre le mode où tu es (Dessin, Animation ou Jeux multijoueur). Touche-le : trois ronds de verre se déploient avec leur nom dessous. Choisis un mode, ou touche ailleurs, et le menu se replie.']] },
+  { v: '1.16.1', date: '2 nov. 2026', items: [
     ['Menu du haut plus léger', 'Dans le sélecteur Dessin, Animation et Jeux multijoueur, seules les icônes restent visibles, sauf pour le mode où tu te trouves qui garde son nom. Le nom se déploie et se replie en douceur quand tu changes de mode, avec ou sans la bibliothèque Liquid Glass.']] },
-  { v: '1.16.0', date: '15 nov. 2026', items: [
+  { v: '1.16.0', date: '2 nov. 2026', items: [
     ['La vraie bibliothèque Liquid Glass', 'L’app charge maintenant glass-lib.js (la bibliothèque de liquidglass.theatom.lk, déjà essayée dans AH) : les boutons de la barre du haut et des panneaux, les sélecteurs (modes, réglages), les interrupteurs et les curseurs sont de vrais composants de verre liquide, avec lentille qu’on fait glisser, réfraction et ressorts.'],
     ['Retour au verre intégré en un geste', 'Réglages, Affichage : l’interrupteur « Bibliothèque Liquid Glass » la coupe tout de suite. Sans le fichier glass-lib.js, l’app garde le verre intégré de la version précédente.']] },
   { v: '1.15.0', date: '14 nov. 2026', items: [
@@ -6761,6 +6792,53 @@ window.LG = LG; LG.start();
 /* ---------- bibliothèque Liquid Glass (glass-lib.js) : chargée après le premier rendu, jamais bloquante ----------
    Absente, ou désactivée dans Réglages : l'app garde le verre intégré (moteur LG ci-dessus). Les navigateurs automatisés ne la
    chargent qu'avec ?glasslib=1, pour que les tests de la logique restent fiables. */
+/* ---------- menu des modes : un rond qui se déploie en trois ronds (1.17.0) ----------
+   Replié, seul le mode actif est visible. Un toucher le déploie ; choisir un mode (ou retoucher l'actif, toucher ailleurs, Échap) le replie.
+   Les clics faits par le code (non « de confiance ») passent sans déployer : le reste de l'app agit comme avant. */
+const MF = (() => {
+  const sg = document.getElementById('modeSeg'); if (!sg) return {}; const tb = sg.closest('#topbar');
+  const bs = () => [...sg.querySelectorAll(':scope > button')];
+  const caps = document.createElement('div'); caps.className = 'fab-caps'; caps.setAttribute('aria-hidden', 'true');
+  bs().forEach(b => { const full = ((b.querySelector('span') || b).textContent || '').trim(); b.setAttribute('aria-label', full); b.title = full;
+    const c = document.createElement('em'); c.textContent = full === 'Jeux multijoueur' ? 'Multijoueur' : full; caps.appendChild(c); });
+  sg.appendChild(caps);
+  let open = false, closing = false, anims = [];
+  const calm = () => !settings.anim || document.documentElement.classList.contains('noanim') || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const size = () => { const r = document.getElementById('btnLib'), w = r ? Math.round(r.getBoundingClientRect().width) : 0, f = w >= 30 && w <= 60 ? w : 44; sg.style.setProperty('--fab', f + 'px'); sg.style.setProperty('--step', (f + 40) + 'px'); return f + 10; };
+  const syncCaps = () => { const l = bs(); [...caps.children].forEach((c, i) => c.classList.toggle('on', !!l[i] && l[i].classList.contains('on'))); };
+  const stop = () => { anims.forEach(a => { try { a.cancel(); } catch (e) { } }); anims = []; };
+  function setOpen(o) {
+    if (o === open || closing) return;
+    const list = bs(), step = size(), idx = Math.max(0, list.findIndex(b => b.classList.contains('on'))); stop();
+    const can = !calm() && list[0] && list[0].animate;
+    if (o) {
+      open = true; sg.classList.add('open'); if (tb) tb.classList.add('fab-open'); syncCaps();
+      if (can) list.forEach((b, i) => anims.push(b.animate([{ transform: `translateX(${-i * step}px) scale(${i === idx ? 1 : .4})`, opacity: i === idx ? 1 : 0 }, { transform: 'none', opacity: 1 }], { duration: 480, delay: Math.abs(i - idx) * 40, easing: 'cubic-bezier(.3,1.35,.5,1)', fill: 'backwards' })));
+    } else {
+      const done = () => { stop(); sg.classList.remove('open', 'closing'); if (tb) tb.classList.remove('fab-open'); open = false; closing = false; };
+      if (!can) { done(); return; }
+      closing = true; sg.classList.add('closing');
+      list.forEach((b, i) => anims.push(b.animate([{ transform: 'none', opacity: 1 }, { transform: `translateX(${-i * step}px) scale(${i === idx ? 1 : .4})`, opacity: i === idx ? 1 : 0 }], { duration: 300, delay: Math.abs(i - idx) * 25, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' })));
+      Promise.all(anims.map(a => a.finished)).then(done, done);
+    }
+  }
+  sg.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('button'); if (!b || !e.isTrusted) return;
+    if (closing) { e.stopPropagation(); e.preventDefault(); return; }
+    if (!open) { e.stopPropagation(); e.preventDefault(); setOpen(true); return; }
+    if (b.classList.contains('on')) { e.stopPropagation(); e.preventDefault(); setOpen(false); return; }
+    setTimeout(() => setOpen(false), 170);          /* le choix suit son cours normal, puis on replie */
+  }, true);
+  document.addEventListener('pointerdown', e => { if (open && !closing && !sg.contains(e.target)) setOpen(false); }, true);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && open) setOpen(false); });
+  /* le mode change pendant que le menu est replié (depuis l'app) : la nouvelle icône apparaît en grossissant */
+  new MutationObserver(ms => { syncCaps(); if (open || closing || calm()) return;
+    ms.forEach(m => { const b = m.target; if (b !== sg && b.classList && b.classList.contains('on') && !(m.oldValue || '').split(' ').includes('on') && b.animate) b.animate([{ transform: 'scale(.55)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 300, easing: 'cubic-bezier(.3,1.4,.5,1)' }); });
+  }).observe(sg, { attributes: true, attributeFilter: ['class'], subtree: true, attributeOldValue: true });
+  window.addEventListener('resize', size); size(); syncCaps();
+  return { set: setOpen, isOpen: () => open };
+})();
+
 const GL = (() => {
   let state = 'idle';
   const wanted = () => settings.glasslib !== false && !/[?&]glasslib=0/.test(location.search) && (!navigator.webdriver || /[?&]glasslib=1/.test(location.search));
