@@ -1625,33 +1625,63 @@ html[data-dg] .dg-orig{display:none!important}
 .seg.nav button:not(.on) span{max-width:0;opacity:0;margin-left:-6px}
 .seg.nav button.on span{display:inline-block;max-width:150px;opacity:1;margin-left:0}
 .seg.nav .gl-zb:not(.on) span{display:inline-block;overflow:hidden;max-width:0;opacity:0;margin-left:-6px}
-/* ---------- 1.17.0 : menu des modes en bouton rond qui se déploie (trois ronds, le nom dessous) ---------- */
-#modeSeg.modefab{position:relative;display:block;flex:none;width:var(--fab,44px);height:var(--fab,44px);margin:0;padding:0;overflow:visible;z-index:5}
+/* ---------- 1.18.0 ---------- */
+/* Réglages : fenêtre à taille fixe, seul le contenu défile */
+#sheet.settings{height:min(740px,calc(100% - var(--sat) - var(--sab) - 32px));display:flex;flex-direction:column;overflow:hidden}
+#sheet.settings > *{flex:none}
+#sheet.settings > .tabpane{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;animation:none;margin:0 -8px;padding:0 8px}
+/* croix : plus haut, dans le coin ; plus de bandeau rectangulaire derrière les titres des panneaux */
+.sx-row{top:0;margin:-23px -2px 0 0}
+#sheet .sx-row + *{margin-top:23px}
+.insp-h,.pop-h{position:static;top:auto;background:none;padding:4px 44px 4px 0;min-height:36px;margin-bottom:4px}
+.insp-h .insp-x,.insp-h .xbtn,.pop-h .xbtn,.pop-h .insp-x{position:absolute;top:8px;right:8px;z-index:4}
+/* barre du haut : boutons un peu plus espacés, flèches annuler / rétablir centrées dans leur bulle */
+.ag{gap:5px}
+.ag+.ag{margin-left:9px;padding-left:9px}
+#btnUndo .ic{translate:.4px -1.9px}
+#btnRedo .ic{translate:-.4px -1.9px}
+.an-bar [aria-label="Pelure d’oignon"] .ic,#animbar [aria-label="Pelure d’oignon"] .ic{translate:.8px .8px}
+/* panneau Animation : plus de débordement, boutons espacés */
+.an-pop{overflow-x:hidden}
+.an-acts{gap:8px;margin-bottom:8px}
+.an-row{gap:10px}
+.an-pop .dg-seg .lg-track,#insp .dg-seg .lg-track{--lg-item-w:38px}
+.dg-host.dg-seg{min-width:0}
+/* polices et marges des boutons repris par la bibliothèque */
+html[data-dg] .lg-button{font-size:var(--dg-fs,16px);font-weight:var(--dg-fw,500);letter-spacing:0}
+html[data-dg] .lg-button:not([data-icon-only]){padding-inline:var(--dg-pad,18px)}
+/* portfolio : croix dans le coin, bouton principal encre en verre */
+#sheet.folio .f-x{translate:26px -12px}
+html[data-dg] #sheet.folio .btn.primary.lg-button{background:var(--lg-glass-fill);--lg-glass-fill:rgb(29 27 24 / .92)}
+html[data-dg][data-theme="dark"] #sheet.folio .btn.primary.lg-button{--lg-glass-fill:rgb(239 235 228 / .92)}
+/* mode sombre : reflets blancs du verre plus discrets */
+html[data-theme="dark"]{--lg-rim-opacity:.3;--lg-glow:rgb(255 255 255 / .06);--lg-lens-ring:rgb(255 255 255 / .14);--lg-lens-edge:rgb(255 255 255 / .06);--lg-selection-lens-edge:rgb(255 255 255 / .13);--lg-edge:rgb(255 255 255 / .05)}
+/* ---------- 1.19.0 : barre du haut triée ; menu des modes à droite, sans verre, qui se déploie vers le bas ---------- */
+#topbar .act-l{margin-left:12px}
+#topbar .act-r{margin-left:auto}
+.lefty #topbar .act-l{margin-left:0;margin-right:12px}
+.lefty #topbar .act-r{margin-left:0;margin-right:auto}
+#modeSeg.modefab{--mode-blue:#007aff;--mode-off:#fff;position:relative;display:block;flex:none;width:var(--fab,44px);height:var(--fab,44px);margin:0 0 0 12px;padding:0;overflow:visible;z-index:5}
+html[data-theme="dark"] #modeSeg.modefab{--mode-blue:#0a84ff;--mode-off:#303640}
+#modeSeg.modefab::before{content:"";position:absolute;left:-7px;top:11px;bottom:11px;width:1px;background:var(--line)}
+.lefty #modeSeg.modefab{margin:0 12px 0 0}
+.lefty #modeSeg.modefab::before{left:auto;right:-7px}
 #modeSeg.modefab > .nav-ind{display:none}
 #modeSeg.modefab > button{position:absolute;top:0;left:0;width:var(--fab,44px);height:var(--fab,44px);padding:0;margin:0;gap:0;display:grid;place-items:center;border-radius:50%;
-  opacity:0;visibility:hidden;pointer-events:none;transform:scale(.4);color:var(--ink)}
-#modeSeg.modefab > button.on{opacity:1;visibility:visible;pointer-events:auto;transform:none;color:var(--accent)}
+  background:var(--mode-off);box-shadow:none;color:var(--ink);opacity:0;visibility:hidden;pointer-events:none;transform:scale(.4)}
+#modeSeg.modefab > button.on{opacity:1;visibility:visible;pointer-events:auto;transform:none;background:var(--mode-blue);color:#fff}
 #modeSeg.modefab > button span{display:none}
-#modeSeg.modefab > button:not(.lg-button){background:var(--fill);box-shadow:0 1px 4px rgba(20,35,55,.14),inset 0 1px 0 rgba(255,255,255,.45)}
-html[data-theme="dark"] #modeSeg.modefab > button:not(.lg-button){box-shadow:0 1px 4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08)}
-#modeSeg.modefab > button .ic{width:20px;height:20px}
-#modeSeg.modefab.open > button{opacity:1;visibility:visible;pointer-events:auto;transform:none}
-#modeSeg.modefab.open > button:nth-of-type(2){left:var(--step,84px)}
-#modeSeg.modefab.open > button:nth-of-type(3){left:calc(var(--step,84px)*2)}
-#modeSeg.modefab.open > button.on{outline:2px solid var(--accent);outline-offset:-2px}
-#modeSeg .fab-caps{position:absolute;left:0;top:calc(var(--fab,44px) + 6px);width:calc(var(--step,84px)*3);height:22px;pointer-events:none;z-index:6}
-#modeSeg .fab-caps em{position:absolute;top:0;left:calc(var(--fab,44px)/2);font-style:normal;font-size:11.5px;font-weight:550;line-height:1;white-space:nowrap;padding:4px 9px;border-radius:999px;color:var(--ink);
-  background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(12px) saturate(1.5);backdrop-filter:blur(12px) saturate(1.5);box-shadow:0 1px 6px rgba(20,30,45,.14);
-  opacity:0;transform:translate(-50%,-6px) scale(.9);transition:opacity .18s,transform .38s cubic-bezier(.3,1.35,.5,1)}
-#modeSeg .fab-caps em:nth-child(2){left:calc(var(--step,84px) + var(--fab,44px)/2)}
-#modeSeg .fab-caps em:nth-child(3){left:calc(var(--step,84px)*2 + var(--fab,44px)/2)}
-#modeSeg.open:not(.closing) .fab-caps em{opacity:1;transform:translate(-50%,0) scale(1)}
-#modeSeg.open:not(.closing) .fab-caps em:nth-child(2){transition-delay:.05s}
-#modeSeg.open:not(.closing) .fab-caps em:nth-child(3){transition-delay:.1s}
-#modeSeg .fab-caps em.on{color:var(--accent);font-weight:700}
-html[data-theme="dark"] #modeSeg .fab-caps em{background:rgba(30,34,42,.82);box-shadow:0 1px 8px rgba(0,0,0,.4)}
-html.glass-lite #modeSeg .fab-caps em{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(255,255,255,.96)}
-html.glass-lite[data-theme="dark"] #modeSeg .fab-caps em{background:rgba(34,38,46,.97)}
+#modeSeg.modefab > button .ic{width:21px;height:21px;opacity:1}
+#modeSeg.modefab.open > button{opacity:1;visibility:visible;pointer-events:auto;transform:none;top:calc(var(--slot,0)*var(--step,54px));box-shadow:0 2px 8px rgba(20,30,45,.22)}
+#modeSeg.modefab.open > button.on{box-shadow:0 2px 10px rgba(0,122,255,.45)}
+#modeSeg .fab-caps{position:absolute;top:0;right:calc(var(--fab,44px) + 10px);width:0;height:0;pointer-events:none;z-index:6}
+#modeSeg .fab-caps em{position:absolute;right:0;top:calc(var(--slot,0)*var(--step,54px) + var(--fab,44px)/2);font-style:normal;font-size:13px;font-weight:600;line-height:1;white-space:nowrap;padding:8px 13px;border-radius:999px;
+  color:var(--ink);background:#fff;box-shadow:0 2px 8px rgba(20,30,45,.2);opacity:0;transform:translate(10px,-50%) scale(.92);transition:opacity .18s,transform .36s cubic-bezier(.3,1.35,.5,1);transition-delay:calc(var(--slot,0)*.04s)}
+.lefty #modeSeg .fab-caps{right:auto;left:calc(var(--fab,44px) + 10px)}
+.lefty #modeSeg .fab-caps em{right:auto;left:0;transform:translate(-10px,-50%) scale(.92)}
+#modeSeg.open:not(.closing) .fab-caps em{opacity:1;transform:translate(0,-50%) scale(1)}
+#modeSeg .fab-caps em.on{display:none}
+html[data-theme="dark"] #modeSeg .fab-caps em{background:#2a2f37;box-shadow:0 2px 10px rgba(0,0,0,.45)}
 .noanim #modeSeg .fab-caps em{transition:none}
 #topbar.fab-open{z-index:12}
 </style>
@@ -1765,13 +1795,8 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
   <header id="topbar" class="glass">
     <div class="brand"><img id="brandIco" alt=""><span>Dessiner</span></div>
-    <nav class="modefab" id="modeSeg" role="tablist" aria-label="Sections">
-      <button data-mode="free" class="ib on" role="tab" aria-selected="true"><svg class="ic"><use href="#i-brush"/></svg><span>Dessin</span></button>
-      
-      <button data-mode="anim" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-anim"/></svg><span>Animation</span></button>
-      <button data-nav="games" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-users"/></svg><span>Jeux multijoueur</span></button>
-    </nav>
-    <div class="actions">
+    
+    <div class="actions act-l">
       <div class="ag" role="group" aria-label="Feuille">
         <button class="ib" id="btnNew" aria-label="Nouvelle feuille" title="Nouvelle feuille (maintiens pour choisir le format)"><svg class="ic"><use href="#i-plus"/></svg></button>
         <button class="ib" id="btnLib" aria-label="Mes dessins" title="Mes dessins"><svg class="ic"><use href="#i-folder"/></svg></button>
@@ -1780,6 +1805,8 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
         <button class="ib" id="btnUndo" aria-label="Annuler" title="Annuler" disabled><svg class="ic"><use href="#i-undo"/></svg></button>
         <button class="ib" id="btnRedo" aria-label="Rétablir" title="Rétablir" disabled><svg class="ic flip"><use href="#i-undo"/></svg></button>
       </div>
+    </div>
+    <div class="actions act-r">
       <div class="ag" role="group" aria-label="Vue">
         <button class="ib" id="btnLay" aria-label="Calques" title="Calques"><svg class="ic"><use href="#i-layers"/></svg></button>
         <button class="ib" id="btnFit" aria-label="Recentrer la feuille" title="Recentrer la feuille"><svg class="ic"><use href="#i-fit"/></svg></button>
@@ -1790,6 +1817,12 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
       </div>
     </div>
     
+    <nav class="modefab" id="modeSeg" data-dg-skip role="tablist" aria-label="Sections">
+      <button data-mode="free" class="ib on" role="tab" aria-selected="true"><svg class="ic"><use href="#i-brush"/></svg><span>Dessin</span></button>
+      
+      <button data-mode="anim" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-anim"/></svg><span>Animation</span></button>
+      <button data-nav="games" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-users"/></svg><span>Jeux multijoueur</span></button>
+    </nav>
     <div id="mpHud">
       <div class="mph-who"><span class="mph-av" id="mphAv" aria-hidden="true"></span><b id="mphName"></b></div>
       <div class="mph-theme" id="mphTheme"></div>
@@ -1851,7 +1884,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.17.0";
+const APP_VERSION = "1.19.0";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -3277,7 +3310,7 @@ function openSheet(html, wide, mode) {
   if (typeof closeEditSessions === 'function') closeEditSessions();
   const was = sheet.classList.contains('open');            /* fenêtre déjà ouverte qu'on met à jour : pas de nouvelle cascade */
   /* le changement de pose (centrée, large, plein écran) se fait sans transition : sinon la fenêtre glisse depuis un coin */
-  sheet.style.transition = 'none'; sheet.classList.toggle('wide', !!wide); sheet.classList.toggle('folio', mode === 'folio' || mode === 'nbv'); sheet.classList.toggle('nbv', mode === 'nbv'); sheet.classList.remove('nb-bare'); sheet.classList.toggle('noin', was); sheet.innerHTML = html; void sheet.offsetWidth; sheet.style.transition = '';
+  sheet.style.transition = 'none'; sheet.classList.toggle('wide', !!wide); sheet.classList.toggle('folio', mode === 'folio' || mode === 'nbv'); sheet.classList.toggle('nbv', mode === 'nbv'); sheet.classList.remove('nb-bare', 'settings'); sheet.classList.toggle('noin', was); sheet.innerHTML = html; void sheet.offsetWidth; sheet.style.transition = '';
   [...sheet.children].forEach((c, i) => c.style.setProperty('--i', Math.min(i, 9)));
   sheet.querySelectorAll('.dcard,.tile,.card').forEach((c, i) => c.style.setProperty('--j', Math.min(i, 14)));
   if (mode !== 'folio' && mode !== 'nbv') sheetCloseUI();                    /* les écrans du portfolio ont leur propre croix */
@@ -3350,13 +3383,29 @@ function settingsPane(tab) {
     <div class="sec">Seau de peinture</div>
     <p class="sub" style="margin:4px 0 0">Touche une zone pour la remplir. Touche le seau une seconde fois pour régler la tolérance et la fermeture des trous. La gomme retire un aplat d’un simple tap.</p>`;
 }
+/* changer d'onglet des Réglages : la fenêtre garde sa taille, seul le contenu glisse (sortie rapide, entrée plus douce) */
+function settingsSwap(tab) {
+  const pane = sheet.querySelector('.tabpane'); if (!pane) return false;
+  const order = SET_TABS.map(t => t[0]), from = order.indexOf(pane.dataset.pane), to = order.indexOf(tab);
+  if (to < 0) return false; if (from === to) return true;
+  sheet.querySelectorAll('button[data-tab]').forEach(b => { const on = b.dataset.tab === tab; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); });
+  const put = () => { pane.dataset.pane = tab; pane.innerHTML = settingsPane(tab); pane.scrollTop = 0; if (tab === 'data') { fillStorage(); fillUpdate(); } };
+  const dir = to > from ? 1 : -1, calm = !settings.anim || document.documentElement.classList.contains('noanim');
+  pane.getAnimations().forEach(a => a.cancel());
+  if (calm || !pane.animate) { put(); return true; }
+  const out = pane.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${-16 * dir}px)` }], { duration: 110, easing: 'ease-in', fill: 'forwards' });
+  out.finished.then(() => { put(); out.cancel(); const inn = pane.animate([{ opacity: 0, transform: `translateX(${16 * dir}px)` }, { opacity: 1, transform: 'none' }], { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)' }); inn.finished.then(() => inn.cancel(), () => {}); }, () => {});
+  return true;
+}
 function openMenu(tab) {
   tab = SET_TABS.some(t => t[0] === tab) ? tab : LS.get('setTab', 'draw'); if (!SET_TABS.some(t => t[0] === tab)) tab = 'draw'; LS.set('setTab', tab);
+  if (sheet.classList.contains('open') && sheet.classList.contains('settings') && settingsSwap(tab)) return;
   openSheet(`
     <h2>Réglages</h2><p class="sub">Préférences de l’app · version ${APP_VERSION}</p>
     <div class="seg full tabs" role="tablist" aria-label="Catégories">${SET_TABS.map(([k, l]) => `<button role="tab" data-tab="${k}" aria-selected="${k === tab}"${k === tab ? ' class="on"' : ''}>${l}</button>`).join('')}</div>
     <div class="tabpane" data-pane="${tab}">${settingsPane(tab)}</div>
     <div class="row btns" style="margin-top:10px"><button class="btn primary" data-sheet="close">Terminé</button></div>`);
+  sheet.classList.add('settings');
   if (tab === 'data') { fillStorage(); fillUpdate(); }
 }
 /* ---------- Outils : tout ce qui aide à dessiner, s'entraîner et partager ---------- */
@@ -4924,6 +4973,17 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
+  { v: '1.19.0', date: '2 nov. 2026', items: [
+    ['Menu des modes à droite', 'Le menu Dessin, Animation, Jeux multijoueur est maintenant au bout de la barre, à droite. Touche-le : les deux autres modes descendent dessous, leur nom à gauche. Le mode choisi est une pastille bleue avec son icône blanche bien visible, les autres ronds sont pleins (jamais transparents), et le menu n’utilise plus le verre liquide.'],
+    ['Barre du haut mieux triée', 'À gauche : nouvelle feuille, mes dessins, annuler et rétablir. À droite : calques, recentrer, outils, réglages, puis le menu des modes. Même rangement en Dessin et en Animation.']] },
+  { v: '1.18.0', date: '2 nov. 2026', items: [
+    ['Réglages à taille fixe', 'La fenêtre ne change plus de taille d’un onglet à l’autre : seul le contenu glisse, en douceur.'],
+    ['Croix dans le coin', 'La croix des menus est plus haute, tout près du coin, et le bandeau rectangulaire derrière le titre des panneaux d’outils a disparu.'],
+    ['Barre du haut plus aérée', 'Les boutons sont un peu plus espacés et les flèches annuler et rétablir sont centrées dans leur bulle.'],
+    ['Verre plus doux en sombre', 'Les reflets blancs du verre liquide sont adoucis en mode sombre.'],
+    ['Panneau Animation', 'Plus de débordement ni de contenu qui glisse sur le côté, et des boutons mieux espacés.'],
+    ['Portfolio en verre', 'Les boutons du portfolio prennent le verre liquide.'],
+    ['Menu des modes', 'Une capsule de verre s’étire derrière les trois ronds quand le menu se déploie.']] },
   { v: '1.17.0', date: '2 nov. 2026', items: [
     ['Un menu des modes minimaliste', 'En haut, un seul bouton rond montre le mode où tu es (Dessin, Animation ou Jeux multijoueur). Touche-le : trois ronds de verre se déploient avec leur nom dessous. Choisis un mode, ou touche ailleurs, et le menu se replie.']] },
   { v: '1.16.1', date: '2 nov. 2026', items: [
@@ -6662,7 +6722,7 @@ const LG = (() => {
   const radiusOf = el => parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
   function paint(el) {
     const w = el.offsetWidth, h = el.offsetHeight; if (w < 8 || h < 8) return;
-    const r = Math.min(radiusOf(el), w / 2, h / 2), url = bake(w, h, Math.round(r * 2) / 2, clamp(Math.min(w, h) * 0.36, 5, 16), false, dark() ? 0.62 : 1);
+    const r = Math.min(radiusOf(el), w / 2, h / 2), url = bake(w, h, Math.round(r * 2) / 2, clamp(Math.min(w, h) * 0.36, 5, 16), false, dark() ? 0.4 : 1);
     if (el._lgRim !== url) { el._lgRim = url; el.style.setProperty('--gl-rim', url); }
   }
   const queue = new Set(); let queued = 0;
@@ -6792,33 +6852,36 @@ window.LG = LG; LG.start();
 /* ---------- bibliothèque Liquid Glass (glass-lib.js) : chargée après le premier rendu, jamais bloquante ----------
    Absente, ou désactivée dans Réglages : l'app garde le verre intégré (moteur LG ci-dessus). Les navigateurs automatisés ne la
    chargent qu'avec ?glasslib=1, pour que les tests de la logique restent fiables. */
-/* ---------- menu des modes : un rond qui se déploie en trois ronds (1.17.0) ----------
-   Replié, seul le mode actif est visible. Un toucher le déploie ; choisir un mode (ou retoucher l'actif, toucher ailleurs, Échap) le replie.
-   Les clics faits par le code (non « de confiance ») passent sans déployer : le reste de l'app agit comme avant. */
+/* ---------- menu des modes (1.19.0) : un rond à droite de la barre ; touché, il déploie les autres modes vers le bas ----------
+   Replié, seul le mode actif est visible. Le mode actif reste en place, les deux autres descendent dessous, leur nom à gauche.
+   Choisir un mode, retoucher l'actif, toucher ailleurs ou Échap replie. Les clics faits par le code (non « de confiance ») passent sans déployer. */
 const MF = (() => {
   const sg = document.getElementById('modeSeg'); if (!sg) return {}; const tb = sg.closest('#topbar');
   const bs = () => [...sg.querySelectorAll(':scope > button')];
   const caps = document.createElement('div'); caps.className = 'fab-caps'; caps.setAttribute('aria-hidden', 'true');
-  bs().forEach(b => { const full = ((b.querySelector('span') || b).textContent || '').trim(); b.setAttribute('aria-label', full); b.title = full;
-    const c = document.createElement('em'); c.textContent = full === 'Jeux multijoueur' ? 'Multijoueur' : full; caps.appendChild(c); });
+  bs().forEach(b => { const full = ((b.querySelector('span') || b).textContent || '').trim(); b.setAttribute('aria-label', full); b.title = full; const c = document.createElement('em'); c.textContent = full; caps.appendChild(c); });
   sg.appendChild(caps);
   let open = false, closing = false, anims = [];
   const calm = () => !settings.anim || document.documentElement.classList.contains('noanim') || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const size = () => { const r = document.getElementById('btnLib'), w = r ? Math.round(r.getBoundingClientRect().width) : 0, f = w >= 30 && w <= 60 ? w : 44; sg.style.setProperty('--fab', f + 'px'); sg.style.setProperty('--step', (f + 40) + 'px'); return f + 10; };
+  const size = () => { const r = document.getElementById('btnLib'), w = r ? Math.round(r.getBoundingClientRect().width) : 0, f = w >= 30 && w <= 60 ? w : 44; sg.style.setProperty('--fab', f + 'px'); sg.style.setProperty('--step', (f + 10) + 'px'); return f + 10; };
+  const slotsNow = () => { const l = bs(), a = Math.max(0, l.findIndex(b => b.classList.contains('on'))); let k = 1; return l.map((b, i) => i === a ? 0 : k++); };
+  const paintSlots = () => { const sl = slotsNow(); bs().forEach((b, i) => b.style.setProperty('--slot', sl[i])); [...caps.children].forEach((c, i) => c.style.setProperty('--slot', sl[i])); };
   const syncCaps = () => { const l = bs(); [...caps.children].forEach((c, i) => c.classList.toggle('on', !!l[i] && l[i].classList.contains('on'))); };
   const stop = () => { anims.forEach(a => { try { a.cancel(); } catch (e) { } }); anims = []; };
   function setOpen(o) {
     if (o === open || closing) return;
-    const list = bs(), step = size(), idx = Math.max(0, list.findIndex(b => b.classList.contains('on'))); stop();
+    const list = bs(), step = size(); stop();
     const can = !calm() && list[0] && list[0].animate;
     if (o) {
-      open = true; sg.classList.add('open'); if (tb) tb.classList.add('fab-open'); syncCaps();
-      if (can) list.forEach((b, i) => anims.push(b.animate([{ transform: `translateX(${-i * step}px) scale(${i === idx ? 1 : .4})`, opacity: i === idx ? 1 : 0 }, { transform: 'none', opacity: 1 }], { duration: 480, delay: Math.abs(i - idx) * 40, easing: 'cubic-bezier(.3,1.35,.5,1)', fill: 'backwards' })));
+      paintSlots(); open = true; sg.classList.add('open'); if (tb) tb.classList.add('fab-open'); syncCaps();
+      if (can) list.forEach(b => { const s = +b.style.getPropertyValue('--slot'); if (s) anims.push(b.animate([{ transform: `translateY(${-s * step}px) scale(.4)`, opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 460, delay: s * 45, easing: 'cubic-bezier(.3,1.35,.5,1)', fill: 'backwards' })); });
     } else {
-      const done = () => { stop(); sg.classList.remove('open', 'closing'); if (tb) tb.classList.remove('fab-open'); open = false; closing = false; };
+      const done = () => { stop(); sg.classList.remove('open', 'closing'); if (tb) tb.classList.remove('fab-open'); paintSlots(); open = false; closing = false; };
       if (!can) { done(); return; }
       closing = true; sg.classList.add('closing');
-      list.forEach((b, i) => anims.push(b.animate([{ transform: 'none', opacity: 1 }, { transform: `translateX(${-i * step}px) scale(${i === idx ? 1 : .4})`, opacity: i === idx ? 1 : 0 }], { duration: 300, delay: Math.abs(i - idx) * 25, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' })));
+      list.forEach(b => { const s = +b.style.getPropertyValue('--slot') || 0, on = b.classList.contains('on');
+        if (s || !on) anims.push(b.animate([{ transform: 'none', opacity: 1 }, { transform: `translateY(${-s * step}px) scale(${on ? 1 : .4})`, opacity: on ? 1 : 0 }], { duration: 280, delay: s * 25, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' })); });
+      if (!anims.length) { done(); return; }
       Promise.all(anims.map(a => a.finished)).then(done, done);
     }
   }
@@ -6835,7 +6898,7 @@ const MF = (() => {
   new MutationObserver(ms => { syncCaps(); if (open || closing || calm()) return;
     ms.forEach(m => { const b = m.target; if (b !== sg && b.classList && b.classList.contains('on') && !(m.oldValue || '').split(' ').includes('on') && b.animate) b.animate([{ transform: 'scale(.55)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 300, easing: 'cubic-bezier(.3,1.4,.5,1)' }); });
   }).observe(sg, { attributes: true, attributeFilter: ['class'], subtree: true, attributeOldValue: true });
-  window.addEventListener('resize', size); size(); syncCaps();
+  window.addEventListener('resize', size); size(); paintSlots(); syncCaps();
   return { set: setOpen, isOpen: () => open };
 })();
 
