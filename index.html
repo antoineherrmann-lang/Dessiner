@@ -54,7 +54,7 @@ html{background:#f6f3ee}:root[data-theme=dark]{background:#161412}
   --glass:rgba(248,250,253,.40); --glass-panel:rgba(248,250,253,.58); --glass-strong:rgba(248,250,253,.74); --glass-brd:rgba(255,255,255,.70);
   --raise:rgba(255,255,255,.66); --hi:rgba(255,255,255,.95); --hi2:rgba(255,255,255,.34);
   --ink:#1d2024; --ink2:#6a7079; --line:rgba(30,40,55,.11); --fill:rgba(120,130,145,.16);
-  --accent:#2e6a96; --accent-soft:rgba(46,106,150,.15); --danger:#c0392b; --seg-on:#fff;
+  --accent:#007aff; --accent-soft:rgba(0,122,255,.14); --danger:#c0392b; --seg-on:#fff;
   --shadow:0 8px 28px rgba(20,35,55,.16), 0 1px 2px rgba(20,35,55,.08);
   --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
   --sal:env(safe-area-inset-left,0px); --sar:env(safe-area-inset-right,0px);
@@ -64,7 +64,7 @@ html{background:#f6f3ee}:root[data-theme=dark]{background:#161412}
   --glass:rgba(30,34,39,.80); --glass-panel:rgba(30,34,39,.90); --glass-strong:rgba(30,34,39,.95); --glass-brd:rgba(255,255,255,.09);
   --raise:rgba(255,255,255,.08); --hi:rgba(255,255,255,.12); --hi2:rgba(255,255,255,.05);
   --ink:#eceff3; --ink2:#a8b1bc; --line:rgba(255,255,255,.12); --fill:rgba(170,180,195,.18);
-  --accent:#3a78a8; --accent-soft:rgba(90,150,205,.24); --danger:#ff6f61; --seg-on:#444b54;
+  --accent:#0a84ff; --accent-soft:rgba(10,132,255,.24); --danger:#ff6f61; --seg-on:#444b54;
   --shadow:0 10px 30px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.4);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -553,7 +553,7 @@ gomme fine,taille précise ---------- */
 .er-rng input{flex:1;min-width:0;height:32px;accent-color:var(--accent)}
 .er-rng b{min-width:44px;text-align:right;font-variant-numeric:tabular-nums}
 .er-prev{display:flex;align-items:center;justify-content:center;height:64px;margin:4px 0 8px;border-radius:14px;background:#fdfdfb;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
-.er-prev i{display:block;border-radius:50%;border:1.5px solid var(--accent);background:rgba(46,106,150,.12)}
+.er-prev i{display:block;border-radius:50%;border:1.5px solid var(--accent);background:rgba(0,122,255,.12)}
 .cr-pick{position:relative;overflow:hidden}
 .cr-pick input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
 .swatch.cur{background:conic-gradient(from 0deg,#ff3b30,#ff9f0a,#ffd60a,#30d158,#0a84ff,#bf5af2,#ff375f,#ff3b30)}
@@ -728,7 +728,7 @@ html.space-leave #expanel,html.space-leave #layers,html.space-leave #refpanel,ht
 #animbar.playing .an-strip{opacity:.85}
 /* ---------- 1.6.0 : règle, images ---------- */
 #grpAid{display:flex;gap:4px}
-#btnRuler.on{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(46,106,150,.32)}
+#btnRuler.on{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(0,122,255,.32)}
 #ruler{position:absolute;left:0;top:0;z-index:3;display:none;pointer-events:none;transform-origin:50% 50%;border-radius:10px;
   background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(236,240,246,.66));box-shadow:0 0 0 1px rgba(40,60,90,.18),0 10px 28px rgba(20,35,55,.18),inset 0 1px 0 rgba(255,255,255,.9);
   -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
@@ -750,13 +750,13 @@ html.space-leave #expanel,html.space-leave #layers,html.space-leave #refpanel,ht
 .pl-n{font-weight:700;font-size:14px;margin-right:6px}
 .pl-bar .btn{height:42px;padding:0 20px}
 html.placing #dock,html.placing #animbar{opacity:.35;pointer-events:none}
-#stage.dropping::after{content:"Dépose tes images ici";position:absolute;inset:16px;display:grid;place-items:center;border:3px dashed var(--accent);border-radius:24px;background:rgba(46,106,150,.08);font-weight:700;color:var(--accent);z-index:5;pointer-events:none}
+#stage.dropping::after{content:"Dépose tes images ici";position:absolute;inset:16px;display:grid;place-items:center;border:3px dashed var(--accent);border-radius:24px;background:rgba(0,122,255,.08);font-weight:700;color:var(--accent);z-index:5;pointer-events:none}
 /* rangées de boutons : le texte revient à la ligne au lieu de déborder ; colonne pour les choix longs */
 .row.btns .btn{white-space:normal;line-height:1.2;height:auto;min-height:44px;padding-top:9px;padding-bottom:9px;text-align:center}
 .row.btns.stack{flex-direction:column;align-items:stretch}
 .row.btns.stack .btn{flex:none;width:100%}
 /* ---------- 1.7.0 : symétrie, GIF ---------- */
-#btnSym.on{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(46,106,150,.32)}
+#btnSym.on{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(0,122,255,.32)}
 #symGuide{position:absolute;left:0;top:0;z-index:2;display:none;pointer-events:none;overflow:visible}
 #symGuide.show{display:block}
 #symGuide line{stroke:rgba(194,82,45,.65);stroke-width:1.5;stroke-dasharray:7 6}
@@ -793,7 +793,7 @@ html.placing #dock,html.placing #animbar{opacity:.35;pointer-events:none}
 #lmEl[hidden]{display:none}
 .pl-surface{position:absolute;pointer-events:auto;touch-action:none;cursor:move}
 .pl-box{pointer-events:auto}
-.lm-box{outline:2px dashed var(--accent);box-shadow:none;background:rgba(46,106,150,.05)}
+.lm-box{outline:2px dashed var(--accent);box-shadow:none;background:rgba(0,122,255,.05)}
 .lm-box.noxf .pl-h{display:none}
 .pl-bar{flex-wrap:wrap;justify-content:center;width:max-content;max-width:calc(100% - 20px);row-gap:6px}
 .pl-own{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;padding:0 6px;white-space:nowrap}
@@ -802,7 +802,7 @@ html.placing #dock,html.placing #animbar{opacity:.35;pointer-events:none}
 html.lmoving #dock,html.lmoving #animbar{opacity:.35;pointer-events:none}
 #alignGuide{position:absolute;left:0;top:0;z-index:31;display:none;pointer-events:none;overflow:visible}
 #alignGuide.show{display:block}
-#alignGuide line{stroke:#2e6a96;stroke-width:1.5;stroke-dasharray:6 5}
+#alignGuide line{stroke:#007aff;stroke-width:1.5;stroke-dasharray:6 5}
 #alignGuide line.mid{stroke:#e0306b;stroke-width:2}
 @media (max-width:520px){.pl-bar{bottom:calc(var(--sab) + 70px)}
 .pl-bar .btn{padding:0 14px}}
@@ -836,7 +836,7 @@ html.lmoving #dock,html.lmoving #animbar{opacity:.35;pointer-events:none}
 /* ---------- 1.8 : texte et déformation ---------- */
 #txEl,#dfEl{position:absolute;inset:0;z-index:30;pointer-events:none}
 #txEl[hidden],#dfEl[hidden],#txPanel[hidden]{display:none}
-.tx-box{outline:2px solid var(--accent);outline-offset:0;background:rgba(46,106,150,.05);cursor:move}
+.tx-box{outline:2px solid var(--accent);outline-offset:0;background:rgba(0,122,255,.05);cursor:move}
 .tx-box::before{content:"";position:absolute;inset:-14px}
 #txPanel{position:absolute;z-index:33;top:calc(var(--sat) + 66px);left:50%;translate:-50% 0;width:min(620px,calc(100% - 24px));padding:10px;border-radius:22px;display:grid;gap:8px;animation:panelin .26s var(--ease);transform-origin:top center}
 .tx-top{display:flex;gap:8px;align-items:flex-start}
@@ -871,11 +871,11 @@ html.lmoving #dock,html.lmoving #animbar{opacity:.35;pointer-events:none}
 html.deforming #dock,html.deforming #animbar{opacity:.35;pointer-events:none}
 #dfCv{position:absolute;pointer-events:none}
 .df-svg{position:absolute;pointer-events:none;overflow:visible}
-.df-q{fill:rgba(46,106,150,.06);stroke:rgba(46,106,150,.95);stroke-width:1.6;stroke-dasharray:7 5;stroke-linejoin:round}
-.df-g polyline{fill:none;stroke:rgba(46,106,150,.9);stroke-width:1.4;stroke-dasharray:7 5}
+.df-q{fill:rgba(0,122,255,.06);stroke:rgba(0,122,255,.95);stroke-width:1.6;stroke-dasharray:7 5;stroke-linejoin:round}
+.df-g polyline{fill:none;stroke:rgba(0,122,255,.9);stroke-width:1.4;stroke-dasharray:7 5}
 .df-svg.bad .df-q{stroke:#e0306b;fill:rgba(224,48,107,.08)}
 .df-h::after{content:"";position:absolute;inset:-11px;border-radius:50%}
-.df-h.grab{transform-origin:center;box-shadow:0 0 0 7px rgba(46,106,150,.22),0 2px 9px rgba(0,0,0,.28)}
+.df-h.grab{transform-origin:center;box-shadow:0 0 0 7px rgba(0,122,255,.22),0 2px 9px rgba(0,0,0,.28)}
 #dfEl.busy .df-bar{opacity:.6;pointer-events:none}
 #dfEl.busy .df-bar .btn.primary::after{content:" …"}
 /* pendant la déformation, le reste de l'interface est mis de côté : une seule chose à la fois */
@@ -977,7 +977,7 @@ html.ui-anim-keep.ui-hide #dock,html.ui-anim-keep.ui-hide #topbar{pointer-events
 #bucketopts .seg,#gradopts .seg,#eraseropts .seg{display:flex;width:100%}
 #bucketopts .seg button,#gradopts .seg button,#eraseropts .seg button{flex:1;min-width:0;padding:0 4px}
 #ripples{position:absolute;inset:0;z-index:8;pointer-events:none;overflow:hidden}
-.rip{position:absolute;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--rc,#2e6a96);opacity:.5;animation:ripple .65s var(--ease) forwards}
+.rip{position:absolute;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--rc,#007aff);opacity:.5;animation:ripple .65s var(--ease) forwards}
 /* ---------- animations ---------- */
 @keyframes rise{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}
 @keyframes pop2{from{opacity:0;scale:.9;translate:0 8px}60%{opacity:1}to{opacity:1;scale:1;translate:0 0}}
@@ -1376,8 +1376,8 @@ html.noanim *,html.noanim *::before,html.noanim *::after{transition:none!importa
 :root[data-theme=dark]:not(#z):not(#zz) .f-card.sel .thumb{box-shadow:0 0 0 3px var(--f-acc),0 18px 36px -24px rgba(0,0,0,0.57)}
 /* ---------- 1.9 : mode sombre — retouches ---------- */
 :root[data-theme=dark] .swatch i{box-shadow:inset 0 0 0 1px rgba(255,255,255,.30)}
-:root[data-theme=dark] .swatch.on{box-shadow:0 0 0 2px #7db4e0}
-:root[data-theme=dark] .size.on{box-shadow:inset 0 0 0 1.5px #7db4e0}
+:root[data-theme=dark] .swatch.on{box-shadow:0 0 0 2px #0a84ff}
+:root[data-theme=dark] .size.on{box-shadow:inset 0 0 0 1.5px #0a84ff}
 :root[data-theme=dark]:not(#z):not(#zz) .f-cmpbtn.on{background:#c2522d;color:#fff}
 :root[data-theme=dark]:not(#z):not(#zz) .f-card.sel .f-check{background:#c2522d;box-shadow:0 0 0 2px #262320}/* ---------- 1.9.2 : effets de verre légers ---------- */
 html.glass-lite *,html.glass-lite *::before,html.glass-lite *::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
@@ -1684,6 +1684,24 @@ html[data-theme="dark"] #modeSeg.modefab{--mode-blue:#0a84ff;--mode-off:#303640}
 html[data-theme="dark"] #modeSeg .fab-caps em{background:#2a2f37;box-shadow:0 2px 10px rgba(0,0,0,.45)}
 .noanim #modeSeg .fab-caps em{transition:none}
 #topbar.fab-open{z-index:12}
+/* ---------- 1.20.0 ---------- */
+/* couleurs : la bulle de verre, en beaucoup plus discrète (reflets divisés par deux, flou réduit, brillance du haut presque effacée) */
+#grpColors .swatch:not(#btnColor)::before,.cr-grid button::before,.cw-nu button::before{background:radial-gradient(120% 120% at 30% 16%,rgba(255,255,255,.34),rgba(255,255,255,.04) 55%,rgba(255,255,255,.14));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.42),inset 0 1px 1px rgba(255,255,255,.55),inset 0 -2px 3px rgba(40,60,90,.06),0 0 0 1px color-mix(in srgb,var(--accent) 38%,transparent),0 2px 6px -3px rgba(30,50,80,.2);
+  -webkit-backdrop-filter:blur(3px) saturate(1.25);backdrop-filter:blur(3px) saturate(1.25)}
+:root[data-theme=dark] #grpColors .swatch:not(#btnColor)::before,:root[data-theme=dark] .cr-grid button::before,:root[data-theme=dark] .cw-nu button::before{background:radial-gradient(120% 120% at 30% 16%,rgba(255,255,255,.15),rgba(255,255,255,.02) 55%,rgba(255,255,255,.06));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),inset 0 1px 1px rgba(255,255,255,.25),inset 0 -2px 3px rgba(0,0,0,.2),0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent),0 2px 6px -3px rgba(0,0,0,.4)}
+#grpColors .swatch:not(#btnColor).on::before,.cr-grid button.on::before,.cw-nu button.on::before{opacity:.72}
+#grpColors .swatch:not(#btnColor).on i{transform:scale(1.02)}
+#grpColors .swatch:not(#btnColor)::after{left:31%;width:38%;height:2px}
+#grpColors .swatch:not(#btnColor).on::after{opacity:.38}
+html:not(.dock-mini) #dock #grpColors #btnColor.on{background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,.2));box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),inset 0 1px 1px rgba(255,255,255,.6),0 0 0 1px var(--line),0 2px 6px -3px rgba(30,50,80,.2)}
+:root[data-theme=dark] html:not(.dock-mini) #dock #grpColors #btnColor.on,:root[data-theme=dark]:not(.dock-mini) #dock #grpColors #btnColor.on{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05));box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),inset 0 1px 1px rgba(255,255,255,.25),0 0 0 1px var(--line),0 2px 6px -3px rgba(0,0,0,.4)}
+/* menu des modes : la bibliothèque donne le verre ; bleu vif pour le mode choisi, ronds presque opaques pour les autres */
+#modeSeg.modefab{--mode-blue:var(--accent);--mode-off-g:rgb(255 255 255 / .9);--mode-on-g:rgb(0 122 255 / .94)}
+html[data-theme="dark"] #modeSeg.modefab{--mode-off-g:rgb(52 58 68 / .92);--mode-on-g:rgb(10 132 255 / .94)}
+html[data-dg] #modeSeg.modefab > button.lg-button{background:var(--lg-glass-fill);--lg-glass-fill:var(--mode-off-g)}
+html[data-dg] #modeSeg.modefab > button.lg-button.on{--lg-glass-fill:var(--mode-on-g)}
 </style>
 </head>
 <body>
@@ -1817,7 +1835,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
       </div>
     </div>
     
-    <nav class="modefab" id="modeSeg" data-dg-skip role="tablist" aria-label="Sections">
+    <nav class="modefab" id="modeSeg" role="tablist" aria-label="Sections">
       <button data-mode="free" class="ib on" role="tab" aria-selected="true"><svg class="ic"><use href="#i-brush"/></svg><span>Dessin</span></button>
       
       <button data-mode="anim" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-anim"/></svg><span>Animation</span></button>
@@ -1884,7 +1902,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.19.0";
+const APP_VERSION = "1.20.1";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -4520,7 +4538,7 @@ function bindUI() {
     const b = e.target.closest('button'); if (!b) return; const d = b.dataset;
     if (b.id === 'btnFill' || b.id === 'btnColor' || b.id === 'btnEraser') return;
     if (b.id === 'btnBrush') { if (NON_BRUSH.includes(S.tool) && S.tool !== 'grain') setTool(S.brush); else toggleBrushes(); }
-    else if (d.tool) setTool(d.tool); else if (d.size) { setSize(+d.size); closeBrushes(); } else if (d.color) setColor(d.color);
+    else if (d.tool) setTool(d.tool); else if (d.size) { setSize(+d.size); closeBrushes(); } else if (d.color) { const again = b.classList.contains('on') && !popIsOpen('color'); setColor(d.color); if (again) popOpen('color'); }
   });
   document.addEventListener('input', e => { if (e.target.id === 'colorPick') { setColor(e.target.value, true); const d = document.querySelector('#recentopts .cr-cur'); if (d) { d.style.setProperty('--c', S.color); d.querySelector('b').textContent = S.color.toUpperCase(); } } });
   $('#modeSeg').addEventListener('click', e => {
@@ -4973,6 +4991,14 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
+  { v: '1.20.1', date: '2 nov. 2026', items: [
+    ['Bulle de verre plus discrète sur les couleurs', 'La bulle de verre autour de la couleur choisie revient, en beaucoup plus légère : reflets divisés par deux, flou réduit, avec un fin liseré bleu.']] },
+  { v: '1.20.0', date: '2 nov. 2026', items: [
+    ['Un bleu de sélection plus vif', 'Le bleu du menu des modes devient la couleur de sélection de toute l’app : outil choisi, réglages, curseurs, interrupteurs, sélections.'],
+    ['Pastilles de couleur sans gonflement', 'Les pastilles ne gonflent plus quand on les touche.'],
+    ['Nuancier direct', 'Touche une seconde fois la couleur déjà choisie : le panneau s’ouvre sur les nuances de cette couleur.'],
+    ['Menu des modes en verre', 'Le mode choisi est une pastille de verre bleue, les autres des ronds de verre bien opaques.'],
+    ['Portfolio en verre liquide', 'Les filtres (Tout, Carnets, Dessins libres) deviennent un sélecteur à lentille, et la croix passe en verre, comme les autres boutons.']] },
   { v: '1.19.0', date: '2 nov. 2026', items: [
     ['Menu des modes à droite', 'Le menu Dessin, Animation, Jeux multijoueur est maintenant au bout de la barre, à droite. Touche-le : les deux autres modes descendent dessous, leur nom à gauche. Le mode choisi est une pastille bleue avec son icône blanche bien visible, les autres ronds sont pleins (jamais transparents), et le menu n’utilise plus le verre liquide.'],
     ['Barre du haut mieux triée', 'À gauche : nouvelle feuille, mes dessins, annuler et rétablir. À droite : calques, recentrer, outils, réglages, puis le menu des modes. Même rangement en Dessin et en Animation.']] },
@@ -5322,7 +5348,7 @@ function placeInsp() {
 insp.querySelector('.insp-x').addEventListener('click', () => closeInsp());
 document.addEventListener('pointerdown', e => {
   if (!inspPanel) return; const t = e.target;
-  if (t && t.closest && t.closest('#insp, ' + PANELS[inspPanel].anchor)) return; closeInsp();
+  if (t && t.closest && t.closest('#insp, ' + PANELS[inspPanel].anchor + (PANELS[inspPanel].anchor === '#btnColor' ? ', #grpColors .swatch' : ''))) return; closeInsp();
 }, true);
 /* grain : du bruit de matière, posé au pinceau sur certaines zones */
 const grEl = $('#grainopts');
@@ -6734,7 +6760,7 @@ const LG = (() => {
   const refresh = () => { rims.clear(); for (const el of surfaces) { el._lgRim = null; ask(el); } };
 
   /* ---------- appui : la forme gonfle sous le doigt, penche vers le glissement, s'allume là où on touche, puis se relâche avec un rebond ---------- */
-  const PRESS = '.ib,.tool,.size,.swatch,.br,.tile,.btn,.nb-arrow,.nb-sw,.f-back,.f-ic,.f-chip,.nbc-card,.lt-b';
+  const PRESS = '.ib,.tool,.size,.br,.tile,.btn,.nb-arrow,.nb-sw,.f-back,.f-ic,.f-chip,.nbc-card,.lt-b';
   const presses = new WeakMap();
   function pressOf(el) {
     let p = presses.get(el); if (p) return p;
