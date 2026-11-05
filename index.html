@@ -1702,6 +1702,28 @@ html:not(.dock-mini) #dock #grpColors #btnColor.on{background:linear-gradient(18
 html[data-theme="dark"] #modeSeg.modefab{--mode-off-g:rgb(52 58 68 / .92);--mode-on-g:rgb(10 132 255 / .94)}
 html[data-dg] #modeSeg.modefab > button.lg-button{background:var(--lg-glass-fill);--lg-glass-fill:var(--mode-off-g)}
 html[data-dg] #modeSeg.modefab > button.lg-button.on{--lg-glass-fill:var(--mode-on-g)}
+/* ---------- 1.21.0 : calques fins et allongés, options en panneau flottant, effets de calque ---------- */
+#layers{width:min(248px,calc(100% - 24px - var(--sal) - var(--sar)));padding:10px;min-height:min(470px,calc(100% - var(--sat) - var(--sab) - 100px))}
+#layers .lsel{height:42px}
+#layers .lt{width:32px;height:32px;border-radius:7px}
+#layers .lh{margin:0 0 4px 4px}
+#layers .lh b{font-size:15px}
+#layOpt{position:absolute;z-index:11;display:none;width:272px;max-height:calc(100% - var(--sat) - var(--sab) - 100px);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:12px}
+#layOpt.show{display:block;animation:panelin .28s var(--ease)}
+.lo-h{display:flex;align-items:center;gap:8px;margin:0 0 8px 2px}
+.lo-h b{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+.lo-h .ln{flex:1;font-size:15px;font-weight:600}
+.lo-t{margin:14px 2px 8px;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+.fx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.fx-chips button{height:34px;padding:0 14px;border-radius:17px;background:var(--fill);font-size:14px;font-weight:550;color:var(--ink)}
+.fx-chips button.on{background:var(--accent);color:#fff}
+.lo-hint{margin:10px 2px 0;font-size:12.5px;line-height:1.4;color:var(--ink2)}
+#layOpt .orow{margin:8px 0}
+#layOpt .orow span{flex:0 0 66px}
+#layOpt .orow input{flex:1;min-width:0}
+.tx-sl .tx-size{gap:5px}
+.tx-sl .tx-size span{min-width:0;font-size:11.5px;white-space:nowrap}
+.tx-sl .tx-size output{min-width:28px}
 </style>
 </head>
 <body>
@@ -1902,7 +1924,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.20.1";
+const APP_VERSION = "1.21.0";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -1993,11 +2015,13 @@ const lid = () => 'l' + Math.random().toString(36).slice(2, 8);
 const mkLayer = name => ({ id: lid(), name, visible: true, locked: false, opacity: 1, group: null });
 const mkGroup = name => ({ id: 'g' + Math.random().toString(36).slice(2, 8), name, visible: true, locked: false, opacity: 1, collapsed: false });
 const newDoc = page => { const L = mkLayer('Calque 1'); return { page: { w: page.w, h: page.h }, strokes: [], layers: [L], groups: [], ref: null, active: L.id, undo: [], redo: [], view: { s: 1, tx: 0, ty: 0, rot: 0, fit: true, fitS: 1 } }; };
+const cleanFx = f => { if (!f || !['blur', 'motion', 'glass'].includes(f.t)) return undefined; const n = (v, a, b, d) => Number.isFinite(+v) ? Math.min(b, Math.max(a, +v)) : d; return { t: f.t, r: n(f.r, 0, 200, 12), a: n(f.a, 0, 360, 0), k: n(f.k, 0, 1, 0.18) }; };
 const cleanLayers = (raw, fallbackStrokes) => {
   let L = Array.isArray(raw) ? raw.filter(l => l && l.id).slice(0, MAX_LAYERS).map(l => ({
     id: String(l.id), name: String(l.name || 'Calque').slice(0, 40), visible: l.visible !== false, locked: !!l.locked,
     opacity: Number.isFinite(+l.opacity) && l.opacity !== null ? Math.min(1, Math.max(0, +l.opacity)) : 1,
-    group: l.group ? String(l.group) : null
+    group: l.group ? String(l.group) : null,
+    fx: cleanFx(l.fx)
   })) : [];
   if (!L.length) L = [mkLayer('Calque 1')];
   return L;
@@ -2394,9 +2418,52 @@ function paintCached(c, L, arr, d) {
   if (stale && moving) { clearTimeout(LCACHE.t); LCACHE.t = setTimeout(() => requestRender(), 240); }
   c.save(); c.imageSmoothingQuality = 'high'; c.drawImage(e.cv, 0, 0, W, H); c.restore();
 }
+/* ---------- effets de calque : flou, flou directionnel, verre dépoli ----------
+   Un calque avec un effet est d'abord dessiné seul dans une image de travail, puis transformé, puis posé sur la feuille. Les rayons sont en unités de feuille :
+   l'effet est donc identique à tout zoom et à l'export. Le flou utilise ctx.filter quand le navigateur le connaît, sinon une descente puis remontée de l'image. */
+const LFX_CTX = (() => { try { const x = document.createElement('canvas').getContext('2d'); return typeof x.filter === 'string'; } catch (e) { return false; } })(), LFX_TMP = [];
+function lfxBlur(dst, src, r) { /* dst est en transformation identité */
+  if (r < 0.6) { dst.drawImage(src, 0, 0); return; }
+  if (LFX_CTX) { dst.save(); dst.filter = 'blur(' + r.toFixed(2) + 'px)'; dst.drawImage(src, 0, 0); dst.restore(); return; }
+  const W = src.width, H = src.height, n = Math.max(1, Math.min(7, Math.round(Math.log2(r * 2.2)))), lv = []; let prev = src, w = W, h = H;
+  for (let i = 0; i < n; i++) {
+    w = Math.max(2, w >> 1); h = Math.max(2, h >> 1); let t = LFX_TMP[i]; if (!t || t.width !== w || t.height !== h) { t = LFX_TMP[i] = document.createElement('canvas'); t.width = w; t.height = h; }
+    const x = t.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, w, h); x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high'; x.drawImage(prev, 0, 0, w, h); lv.push(t); prev = t;
+  }
+  for (let i = lv.length - 1; i > 0; i--) { const x = lv[i - 1].getContext('2d'); x.clearRect(0, 0, lv[i - 1].width, lv[i - 1].height); x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high'; x.drawImage(lv[i], 0, 0, lv[i - 1].width, lv[i - 1].height); }
+  const o = Math.pow(2, lv.length) * 0.25; dst.save(); dst.imageSmoothingEnabled = true; dst.imageSmoothingQuality = 'high'; dst.globalCompositeOperation = 'lighter'; dst.globalAlpha = 0.25;      /* moyenne de 4 copies : en additif (une zone transparente n'atténue rien en composition normale) */
+  [[o, 0], [-o, 0], [0, o], [0, -o]].forEach(p => dst.drawImage(lv[0], p[0], p[1], W, H)); dst.restore();
+}
+function lfxMotion(dst, src, dist, ang, c) { /* moyenne de copies décalées le long d'une direction */
+  if (dist < 1.5) { dst.drawImage(src, 0, 0); return; }
+  const N = Math.max(5, Math.min(20, Math.round(dist / 2))), gap = dist / (N - 1); let from = src;
+  if (gap > 2.5) { const t = scratchCtx(10, c); t.save(); t.setTransform(1, 0, 0, 1, 0, 0); lfxBlur(t, src, gap * 0.4); t.restore(); from = t.canvas; }   /* adoucit les marches entre deux copies */
+  const dx = Math.cos(ang), dy = Math.sin(ang); dst.save(); dst.globalCompositeOperation = 'lighter'; dst.globalAlpha = 1 / N;      /* moyenne de N copies, en additif : c'est le seul moyen juste avec des zones transparentes */
+  for (let i = 0; i < N; i++) { const t = (i / (N - 1) - 0.5) * dist; dst.drawImage(from, dx * t, dy * t); }
+  dst.restore();
+}
+function paintLayerFx(c, L, byL, cull) {
+  const fx = L.fx, T = c.getTransform(), sc = Math.hypot(T.a, T.b) || 1, r = Math.max(0, +fx.r || 0) * sc, ext = fx.t === 'motion' ? (+fx.r || 0) : (+fx.r || 0) * 2.2;
+  const cl = cull ? [cull[0] - ext, cull[1] - ext, cull[2] + ext, cull[3] + ext] : null;
+  const x = scratchCtx(8, c); if (!paintLayer(x, { ...L, fx: null, opacity: 1 }, byL, cl)) return false;
+  const cw = c.canvas.width, ch = c.canvas.height;
+  if (fx.t === 'glass') { /* verre dépoli : le fond déjà dessiné, flouté, ne reste que dans les formes du calque ; un voile de leur couleur et un liseré clair en haut à gauche */
+    const B = scratchCtx(10, c); B.save(); B.setTransform(1, 0, 0, 1, 0, 0);
+    if (LFX_CTX) { B.filter = 'blur(' + r.toFixed(2) + 'px) saturate(1.5) brightness(1.06)'; B.drawImage(c.canvas, 0, 0); B.filter = 'none'; } else lfxBlur(B, c.canvas, r);
+    B.globalCompositeOperation = 'destination-in'; B.drawImage(x.canvas, 0, 0);
+    B.globalCompositeOperation = 'source-over'; B.globalAlpha = Math.min(1, fx.k == null ? 0.18 : +fx.k); B.drawImage(x.canvas, 0, 0); B.globalAlpha = 1;
+    const e = Math.max(1.5, sc * 1.2), rim = (ox, oy, a) => { const E = scratchCtx(11, c); E.save(); E.setTransform(1, 0, 0, 1, 0, 0); E.drawImage(x.canvas, 0, 0); E.globalCompositeOperation = 'destination-out'; E.drawImage(x.canvas, ox, oy); E.globalCompositeOperation = 'source-in'; E.fillStyle = '#fff'; E.fillRect(0, 0, cw, ch); E.restore(); B.globalAlpha = a; B.drawImage(E.canvas, 0, 0); B.globalAlpha = 1; };
+    rim(e, e, 0.85); rim(-e, -e, 0.3); B.restore();
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = L.opacity; c.drawImage(B.canvas, 0, 0); c.restore(); return true;
+  }
+  const out = scratchCtx(9, c); out.save(); out.setTransform(1, 0, 0, 1, 0, 0);
+  if (fx.t === 'blur') lfxBlur(out, x.canvas, r); else lfxMotion(out, x.canvas, r, (+fx.a || 0) * Math.PI / 180, c);
+  out.restore(); c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = L.opacity; c.drawImage(out.canvas, 0, 0); c.restore(); return true;
+}
 function paintLayer(c, L, byL, cull) {
   if (typeof DF !== 'undefined' && DF.on && DF.ids.includes(L.id)) return false;                     /* pendant la déformation, le calque est montré par l'aperçu */
   if (!L.visible || L.opacity <= 0) return false;
+  if (L.fx && L.fx.t) return paintLayerFx(c, L, byL, cull);
   const arr = byL.get(L.id); if (!arr) return false;
   const list = cull ? arr.filter(st => { const b = bbOf(st); return !(b[2] < cull[0] || b[0] > cull[2] || b[3] < cull[1] || b[1] > cull[3]); }) : arr;
   if (!list.length) return false;
@@ -2800,7 +2867,7 @@ async function loadFree() {
 
 /* ---------- (dé)sérialisation des traits ---------- */
 const serStrokes = arr => arr.map(s => { const o = { t: s.tool, c: s.color, a: s.alpha, l: s.layer, p: Array.from(s.p) }; if (s.g) o.g = [s.g.k, s.g.x0, s.g.y0, s.g.x1, s.g.y1, s.g.c2 || '']; if (s.gr) o.r = [s.gr.c2, s.gr.L, s.gr.rep ? 1 : 0]; if (s.tool === 'grain') o.x = [s.gm, s.gt, s.gz]; if (s.sym) o.y = [s.sym.m, s.sym.n, rd(s.sym.cx), rd(s.sym.cy)]; if (s.tool === 'text' && s.tx) o.tx = txSer(s.tx); if (s.tool === 'image' && s.im) o.i = [s.im.id, rd(s.im.cx), rd(s.im.cy), rd(s.im.w), rd(s.im.h), +(s.im.rot || 0).toFixed(5), s.im.flip ? 1 : 0]; return o; });
-const serLayers = d => d.layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, locked: l.locked, opacity: l.opacity, group: l.group || null }));
+const serLayers = d => d.layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, locked: l.locked, opacity: l.opacity, group: l.group || null, fx: l.fx || undefined }));
 const serGroups = d => d.groups.map(g => ({ id: g.id, name: g.name, visible: g.visible, locked: g.locked, opacity: g.opacity, collapsed: g.collapsed }));
 
 /* ---------- export : PNG, ou tout fichier via la feuille de partage ---------- */
@@ -3510,7 +3577,7 @@ function setLayersOpen(v) {
   if (v && typeof closeEditSessions === 'function') closeEditSessions();
   layersOpen = !!v && S.mode === 'free' && !G; renamingId = null; if (drag) cancelDrag();
   if (layersOpen && refOpen) setRefOpen(false);
-  layersEl.classList.toggle('show', layersOpen); $('#btnLay').classList.toggle('on', layersOpen);
+  layersEl.classList.toggle('show', layersOpen); $('#btnLay').classList.toggle('on', layersOpen); layOptRefresh();
   if (layersOpen) refreshLayers();
 }
 function syncLayersBtn() {
@@ -3547,11 +3614,7 @@ function refreshLayers() {
       ${L.locked ? `<button data-ly="lock" data-id="${L.id}" class="lkd" aria-label="Déverrouiller le calque" aria-pressed="true">${ICO('lock')}</button>` : ''}
       <button data-ly="grip" data-id="${L.id}" class="grip" aria-label="Déplacer le calque (glisser)">${ICO('grip')}</button>
     </div>
-    ${ctl ? `<div class="lx${L.group ? ' in' : ''}"><div class="orow"><span>Opacité</span><input type="range" min="0" max="100" value="${Math.round(L.opacity * 100)}" data-ly="op" aria-label="Opacité du calque"><b id="opv">${Math.round(L.opacity * 100)} %</b></div>
-      <div class="ltools" role="toolbar" aria-label="Actions du calque">
-        ${tile('dup', 'copy', 'Dupliquer', 'Dupliquer le calque', { dis: n >= MAX_LAYERS })}${tile('merge', 'merge', 'Fusionner', 'Fusionner avec le calque du dessous', { dis: !si.canMerge })}${L.group ? tile('ungroupone', 'ungroup', 'Sortir', 'Sortir du groupe') : tile('group', 'folder', 'Grouper', 'Grouper ce calque')}${tile('up', 'up', 'Monter', 'Monter le calque', { dis: !si.canUp })}${tile('down', 'down', 'Descendre', 'Descendre le calque', { dis: !si.canDown })}
-        ${tile('move', 'move', 'Déplacer', 'Déplacer, agrandir, tourner le calque')}${tile('deform', 'warp', 'Déformer', 'Déformer le calque')}${tile('ren', 'edit', 'Renommer', 'Renommer le calque')}${tile('lock', L.locked ? 'lock' : 'unlock', L.locked ? 'Débloquer' : 'Bloquer', (L.locked ? 'Déverrouiller' : 'Verrouiller') + ' le calque', { id: L.id, on: L.locked, pressed: !!L.locked })}${tile('del', 'trash', 'Supprimer', 'Supprimer le calque', { danger: true, dis: n <= 1 })}
-      </div></div></div>` : ''}`;
+`;
   };
   const groupRow = (g, count) => {
     const sel = selGroup === g.id, members = d.layers.filter(l => l.group === g.id).length;
@@ -3563,8 +3626,7 @@ function refreshLayers() {
       ${g.locked ? `<button data-ly="glock" data-id="${g.id}" class="lkd" aria-label="Déverrouiller le groupe" aria-pressed="true">${ICO('lock')}</button>` : ''}
       <button data-ly="grip" data-id="${g.id}" class="grip" aria-label="Déplacer le groupe (glisser)">${ICO('grip')}</button>
     </div>
-    ${sel ? `<div class="gx"><div class="orow"><span>Opacité du groupe</span><input type="range" min="0" max="100" value="${Math.round(g.opacity * 100)}" data-ly="gop" aria-label="Opacité du groupe"><b id="opv">${Math.round(g.opacity * 100)} %</b></div>
-      <div class="ltools g4" role="toolbar" aria-label="Actions du groupe">${tile('gren', 'edit', 'Renommer', 'Renommer le groupe')}${tile('glock', g.locked ? 'lock' : 'unlock', g.locked ? 'Débloquer' : 'Bloquer', (g.locked ? 'Déverrouiller' : 'Verrouiller') + ' le groupe', { id: g.id, on: g.locked, pressed: !!g.locked })}${tile('ungroup', 'ungroup', 'Dégrouper', 'Dégrouper')}${tile('gdel', 'trash', 'Supprimer', 'Supprimer le groupe', { danger: true, dis: members >= n })}</div></div></div>` : ''}`;
+`;
   };
   let html = '';
   for (const it of layerTree(d).reverse()) {
@@ -3573,12 +3635,76 @@ function refreshLayers() {
   }
   layersEl.innerHTML = `
     <div class="lh"><b>Calques</b><span class="pill">${n}/${MAX_LAYERS}</span>
-      <button class="ib sm" data-ly="add" aria-label="Ajouter un calque"${n >= MAX_LAYERS ? ' disabled' : ''}>${ICO('plus')}</button><button class="ib sm" data-ly="close" aria-label="Fermer le panneau">${ICO('x')}</button></div>
+      <button class="ib sm" data-ly="add" aria-label="Ajouter un calque"${n >= MAX_LAYERS ? ' disabled' : ''}>${ICO('plus')}</button><button class="ib sm${layOptOpen ? ' on' : ''}" data-ly="opts" aria-label="Options et effets du calque" aria-pressed="${layOptOpen}">${ICO('sliders')}</button><button class="ib sm" data-ly="close" aria-label="Fermer le panneau">${ICO('x')}</button></div>
     <div class="ll">${html}</div>`;
   layersEl.scrollTop = keep;
   if (renamingId) { const inp = $('#lyName'); if (inp) { inp.focus(); inp.select(); } }
-  schedThumbs();
+  schedThumbs(); layOptRefresh();
 }
+/* ---------- options du calque : un panneau flottant sur le côté, ouvert par le bouton réglages du panneau Calques ---------- */
+var layOptOpen = !!LS.get('layOpt', false), layOptEl = null;
+const FX_TYPES = [['', 'Aucun'], ['blur', 'Flou'], ['motion', 'Mouvement'], ['glass', 'Verre']], FX_DEF = { blur: 12, motion: 40, glass: 14 };
+function layOptPlace() {
+  if (!layOptEl) return; const ap = $('#app').getBoundingClientRect(), lr = layersEl.getBoundingClientRect(), w = layOptEl.offsetWidth || 272;
+  let left = lr.left - ap.left - w - 10; if (left < 8) left = lr.right - ap.left + 10;           /* à gauche du panneau Calques, sinon à droite (mode main gauche) */
+  layOptEl.style.left = left + 'px'; layOptEl.style.top = (lr.top - ap.top) + 'px';
+}
+function layOptToggle(v) { layOptOpen = v == null ? !layOptOpen : !!v; LS.set('layOpt', layOptOpen); refreshLayers(); }
+function layOptRefresh() {
+  if (!layOptEl) { layOptEl = document.createElement('div'); layOptEl.id = 'layOpt'; layOptEl.className = 'glass'; layOptEl.setAttribute('role', 'dialog'); layOptEl.setAttribute('aria-label', 'Options du calque'); $('#app').appendChild(layOptEl); layOptBind(); }
+  const show = layersOpen && layOptOpen; layOptEl.classList.toggle('show', show); if (!show) return;
+  const d = S.docs.free, act = activeLayer(d), n = d.layers.length;
+  const tile = (ly, ic, short, label, o = {}) => `<button class="lt-b${o.danger ? ' danger' : ''}${o.on ? ' on' : ''}" data-ly="${ly}"${o.id ? ` data-id="${o.id}"` : ''} aria-label="${label}" title="${label}"${o.dis ? ' disabled' : ''}${o.pressed != null ? ` aria-pressed="${o.pressed}"` : ''}>${ICO(ic)}<span>${short}</span></button>`;
+  const head = (t, name) => `<div class="lo-h"><b>${t}</b><span class="ln">${esc(name)}</span><button class="ib sm" data-ly="opts" aria-label="Fermer les options">${ICO('x')}</button></div>`;
+  const G = selGroup && groupById(d, selGroup);
+  if (G) {
+    const members = d.layers.filter(l => l.group === G.id).length, op = Math.round(G.opacity * 100);
+    layOptEl.innerHTML = head('Groupe', G.name) + `<div class="orow"><span>Opacité</span><input type="range" min="0" max="100" value="${op}" data-ly="gop" aria-label="Opacité du groupe"><b id="opv">${op} %</b></div>
+      <div class="ltools g4" role="toolbar" aria-label="Actions du groupe">${tile('gren', 'edit', 'Renommer', 'Renommer le groupe')}${tile('glock', G.locked ? 'lock' : 'unlock', G.locked ? 'Débloquer' : 'Bloquer', (G.locked ? 'Déverrouiller' : 'Verrouiller') + ' le groupe', { id: G.id, on: G.locked, pressed: !!G.locked })}${tile('ungroup', 'ungroup', 'Dégrouper', 'Dégrouper')}${tile('gdel', 'trash', 'Supprimer', 'Supprimer le groupe', { danger: true, dis: members >= n })}</div>`;
+  } else {
+    const L = act, si = siblingInfo(d, L), fx = L.fx || null, op = Math.round(L.opacity * 100), cur = fx ? fx.t : '';
+    const row = (lab, key, min, max, val, unit) => `<div class="orow"><span>${lab}</span><input type="range" min="${min}" max="${max}" step="1" value="${Math.round(val)}" data-ly="${key}" aria-label="${lab}"><b id="${key}v">${Math.round(val)}${unit}</b></div>`;
+    const rows = !fx ? '<p class="lo-hint">Un effet transforme tout le calque sans toucher à ses traits : tu peux le retirer à tout moment.</p>'
+      : fx.t === 'blur' ? row('Rayon', 'fxr', 0, 60, fx.r, '')
+      : fx.t === 'motion' ? row('Distance', 'fxr', 0, 120, fx.r, '') + row('Angle', 'fxa', 0, 359, fx.a, '°')
+      : row('Flou', 'fxr', 0, 40, fx.r, '') + row('Voile', 'fxk', 0, 100, fx.k * 100, ' %');
+    layOptEl.innerHTML = head('Calque', L.name) + `<div class="orow"><span>Opacité</span><input type="range" min="0" max="100" value="${op}" data-ly="op" aria-label="Opacité du calque"><b id="opv">${op} %</b></div>
+      <div class="ltools" role="toolbar" aria-label="Actions du calque">
+        ${tile('dup', 'copy', 'Dupliquer', 'Dupliquer le calque', { dis: n >= MAX_LAYERS })}${tile('merge', 'merge', 'Fusionner', fx ? 'Retire l’effet avant de fusionner' : 'Fusionner avec le calque du dessous', { dis: !si.canMerge || !!fx })}${L.group ? tile('ungroupone', 'ungroup', 'Sortir', 'Sortir du groupe') : tile('group', 'folder', 'Grouper', 'Grouper ce calque')}${tile('up', 'up', 'Monter', 'Monter le calque', { dis: !si.canUp })}${tile('down', 'down', 'Descendre', 'Descendre le calque', { dis: !si.canDown })}
+        ${tile('move', 'move', 'Déplacer', 'Déplacer, agrandir, tourner le calque')}${tile('deform', 'warp', 'Déformer', 'Déformer le calque')}${tile('ren', 'edit', 'Renommer', 'Renommer le calque')}${tile('lock', L.locked ? 'lock' : 'unlock', L.locked ? 'Débloquer' : 'Bloquer', (L.locked ? 'Déverrouiller' : 'Verrouiller') + ' le calque', { id: L.id, on: L.locked, pressed: !!L.locked })}${tile('del', 'trash', 'Supprimer', 'Supprimer le calque', { danger: true, dis: n <= 1 })}
+      </div>
+      <div class="lo-t">Effets</div>
+      <div class="fx-chips" role="radiogroup" aria-label="Effet du calque">${FX_TYPES.map(([k, l]) => `<button data-ly="fx" data-v="${k}" role="radio" aria-checked="${cur === k}" class="${cur === k ? 'on' : ''}">${l}</button>`).join('')}</div>${rows}`;
+  }
+  layOptPlace();
+}
+function layFxSet(t) {
+  const d = S.docs.free, L = activeLayer(d); if (!L) return;
+  if (!t) L.fx = undefined; else { const o = L.fx || {}; L.fx = { t, r: o.t === t ? o.r : FX_DEF[t], a: o.a || 0, k: o.k != null ? o.k : 0.18 }; }   /* l'objet n'est jamais modifié sur place : annuler et dupliquer restent justes */
+  requestRender(); markDirty(); refreshLayers();
+}
+function layFxEdit(key, v) {
+  const d = S.docs.free, L = activeLayer(d); if (!L || !L.fx) return;
+  L.fx = { ...L.fx, [key]: v }; const out = $('#' + (key === 'r' ? 'fxr' : key === 'a' ? 'fxa' : 'fxk') + 'v'); if (out) out.textContent = key === 'k' ? Math.round(v * 100) + ' %' : key === 'a' ? Math.round(v) + '°' : Math.round(v);
+  requestRender(); markDirty();
+}
+function layOptBind() {
+  layOptEl.addEventListener('click', e => {
+    const el = e.target.closest('[data-ly]'); if (!el || el.disabled) return; const k = el.dataset.ly;
+    if (k === 'op' || k === 'gop' || k === 'fxr' || k === 'fxa' || k === 'fxk') return;
+    if (k === 'opts') return layOptToggle(false);
+    if (k === 'fx') return layFxSet(el.dataset.v);
+    if (renamingId && k !== 'ren' && k !== 'gren') commitRename();
+    layerAction(k, el.dataset.id);
+  });
+  layOptEl.addEventListener('input', e => {
+    const k = e.target.dataset.ly, v = +e.target.value;
+    if (k === 'op' || k === 'gop') { const d = S.docs.free, T = k === 'op' ? activeLayer(d) : groupById(d, selGroup); if (!T) return; T.opacity = v / 100; $('#opv').textContent = v + ' %'; requestRender(); markDirty(); }
+    else if (k === 'fxr') layFxEdit('r', v); else if (k === 'fxa') layFxEdit('a', v); else if (k === 'fxk') layFxEdit('k', v / 100);
+  });
+}
+layersEl.addEventListener('click', e => { const b = e.target.closest('[data-ly=opts]'); if (!b) return; e.stopImmediatePropagation(); layOptToggle(); }, true);
+window.addEventListener('resize', () => { if (layOptEl && layOptEl.classList.contains('show')) layOptPlace(); });
 function schedThumbs() { if (!layersOpen) return; clearTimeout(thumbT); thumbT = setTimeout(() => drawingBusy() ? schedThumbs() : paintThumbs(), 160); }
 function paintThumbs() {
   if (!layersOpen) return;
@@ -4991,6 +5117,10 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
+  { v: '1.21.0', date: '3 nov. 2026', items: [
+    ['Calques plus fins', 'Le panneau Calques est plus étroit et plus allongé. Ses options (opacité, actions, effets) passent dans un panneau flottant sur le côté, qu’on ouvre avec le bouton réglages de l’en-tête.'],
+    ['Effets de calque', 'Flou, flou directionnel (distance et angle) et verre dépoli (le fond flouté ne reste que dans les formes du calque). Les effets s’appliquent aussi à l’export et ne touchent pas aux traits.'],
+    ['Texte : plus de polices et approche négative', 'Une trentaine de polices, et un réglage « Approche » de −40 % à +100 % pour rapprocher ou écarter les lettres en gardant les paires.']] },
   { v: '1.20.1', date: '2 nov. 2026', items: [
     ['Bulle de verre plus discrète sur les couleurs', 'La bulle de verre autour de la couleur choisie revient, en beaucoup plus légère : reflets divisés par deux, flou réduit, avec un fin liseré bleu.']] },
   { v: '1.20.0', date: '2 nov. 2026', items: [
@@ -7813,17 +7943,26 @@ const TX_FONTS = [
   ['didot', 'Didot', 'Didot,"Bodoni 72","Playfair Display",Georgia,serif'], ['mono', 'Machine', '"American Typewriter","Courier New",monospace'],
   ['round', 'Arrondie', '"Avenir Next Rounded","Arial Rounded MT Bold","Avenir Next",sans-serif'], ['script', 'Script', '"Snell Roundhand",Zapfino,"Brush Script MT",cursive'],
   ['marker', 'Feutre', '"Marker Felt","Chalkboard SE","Comic Sans MS",cursive'], ['chalk', 'Craie', 'Chalkduster,"Bradley Hand","Chalkboard SE",cursive'],
-  ['futura', 'Futura', 'Futura,"Avenir Next","Trebuchet MS",sans-serif'], ['hand', 'Manuscrit', 'Noteworthy,"Bradley Hand","Segoe Print",cursive']];
+  ['futura', 'Futura', 'Futura,"Avenir Next","Trebuchet MS",sans-serif'], ['hand', 'Manuscrit', 'Noteworthy,"Bradley Hand","Segoe Print",cursive'],
+  ['avenir', 'Avenir', '"Avenir Next","Avenir","Helvetica Neue",sans-serif'], ['avncond', 'Condensée', '"Avenir Next Condensed","DIN Condensed","Arial Narrow",sans-serif'], ['din', 'DIN', '"DIN Alternate","DIN Condensed","Arial Narrow",sans-serif'],
+  ['gill', 'Gill Sans', '"Gill Sans","Gill Sans MT",Optima,sans-serif'], ['optima', 'Optima', 'Optima,Candara,"Segoe UI",sans-serif'], ['impact', 'Impact', 'Impact,"Haettenschweiler","Arial Black",sans-serif'],
+  ['black', 'Arial Black', '"Arial Black","Helvetica Neue",Arial,sans-serif'], ['baskerville', 'Baskerville', 'Baskerville,"Baskerville Old Face","Libre Baskerville",Georgia,serif'], ['palatino', 'Palatino', 'Palatino,"Palatino Linotype","Book Antiqua",serif'],
+  ['hoefler', 'Hoefler', '"Hoefler Text",Garamond,"EB Garamond",Georgia,serif'], ['cochin', 'Cochin', 'Cochin,"Playfair Display",Georgia,serif'], ['bodoni', 'Bodoni', '"Bodoni 72","Bodoni MT",Didot,serif'],
+  ['copper', 'Copperplate', 'Copperplate,"Copperplate Gothic Light","Trajan Pro",serif'], ['rockwell', 'Rockwell', 'Rockwell,"Roboto Slab","Courier New",serif'], ['clarendon', 'Clarendon', 'Superclarendon,Clarendon,Georgia,serif'],
+  ['menlo', 'Menlo', 'Menlo,"SF Mono",Consolas,monospace'], ['chancery', 'Chancery', '"Apple Chancery","Lucida Calligraphy","Snell Roundhand",cursive'], ['brush', 'Pinceau', '"Brush Script MT","Savoye LET","Snell Roundhand",cursive'],
+  ['zapfino', 'Zapfino', 'Zapfino,"Snell Roundhand",cursive'], ['engrave', 'Gravure', '"Academy Engraved LET",Copperplate,Georgia,serif'], ['papyrus', 'Papyrus', 'Papyrus,Herculanum,fantasy'],
+  ['luminari', 'Luminari', 'Luminari,Papyrus,fantasy'], ['phosphate', 'Phosphate', 'Phosphate,Impact,fantasy'], ['bradley', 'Bradley', '"Bradley Hand","Noteworthy","Segoe Print",cursive'],
+  ['marker2', 'Marqueur', '"Marker Felt","Chalkboard SE","Chalkduster",cursive'], ['trebuchet', 'Trebuchet', '"Trebuchet MS","Lucida Grande",sans-serif']];
 const TXF = Object.fromEntries(TX_FONTS.map(f => [f[0], f[2]])), TX_ALIGN = ['left', 'center', 'right'];
 settings.txt = Object.assign({ f: 'sans', z: 96, b: false, i: false, a: 'center', ol: 0, ls: 0, sh: 0 }, settings.txt || {});
-{ const t = settings.txt; if (!TXF[t.f]) t.f = 'sans'; t.z = clamp(+t.z || 96, 12, 600); t.b = t.b === true; t.i = t.i === true; if (!TX_ALIGN.includes(t.a)) t.a = 'center'; t.ol = clamp(+t.ol || 0, 0, 1); t.ls = clamp(+t.ls || 0, -0.1, 1); t.sh = clamp(+t.sh || 0, 0, 1); }
+{ const t = settings.txt; if (!TXF[t.f]) t.f = 'sans'; t.z = clamp(+t.z || 96, 12, 600); t.b = t.b === true; t.i = t.i === true; if (!TX_ALIGN.includes(t.a)) t.a = 'center'; t.ol = clamp(+t.ol || 0, 0, 1); t.ls = clamp(+t.ls || 0, -0.4, 1); t.sh = clamp(+t.sh || 0, 0, 1); }
 const txCtx = document.createElement('canvas').getContext('2d');
 const txFont = tx => `${tx.i ? 'italic ' : ''}${tx.b ? '700 ' : '400 '}${tx.z}px ${TXF[tx.f] || TXF.sans}`;
 function txLayout(tx) {                                                        /* lignes, lettres, largeur et hauteur du texte (gardées tant que rien ne change) */
   const key = [tx.s, tx.f, tx.z, tx.b ? 1 : 0, tx.i ? 1 : 0, tx.ol, tx.ls || 0, tx.cv || 0, tx.sh || 0, tx.a].join('|'); if (tx._k === key && tx._L) return tx._L;
   const x = txCtx; x.font = txFont(tx); const lines = String(tx.s).split('\n'), lh = tx.z * 1.18, ls = (tx.ls || 0) * tx.z, cv = clamp(tx.cv || 0, -1, 1), sh = clamp(tx.sh || 0, 0, 1);
   const pad = tx.z * (0.14 + 0.1 * tx.ol + 0.3 * sh), special = ls !== 0 || cv !== 0;
-  const adv = lines.map(l => { const chs = Array.from(l), ws = special ? chs.map(c => x.measureText(c || ' ').width) : null; return { chs, ws, w: special ? ws.reduce((a, b) => a + b, 0) + ls * Math.max(0, chs.length - 1) : x.measureText(l || ' ').width }; });
+  const adv = lines.map(l => { const chs = Array.from(l), ws = special ? (() => { let prev = 0; return chs.map((c, i) => { const w = x.measureText(chs.slice(0, i + 1).join('')).width, dw = w - prev; prev = w; return dw; }); })() : null; return { chs, ws, w: special ? ws.reduce((a, b) => a + b, 0) + ls * Math.max(0, chs.length - 1) : x.measureText(l || ' ').width }; });
   const Lmax = Math.max(tx.z * 0.5, ...adv.map(a => a.w)); let L;
   if (!cv) L = { lines, adv, lh, pad, ls, special, curved: false, w: Lmax + pad * 2, h: lines.length * lh + pad * 2, ox: 0, oy: 0 };
   else {                                                                       /* sur un arc de cercle : |courbe| = 1 → demi-cercle pour la ligne la plus longue */
@@ -7865,7 +8004,7 @@ function drawTextStroke(c, st) {
 const txSer = tx => [String(tx.s).slice(0, 2000), tx.f, +tx.z.toFixed(2), tx.b ? 1 : 0, tx.i ? 1 : 0, tx.a, rd(tx.cx), rd(tx.cy), +(tx.rot || 0).toFixed(5), +(tx.ol || 0).toFixed(3), tx.oc || '#ffffff', +(tx.ls || 0).toFixed(3), +(tx.cv || 0).toFixed(3), +(tx.sh || 0).toFixed(3)];
 function txParse(a) {                                                          /* lecture sûre d'un texte enregistré */
   if (!Array.isArray(a) || typeof a[0] !== 'string' || !Number.isFinite(+a[6]) || !Number.isFinite(+a[7])) return null;
-  return { s: a[0].slice(0, 2000), f: TXF[a[1]] ? a[1] : 'sans', z: clamp(+a[2] || 96, 4, 2000), b: +a[3] === 1, i: +a[4] === 1, a: TX_ALIGN.includes(a[5]) ? a[5] : 'center', cx: +a[6], cy: +a[7], rot: +a[8] || 0, ol: clamp(+a[9] || 0, 0, 1), ls: clamp(+a[11] || 0, -0.1, 1), cv: clamp(+a[12] || 0, -1, 1), sh: clamp(+a[13] || 0, 0, 1), oc: /^#[0-9a-f]{6}$/i.test(String(a[10])) ? a[10] : '#ffffff' };
+  return { s: a[0].slice(0, 2000), f: TXF[a[1]] ? a[1] : 'sans', z: clamp(+a[2] || 96, 4, 2000), b: +a[3] === 1, i: +a[4] === 1, a: TX_ALIGN.includes(a[5]) ? a[5] : 'center', cx: +a[6], cy: +a[7], rot: +a[8] || 0, ol: clamp(+a[9] || 0, 0, 1), ls: clamp(+a[11] || 0, -0.4, 1), cv: clamp(+a[12] || 0, -1, 1), sh: clamp(+a[13] || 0, 0, 1), oc: /^#[0-9a-f]{6}$/i.test(String(a[10])) ? a[10] : '#ffffff' };
 }
 const txSig = d => JSON.stringify([d.tx.s, d.tx.f, d.tx.z, d.tx.b, d.tx.i, d.tx.a, d.tx.cx, d.tx.cy, d.tx.rot, d.tx.ol, d.tx.ls || 0, d.tx.cv || 0, d.tx.sh || 0, d.color]);
 const txData = st => ({ tx: { ...st.tx, _k: undefined, _L: undefined }, color: st.color });
@@ -7887,7 +8026,7 @@ txPanel.innerHTML = `<div class="tx-top"><textarea id="txIn" rows="2" placeholde
     <span class="tx-sep"></span>${TX_ALIGN.map(a => `<button data-tx="al" data-v="${a}" aria-label="Alignement ${a === 'left' ? 'à gauche' : a === 'right' ? 'à droite' : 'centré'}" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24"><path d="${a === 'left' ? 'M4 7h16M4 12h10M4 17h13' : a === 'right' ? 'M4 7h16M10 12h10M7 17h13' : 'M4 7h16M7 12h10M5.5 17h13'}"/></svg></button>`).join('')}
     <span class="tx-sep"></span><button data-tx="magnet" class="snapb" aria-label="Aimant activé" aria-pressed="true" title="Aimant activé : centre et bords (toucher pour le couper)"><svg class="ic"><use href="#i-magnet"/></svg></button><button data-tx="ol" aria-label="Contour" aria-pressed="false" class="tx-olb">Contour</button>
     <label class="tx-size"><span>Taille</span><input type="range" id="txSize" min="16" max="400" step="1" aria-label="Taille du texte"><output id="txSizeV"></output></label></div>
-  <div class="tx-row tx-sl"><label class="tx-size"><span>Espace</span><input type="range" id="txLs" min="-10" max="100" step="1" aria-label="Espacement des lettres"><output id="txLsV"></output></label><label class="tx-size"><span>Courbe</span><input type="range" id="txCv" min="-100" max="100" step="1" aria-label="Courbure du texte"><output id="txCvV"></output></label><label class="tx-size"><span>Ombre</span><input type="range" id="txSh" min="0" max="100" step="1" aria-label="Ombre du texte"><output id="txShV"></output></label></div>
+  <div class="tx-row tx-sl"><label class="tx-size"><span title="Approche : rapproche (−) ou écarte (+) les lettres">Approche</span><input type="range" id="txLs" min="-40" max="100" step="1" aria-label="Espacement des lettres"><output id="txLsV"></output></label><label class="tx-size"><span>Courbe</span><input type="range" id="txCv" min="-100" max="100" step="1" aria-label="Courbure du texte"><output id="txCvV"></output></label><label class="tx-size"><span>Ombre</span><input type="range" id="txSh" min="0" max="100" step="1" aria-label="Ombre du texte"><output id="txShV"></output></label></div>
   <div class="tx-row tx-colors" aria-label="Couleur">${COLORS.map(c => `<button data-tx="color" data-v="${c}" aria-label="Couleur ${c}" style="--c:${c}"></button>`).join('')}<label class="tx-pick" title="Choisir n’importe quelle couleur" aria-label="Choisir n’importe quelle couleur"><input type="color" id="txColor" aria-label="Couleur libre"><i></i></label></div>
   <div class="tx-act"><button class="btn primary" data-tx="flat" aria-label="Aplatir en image" title="Aplatir en image">${ICO('image')}Aplatir</button><button class="btn" data-tx="dup">${ICO('copy')}Dupliquer</button><button class="btn danger" data-tx="del" aria-label="Supprimer le texte">${ICO('trash')}Supprimer</button></div>`;
 $('#app').appendChild(txPanel);
@@ -7946,7 +8085,7 @@ txIn.addEventListener('input', () => txEdit(t => { t.s = txIn.value.slice(0, 200
 txColor.addEventListener('input', () => { if (!TX.on) return; const c = txColor.value.toLowerCase(); TX.st.color = c; setColor(c, true); txPanelSync(); requestRender(); });      /* n'importe quelle couleur, en direct */
 txColor.addEventListener('change', () => { if (typeof noteColorUsed === 'function') noteColorUsed(txColor.value.toLowerCase()); });
 txSize.addEventListener('input', () => txEdit(t => { t.z = +txSize.value; }));
-txLs.addEventListener('input', () => txEdit(t => { t.ls = clamp(+txLs.value / 100, -0.1, 1); }));
+txLs.addEventListener('input', () => txEdit(t => { t.ls = clamp(+txLs.value / 100, -0.4, 1); }));
 txCv.addEventListener('input', () => txEdit(t => { t.cv = clamp(+txCv.value / 100, -1, 1); }));
 txSh.addEventListener('input', () => txEdit(t => { t.sh = clamp(+txSh.value / 100, 0, 1); }));
 txPanel.addEventListener('click', e => {
