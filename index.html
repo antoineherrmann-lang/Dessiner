@@ -1746,9 +1746,13 @@ html[data-dg] .btn.primary.cancel{background:var(--lg-glass-fill);--lg-glass-fil
 .dnd-ghost{position:fixed;z-index:200;width:112px;border-radius:10px;box-shadow:0 14px 34px rgba(20,35,55,.4);pointer-events:none;transform:translate(-50%,-62%) rotate(4deg);opacity:.96}
 .dcard.dnd-src{opacity:.35}
 .nbc-card{transition:transform .18s var(--ease),box-shadow .18s}
-#sheet.dnd .nbc-card:not(.nbc-new){box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 35%,transparent)}
-#sheet.dnd .nbc-card.dnd-over{transform:translateY(-4px) scale(1.04);box-shadow:0 0 0 3px var(--accent),0 12px 28px rgba(20,35,55,.3)}
+#sheet.dnd .nbc-card.dnd-over{transform:translateY(-6px) scale(1.05);box-shadow:0 16px 32px rgba(20,35,55,.34)}
 #sheet.dnd{touch-action:none}
+/* ---------- 1.23.0 ---------- */
+.lo-h{gap:10px;margin:0 0 10px}
+.lo-h b{flex:0 0 66px;display:flex;align-items:center;height:34px;line-height:1}
+.lo-name{height:34px;box-sizing:border-box;margin:0;font-size:15px}
+#layers{touch-action:pan-y}
 </style>
 </head>
 <body>
@@ -1949,7 +1953,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.22.0";
+const APP_VERSION = "1.23.0";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -2035,7 +2039,7 @@ const DB = {
 
 /* ---------- état ---------- */
 /* ---------- calques : chaque trait porte l'id de son calque ; d.layers est ordonné du fond vers le dessus ---------- */
-const MAX_LAYERS = 12;
+const MAX_LAYERS = 18;
 const lid = () => 'l' + Math.random().toString(36).slice(2, 8);
 const mkLayer = name => ({ id: lid(), name, visible: true, locked: false, opacity: 1, group: null });
 const mkGroup = name => ({ id: 'g' + Math.random().toString(36).slice(2, 8), name, visible: true, locked: false, opacity: 1, collapsed: false });
@@ -2955,7 +2959,7 @@ function edgeArm(g, a, b) {
 }
 function edgeMove(g, a, b) {
   const e = g.edge, x = (a.x + b.x) / 2, dx = e.left ? x - e.x0 : e.x0 - x; if (dx > 14) g.moved = true;
-  if (!e.done && dx > 56) { e.done = true; g.moved = true; if (!layersOpen) setLayersOpen(true); }
+  if (!e.done && dx > 56) { e.done = true; g.moved = true; if (!layersOpen) layersEdgeOpen(e.left); }
 }
 function beginGesture() {
   const pts = [...P.touches.values()]; if (pts.length < 2) return;
@@ -3712,6 +3716,44 @@ window.addEventListener('pointermove', e => {
 document.addEventListener('touchmove', e => { if (DND.on) e.preventDefault(); }, { passive: false });
 sheet.addEventListener('click', e => { if (DND.noClick) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
 sheet.addEventListener('contextmenu', e => { if (e.target.closest('.dcard .thumb')) e.preventDefault(); });
+/* ---------- Isoler : masque tous les calques sauf celui-ci ; un second toucher les réaffiche comme avant ---------- */
+let laySolo = null;
+const laySoloActive = (d, L) => !!(laySolo && laySolo.d === d && L && laySolo.id === L.id);
+function laySoloRestore(d) {
+  if (laySolo && laySolo.d === d) { for (const l of d.layers) if (l.id in laySolo.l) l.visible = laySolo.l[l.id]; for (const g of (d.groups || [])) if (g.id in laySolo.g) g.visible = laySolo.g[g.id]; }
+  laySolo = null;
+}
+function laySoloToggle(L) {
+  const d = S.docs.free; if (!L) return;
+  if (laySoloActive(d, L)) laySoloRestore(d);
+  else {
+    laySoloRestore(d); laySolo = { d, id: L.id, l: Object.fromEntries(d.layers.map(l => [l.id, l.visible])), g: Object.fromEntries((d.groups || []).map(g => [g.id, g.visible])) };
+    for (const l of d.layers) l.visible = l.id === L.id; for (const g of (d.groups || [])) g.visible = g.id === L.group;
+  }
+  requestRender(); refreshLayers(); markDirty();
+}
+/* ---------- le panneau Calques glisse depuis le bord quand on l'ouvre à deux doigts, et repart dans l'autre sens pour le fermer ---------- */
+const layCalm = () => !settings.anim || document.documentElement.classList.contains('noanim');
+function layersEdgeOpen(left) {
+  if (layersOpen) return;
+  layOptOpen = false; LS.set('layOpt', false);                    /* jamais de panneau de réglages avec ce geste */
+  setLayersOpen(true); if (layCalm() || !layersEl.animate) return;
+  const w = layersEl.offsetWidth + 24;
+  layersEl.animate([{ transform: `translateX(${left ? -w : w}px)`, opacity: 0.35 }, { transform: 'none', opacity: 1 }], { duration: 340, easing: 'cubic-bezier(.2,.9,.25,1)' });
+}
+function closeLayersSwipe() {
+  if (!layersOpen) return; const left = !!settings.lefty; if (layOptEl) layOptEl.classList.remove('show');
+  if (layCalm() || !layersEl.animate) { setLayersOpen(false); return; }
+  const w = layersEl.offsetWidth + 24, a = layersEl.animate([{ transform: 'none', opacity: 1 }, { transform: `translateX(${left ? -w : w}px)`, opacity: 0.35 }], { duration: 260, easing: 'cubic-bezier(.5,0,.8,.4)', fill: 'forwards' });
+  a.finished.then(() => { setLayersOpen(false); a.cancel(); }, () => a.cancel());
+}
+{ const LSW = new Map(); let x0 = 0, done = false;
+  layersEl.addEventListener('pointerdown', e => { if (e.pointerType !== 'touch') return; LSW.set(e.pointerId, { x: e.clientX }); if (LSW.size === 2) { const p = [...LSW.values()]; x0 = (p[0].x + p[1].x) / 2; done = false; } });
+  layersEl.addEventListener('pointermove', e => {
+    const t = LSW.get(e.pointerId); if (!t) return; t.x = e.clientX; if (LSW.size < 2 || done) return;
+    const p = [...LSW.values()], x = (p[0].x + p[1].x) / 2, out = settings.lefty ? x0 - x : x - x0; if (out > 56) { done = true; closeLayersSwipe(); }
+  });
+  ['pointerup', 'pointercancel'].forEach(ev => layersEl.addEventListener(ev, e => LSW.delete(e.pointerId))); }
 /* ---------- options du calque : un panneau flottant sur le côté, ouvert par le bouton réglages du panneau Calques ---------- */
 var layOptOpen = !!LS.get('layOpt', false), layOptEl = null;
 const FX_TYPES = [['', 'Aucun'], ['blur', 'Flou'], ['motion', 'Mouvement']], FX_DEF = { blur: 12, motion: 40 };
@@ -3741,7 +3783,7 @@ function layOptRefresh() {
     layOptEl.innerHTML = head('Calque', L.name) + `<div class="orow"><span>Opacité</span><input type="range" min="0" max="100" value="${op}" data-ly="op" aria-label="Opacité du calque"><b id="opv">${op} %</b></div>
       <div class="ltools" role="toolbar" aria-label="Actions du calque">
         ${tile('dup', 'copy', 'Dupliquer', 'Dupliquer le calque', { dis: n >= MAX_LAYERS })}${tile('merge', 'merge', 'Fusionner', fx ? 'Retire l’effet avant de fusionner' : 'Fusionner avec le calque du dessous', { dis: !si.canMerge || !!fx })}${L.group ? tile('ungroupone', 'ungroup', 'Sortir', 'Sortir du groupe') : tile('group', 'folder', 'Grouper', 'Grouper ce calque')}${tile('up', 'up', 'Monter', 'Monter le calque', { dis: !si.canUp })}${tile('down', 'down', 'Descendre', 'Descendre le calque', { dis: !si.canDown })}
-        ${tile('move', 'move', 'Déplacer', 'Déplacer, agrandir, tourner le calque')}${tile('deform', 'warp', 'Déformer', 'Déformer le calque')}${tile('lock', L.locked ? 'lock' : 'unlock', L.locked ? 'Débloquer' : 'Bloquer', (L.locked ? 'Déverrouiller' : 'Verrouiller') + ' le calque', { id: L.id, on: L.locked, pressed: !!L.locked })}${tile('del', 'trash', 'Supprimer', 'Supprimer le calque', { danger: true, dis: n <= 1 })}
+        ${tile('move', 'move', 'Déplacer', 'Déplacer, agrandir, tourner le calque')}${tile('deform', 'warp', 'Déformer', 'Déformer le calque')}${tile('solo', 'eye', 'Isoler', laySoloActive(d, L) ? 'Réafficher les autres calques' : 'Isoler ce calque (masquer tous les autres)', { id: L.id, on: laySoloActive(d, L), pressed: laySoloActive(d, L) })}${tile('lock', L.locked ? 'lock' : 'unlock', L.locked ? 'Débloquer' : 'Bloquer', (L.locked ? 'Déverrouiller' : 'Verrouiller') + ' le calque', { id: L.id, on: L.locked, pressed: !!L.locked })}${tile('del', 'trash', 'Supprimer', 'Supprimer le calque', { danger: true, dis: n <= 1 })}
       </div><p class="lo-hint lo-tiphint">Maintiens une icône pour voir son nom.</p>
       <div class="lo-t">Effets</div>
       <div class="fx-chips" role="radiogroup" aria-label="Effet du calque">${FX_TYPES.map(([k, l]) => `<button data-ly="fx" data-v="${k}" role="radio" aria-checked="${cur === k}" class="${cur === k ? 'on' : ''}">${l}</button>`).join('')}</div>${rows}${fx ? '<button class="fx-flat" data-ly="fxflat">Aplatir l’effet</button><p class="lo-hint">Le calque devient une image : l’effet est définitif (on peut annuler).</p>' : ''}`;
@@ -3857,7 +3899,8 @@ function layerAction(a, id) {
     case 'sel': if (!selGroup && d.active === L.id) { layOptToggle(); return; } selGroup = null; if (d.active !== L.id) { d.active = L.id; markDirty(); } return refreshLayers();
     case 'vis': L.visible = !L.visible; requestRender(); refreshLayers(); markDirty(); return;
     case 'lock': L.locked = !L.locked; refreshLayers(); markDirty(); return;
-    case 'ren': renamingId = L.id; return refreshLayers();
+    case 'solo': return laySoloToggle(L);
+ case 'ren': renamingId = L.id; return refreshLayers();
     case 'gsel': selGroup = selGroup === G.id ? null : G.id; return refreshLayers();
     case 'gvis': G.visible = !G.visible; requestRender(); refreshLayers(); markDirty(); return;
     case 'glock': G.locked = !G.locked; refreshLayers(); markDirty(); return;
@@ -5212,6 +5255,12 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
+  { v: '1.23.0', date: '3 nov. 2026', items: [
+    ['18 calques par image', 'La limite passe de 12 à 18 calques.'],
+    ['Le panneau Calques glisse', 'Ouvert à deux doigts depuis le bord, il glisse en place ; pour le fermer, glisse deux doigts sur le panneau vers le bord. Ce geste n’ouvre jamais le panneau des réglages.'],
+    ['Dixième réglage : Isoler', 'Un bouton masque tous les autres calques ; un second toucher les réaffiche comme avant.'],
+    ['Réglages du calque mieux alignés', 'Le titre est aligné avec le champ du nom, et le champ avec les curseurs.'],
+    ['Portfolio', 'Plus de bordures bleues autour des carnets pendant le glisser-déposer : le carnet visé se soulève simplement.']] },
   { v: '1.22.0', date: '3 nov. 2026', items: [
     ['Calques : réglages à portée de doigt', 'Le bouton réglages est maintenant à côté de l’œil du calque choisi, et un second toucher sur le calque ouvre ses réglages. L’en-tête du panneau ne déborde plus.'],
     ['Renommer d’un toucher', 'Le nom du calque, en haut de ses réglages, se modifie directement.'],
