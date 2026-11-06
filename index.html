@@ -1753,6 +1753,104 @@ html[data-dg] .btn.primary.cancel{background:var(--lg-glass-fill);--lg-glass-fil
 .lo-h b{flex:0 0 66px;display:flex;align-items:center;height:34px;line-height:1}
 .lo-name{height:34px;box-sizing:border-box;margin:0;font-size:15px}
 #layers{touch-action:pan-y}
+/* ---------- 1.24.0 : espace Notes ---------- */
+#nt{position:absolute;left:0;right:0;bottom:0;top:90px;z-index:9;display:flex;flex-direction:column;opacity:0;transform:translateY(14px);transition:opacity .28s var(--ease),transform .34s var(--ease);pointer-events:none;color:var(--ink)}
+#nt[hidden]{display:none}
+#nt.show{opacity:1;transform:none;pointer-events:auto}
+html.nt-on #dock,html.nt-on #layers,html.nt-on #layOpt,html.nt-on #insp,html.nt-on #btnNew,html.nt-on #btnLay,html.nt-on #btnFit,html.nt-on #btnUndo,html.nt-on #btnRedo,html.nt-on #topbar .ag[aria-label="Historique"],html.nt-on #topbar .ag[aria-label="Vue"]{display:none!important}
+.nt-view{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--stage);transition:opacity .26s var(--ease),transform .3s var(--ease)}
+.nt-view[hidden]{display:none}
+.nt-view.out{opacity:0;transform:translateX(-24px);pointer-events:none}
+.nt-ed.out{transform:translateX(24px)}
+/* liste */
+.nt-lh{display:flex;align-items:center;gap:12px;padding:6px 20px 10px;flex:none}
+.nt-lh h1{margin:0;font-size:26px;font-weight:700;letter-spacing:-.01em;flex:none}
+.nt-search{flex:1;min-width:0;display:flex;align-items:center;gap:8px;height:42px;padding:0 12px;border-radius:21px;background:var(--raise);box-shadow:inset 0 0 0 1px var(--line)}
+.nt-search .ic{width:18px;height:18px;color:var(--ink2);flex:none}
+.nt-search input{flex:1;min-width:0;border:0;background:none;outline:none;font:inherit;font-size:16px;color:var(--ink)}
+.nt-grid{flex:1;min-height:0;overflow-y:auto;padding:4px 20px calc(24px + var(--sab));display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:16px;align-content:start;-webkit-overflow-scrolling:touch}
+.nt-sec{grid-column:1/-1;margin:10px 2px 0;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+.nt-card{position:relative;display:flex;flex-direction:column;border-radius:16px;background:var(--raise);box-shadow:0 1px 2px rgba(20,35,55,.08),inset 0 0 0 1px var(--line);overflow:hidden}
+.nt-open{display:flex;flex-direction:column;align-items:stretch;text-align:left;padding:0;width:100%}
+.nt-th{display:block;aspect-ratio:4/5;background:var(--paper) center top/cover no-repeat;border-bottom:1px solid var(--line)}
+.nt-card b{display:block;margin:10px 12px 0;font-size:15px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nt-card small{display:block;margin:2px 12px 12px;font-size:12.5px;color:var(--ink2)}
+.nt-pinb{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.78);color:var(--ink2);box-shadow:0 1px 4px rgba(20,35,55,.18)}
+html[data-theme="dark"] .nt-pinb{background:rgba(40,44,52,.8)}
+.nt-pinb .ic{width:17px;height:17px}.nt-pinb.on{color:#fff;background:var(--accent)}
+.nt-empty{grid-column:1/-1;margin:40px auto;max-width:330px;text-align:center;color:var(--ink2);line-height:1.5}
+/* éditeur */
+.nt-ed{background:var(--stage)}
+.nt-bar{flex:none;margin:6px 12px 0;padding:6px 8px;border-radius:22px;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;position:relative;z-index:3}
+.nt-bar::-webkit-scrollbar{display:none}
+.nt-bar .ib{flex:none;width:40px;height:40px;position:relative}
+.nt-bar .ib .ic{width:21px;height:21px}
+.nt-bar .ib .dotc{position:absolute;right:6px;bottom:6px;width:9px;height:9px;border-radius:50%;background:var(--c,var(--ink));box-shadow:0 0 0 1.5px var(--paper)}
+.nt-bar .ib.on{color:var(--accent)}
+.nt-sep{flex:none;width:1px;height:24px;margin:0 4px;background:var(--line)}
+.nt-back{flex:none;display:flex;align-items:center;gap:2px;height:40px;padding:0 12px 0 8px;border-radius:20px;font-size:15px;font-weight:600;color:var(--accent)}
+.nt-ttl{flex:1 1 150px;min-width:110px;max-width:340px;height:38px;margin:0 6px;padding:0 12px;border-radius:19px;border:0;background:var(--fill);font:inherit;font-size:16px;font-weight:650;color:var(--ink);outline:none}
+.nt-wrap{position:relative;flex:1;min-height:0;margin-top:6px}
+.nt-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:contain}
+.nt-sizer{position:relative;margin:0 auto}
+.nt-page{position:absolute;left:0;top:0;width:1000px;transform-origin:0 0;overflow:hidden}
+.nt-chunks,.nt-blocks{position:absolute;left:0;top:0;width:1000px}
+.nt-live{position:absolute;left:0;top:0;pointer-events:none;z-index:2}
+.nt-guide{position:absolute;left:0;right:0;pointer-events:none;display:none;z-index:4}
+.nt-guide i{position:absolute;left:0;right:0;height:0;border-top:3px dashed var(--accent)}
+.nt-guide em{position:absolute;left:0;right:0;background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.nt-guide b{position:absolute;right:20px;padding:4px 12px;border-radius:14px;background:var(--accent);color:#fff;font-size:26px;font-weight:700}
+/* blocs */
+.nt-b{position:absolute;pointer-events:none;color:var(--ink);box-sizing:border-box}
+.nt-ed[data-tool=text] .nt-text,.nt-ed[data-tool=text] .nt-todo,.nt-ed[data-tool=move] .nt-b{pointer-events:auto}
+.nt-ed[data-tool=move] .nt-b{outline:2.5px dashed color-mix(in srgb,var(--accent) 70%,transparent);outline-offset:4px}
+.nt-text:focus-within,.nt-todo:focus-within{pointer-events:auto}
+.nt-bh{position:absolute;left:0;top:-52px;height:46px;display:none;align-items:center;gap:6px;padding:0 8px;border-radius:23px;background:var(--glass-strong);box-shadow:var(--shadow),inset 0 0 0 1px var(--glass-brd);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);z-index:5;white-space:nowrap}
+.nt-ed[data-tool=move] .nt-b .nt-bh,.nt-b:focus-within .nt-bh{display:flex}
+.nt-bh button,.nt-grip{min-width:38px;height:36px;border-radius:18px;display:grid;place-items:center;font-size:20px;font-weight:700;color:var(--ink);padding:0 6px;pointer-events:auto}
+.nt-bh button.on{background:var(--accent);color:#fff}
+.nt-grip{cursor:grab;touch-action:none;font-size:22px;letter-spacing:-2px}
+.nt-del{color:var(--danger)!important}
+.nt-tx{display:block;min-height:1.3em;padding:6px 8px;line-height:1.3;white-space:pre-wrap;word-break:break-word;outline:none;-webkit-user-select:text;user-select:text;touch-action:auto;border-radius:8px}
+.nt-text:focus-within .nt-tx{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.nt-tx:empty::before{content:attr(data-ph);color:var(--ink2);opacity:.7}
+.nt-ti{display:flex;align-items:flex-start;gap:10px;padding:2px 0}
+.nt-ck{flex:none;width:30px;height:30px;margin-top:3px;border-radius:50%;border:2.5px solid var(--ink2);background:none;display:grid;place-items:center;pointer-events:auto;touch-action:manipulation;color:#fff}
+.nt-ck[aria-checked=true]{background:var(--accent);border-color:var(--accent)}
+.nt-ck svg{width:18px;height:18px;opacity:0;stroke-width:3.2}.nt-ck[aria-checked=true] svg{opacity:1}
+.nt-ti[data-d="1"] .nt-tx{text-decoration:line-through;opacity:.55}
+.nt-add{margin:2px 0 0 40px;font-size:14px;font-weight:600;color:var(--accent);display:none;pointer-events:auto}
+.nt-ed[data-tool=move] .nt-add,.nt-todo:focus-within .nt-add{display:block}
+.nt-img{display:block}
+.nt-img img{display:block;width:100%;height:100%;object-fit:fill;border-radius:6px;-webkit-user-drag:none;user-select:none}
+.nt-rs{position:absolute;right:-14px;bottom:-14px;width:30px;height:30px;border-radius:50%;background:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.3);display:none;touch-action:none;cursor:nwse-resize;pointer-events:auto}
+.nt-ed[data-tool=move] .nt-rs{display:block}
+/* fenêtres flottantes */
+.nt-pop{position:absolute;z-index:8;min-width:230px;max-width:min(360px,calc(100% - 20px));padding:14px;border-radius:20px}
+.nt-pop[hidden]{display:none}
+.nt-pop h4{margin:0 0 8px 2px;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+.nt-pop h4:not(:first-child){margin-top:14px}
+.nt-row{display:flex;flex-wrap:wrap;gap:8px}
+.nt-sw{width:36px;height:36px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)}
+.nt-sw.on{box-shadow:0 0 0 2.5px var(--paper),0 0 0 5px var(--accent)}
+.nt-sz{width:44px;height:36px;border-radius:12px;background:var(--fill);display:grid;place-items:center}
+.nt-sz i{display:block;border-radius:99px;background:var(--ink)}
+.nt-sz.on{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent)}
+.nt-opt{height:38px;padding:0 14px;border-radius:19px;background:var(--fill);font-size:14.5px;font-weight:600;color:var(--ink)}
+.nt-opt.on{background:var(--accent);color:#fff}
+.nt-opt.danger{color:#fff;background:var(--danger)}
+.nt-psw{width:36px;height:36px;border-radius:10px;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+.nt-psw.on{box-shadow:0 0 0 2.5px var(--paper),0 0 0 5px var(--accent)}
+.nt-menu{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.nt-menu button{display:flex;align-items:center;gap:10px;height:44px;padding:0 14px;border-radius:14px;background:var(--fill);font-size:15px;font-weight:600;text-align:left;color:var(--ink)}
+.nt-menu button .ic{width:20px;height:20px}
+.nt-tr{display:flex;align-items:center;gap:12px;padding:6px 2px}
+.nt-tr span{flex:1;font-size:14.5px;font-weight:600}
+.nt-exp{position:fixed;inset:0;z-index:60;background:rgba(10,14,20,.45);display:grid;place-items:center;font-weight:700;color:#fff;font-size:17px}
+.nt-exp[hidden]{display:none}
+
+.nt-guide{top:0;bottom:0}
+.nt-b[data-low="1"] .nt-bh{top:auto;bottom:-52px}
 </style>
 </head>
 <body>
@@ -1785,7 +1883,13 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
   <symbol id="i-fit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.3"/><circle cx="12" cy="12" r="7.6" opacity=".45"/><path d="M12 2.6v3.4M12 18v3.4M2.6 12H6M18 12h3.4"/></symbol>
   <symbol id="i-gear" viewBox="0 0 24 24"><path d="M10.25 4.71L10.77 2.28 L13.23 2.28 L13.75 4.71A7.5 7.5 0 0 1 15.92 5.61L18.01 4.26 L19.74 5.99 L18.39 8.08A7.5 7.5 0 0 1 19.29 10.25L21.72 10.77 L21.72 13.23 L19.29 13.75A7.5 7.5 0 0 1 18.39 15.92L19.74 18.01 L18.01 19.74 L15.92 18.39A7.5 7.5 0 0 1 13.75 19.29L13.23 21.72 L10.77 21.72 L10.25 19.29A7.5 7.5 0 0 1 8.08 18.39L5.99 19.74 L4.26 18.01 L5.61 15.92A7.5 7.5 0 0 1 4.71 13.75L2.28 13.23 L2.28 10.77 L4.71 10.25A7.5 7.5 0 0 1 5.61 8.08L4.26 5.99 L5.99 4.26 L8.08 5.61A7.5 7.5 0 0 1 10.25 4.71Z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.5 7.5a2 2 0 012-2h3.8l2 2.5h7.2a2 2 0 012 2v7.5a2 2 0 01-2 2h-13a2 2 0 01-2-2z"/></symbol>
-  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3.5l8.5 4.6-8.5 4.6-8.5-4.6z"/><path d="M3.5 12.2l8.5 4.6 8.5-4.6"/><path d="M3.5 16.2l8.5 4.6 8.5-4.6"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M7.5 3.5h6.7L19 8.3V19a1.5 1.5 0 01-1.5 1.5h-10A1.5 1.5 0 016 19V5a1.5 1.5 0 011.5-1.5z"/><path d="M14 3.7v4.8h4.8M9 12.5h6M9 16h4"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M9 4h6l-.8 5.2 2.8 2.8v1H7v-1l2.8-2.8z"/><path d="M12 13v7"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l5 5"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx="3.5"/><path d="M8.5 12.3l2.5 2.5 4.6-5"/></symbol>
+<symbol id="i-space" viewBox="0 0 24 24"><path d="M12 4v6M9.3 7.2L12 4l2.7 3.2M12 20v-6M9.3 16.8L12 20l2.7-3.2"/><path d="M5 12h14" stroke-dasharray="2 2.4"/></symbol>
+<symbol id="i-paper" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx="2.5"/><path d="M4.5 9.5h15M4.5 14.5h15M9.5 4.5v15M14.5 4.5v15"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3.5l8.5 4.6-8.5 4.6-8.5-4.6z"/><path d="M3.5 12.2l8.5 4.6 8.5-4.6"/><path d="M3.5 16.2l8.5 4.6 8.5-4.6"/></symbol>
   <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M10.6 5.7A9.6 9.6 0 0112 5.5c6 0 9.5 6.5 9.5 6.5a16.6 16.6 0 01-2.9 3.7M6.4 7.4C3.8 9.1 2.5 12 2.5 12S6 18.5 12 18.5c1.5 0 2.8-.4 4-.9"/><path d="M9.9 9.9a3 3 0 004.2 4.2"/><path d="M4 4l16 16"/></symbol>
   <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.4"/><path d="M8.2 10.5V8a3.8 3.8 0 017.6 0v2.5"/></symbol>
@@ -1889,7 +1993,8 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
     <nav class="modefab" id="modeSeg" role="tablist" aria-label="Sections">
       <button data-mode="free" class="ib on" role="tab" aria-selected="true"><svg class="ic"><use href="#i-brush"/></svg><span>Dessin</span></button>
       
-      <button data-mode="anim" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-anim"/></svg><span>Animation</span></button>
+      <button data-nav="notes" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-note"/></svg><span>Notes</span></button>
+    <button data-mode="anim" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-anim"/></svg><span>Animation</span></button>
       <button data-nav="games" class="ib" role="tab" aria-selected="false"><svg class="ic"><use href="#i-users"/></svg><span>Jeux multijoueur</span></button>
     </nav>
     <div id="mpHud">
@@ -1953,7 +2058,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.23.0";
+const APP_VERSION = "1.24.0";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -2832,6 +2937,7 @@ function histNote(dir, op) {
   clearTimeout(histT); histT = setTimeout(() => el.classList.remove('show', 'up'), 1500);
 }
 function doUndo() {
+  if (NT.on) { if (NT.cur) ntUndo(); return; }
   if (typeof closeEditSessions === 'function') closeEditSessions();
   const d = curDoc(), op = d.undo.pop(); if (!op) return;
   if (op.k === 'add') { const i = d.strokes.indexOf(op.st); if (i >= 0) d.strokes.splice(i, 1); }
@@ -2842,6 +2948,7 @@ function doUndo() {
   d.redo.push(op); afterHist(); histNote('undo', op);
 }
 function doRedo() {
+  if (NT.on) { if (NT.cur) ntRedo(); return; }
   if (typeof closeEditSessions === 'function') closeEditSessions();
   const d = curDoc(), op = d.redo.pop(); if (!op) return;
   if (op.k === 'add') d.strokes.push(op.st);
@@ -4705,7 +4812,7 @@ function setMode(m) {
 /* barre de sections : Dessin · Atelier 3D · Animation · Jeux multijoueur */
 function navSync() {
   const games = typeof mpEl !== 'undefined' && mpEl.classList.contains('show');
-  const k = window.__spaceKey || (games ? 'games' : S.mode);
+  const k = window.__spaceKey || (games ? 'games' : (window.NT && NT.on ? 'notes' : S.mode));
   document.querySelectorAll('#modeSeg button').forEach(b => { const on = (b.dataset.mode || b.dataset.nav) === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
   if (window.__navIndReady) requestAnimationFrame(() => navIndSync());
 }
@@ -4809,7 +4916,9 @@ function bindUI() {
     const b = e.target.closest('button'); if (!b) return;
     const key = b.dataset.mode || b.dataset.nav, here = S.mode;
     if (MP && key !== 'free') return flash('Une partie multijoueur est en cours.');
-    if (key === here) return;
+    if (key === 'notes') { if (NT.on) return; return spaceGo(key, b, () => openNotes()); }
+  if (NT.on) { closeNotes(); if (key === here) return; }
+  if (key === here) return;
     spaceGo(key, b, () => {
       if (key === 'games') { if (G) gestureFinish(true); return openMultiplayer(); }
       setMode(key);
@@ -5255,6 +5364,11 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
+  { v: '1.24.0', date: '3 nov. 2026', items: [
+    ['Un espace Notes', 'Nouveau choix dans le menu des modes, entre Dessin et Animation : une liste de notes avec recherche par titre et épingle, et une page continue qui défile sans fin.'],
+    ['Papiers et modèles', 'Papier uni, ligné, quadrillé ou pointillé, avec ou sans marge, en cinq couleurs, clair ou sombre comme l’app. Modèles : réunion, liste de tâches, journal, semainier.'],
+    ['Écrire, taper, insérer', 'Stylo fin, surligneur, gomme qui efface le trait entier ; texte tapé, listes à cocher, images ; « insérer de l’espace » pour pousser le contenu vers le bas.'],
+    ['Export', 'La note s’exporte en image PNG ou en document PDF.']] },
   { v: '1.23.0', date: '3 nov. 2026', items: [
     ['18 calques par image', 'La limite passe de 12 à 18 calques.'],
     ['Le panneau Calques glisse', 'Ouvert à deux doigts depuis le bord, il glisse en place ; pour le fermer, glisse deux doigts sur le panneau vers le bord. Ce geste n’ouvre jamais le panneau des réglages.'],
@@ -7211,6 +7325,464 @@ const MF = (() => {
   window.addEventListener('resize', size); size(); paintSlots(); syncCaps();
   return { set: setOpen, isOpen: () => open };
 })();
+
+/* ======================================================================
+   NOTES : liste, page continue, papiers, stylo fin / surligneur / gomme, texte, listes à cocher, images,
+   « insérer de l'espace », export PNG et PDF, recherche par titre, épingle.
+   Les notes sont enregistrées dans la base de l'app (clés « nt:index » et « nt:<id> »). Coordonnées en unités de page (largeur 1000).
+   ====================================================================== */
+var NT = { on: false, list: [], cur: null, tool: 'pen', undo: [], redo: [], q: '', s: 1, dpr: 1, CH: 1000, chunks: new Map(), dirty: false, view: 'list', pan: null };
+const NT_PREF = Object.assign({ pen: 'ink', penW: 2.6, hl: '#ffd93d', hlW: 22 }, LS.get('nt', null) || {});
+const ntSavePref = () => LS.set('nt', NT_PREF);
+const NT_PAPERS = [['blank', 'Uni'], ['ruled', 'Ligné'], ['grid', 'Quadrillé'], ['dots', 'Pointillé']];
+const NT_PCOL = { white: ['#fdfdfb', '#1c1e22', 'Blanc'], cream: ['#f8f0dc', '#2a261c', 'Crème'], gray: ['#eceef1', '#26282c', 'Gris'], blue: ['#e7f0fb', '#1b2431', 'Bleu'], pink: ['#fbe8ee', '#2d1f25', 'Rose'] };
+const NT_PEN_COL = ['ink', '#2f6df6', '#e5403a', '#2ea44f', '#f58026', '#8e44ad'], NT_HL_COL = ['#ffd93d', '#6be585', '#ff8fb8', '#6fc3ff'], NT_PEN_W = [1.6, 2.6, 4.4], NT_HL_W = [14, 22, 34];
+const ntDark = () => document.documentElement.dataset.theme === 'dark';
+const ntInk = c => c === 'ink' ? (ntDark() ? '#f1eee8' : '#1d1b18') : c;
+const ntPaperCol = k => (NT_PCOL[k] || NT_PCOL.white)[ntDark() ? 1 : 0];
+const ntId = () => 'n' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const ntDate = () => new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+const ntClamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const ntFont = () => getComputedStyle(document.body).fontFamily;
+const ntTick = '<svg class="ic" viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg>';
+
+/* ---------- les éléments de l'écran ---------- */
+const ntRoot = document.createElement('section'); ntRoot.id = 'nt'; ntRoot.hidden = true; ntRoot.setAttribute('aria-label', 'Notes');
+ntRoot.innerHTML = `
+<div class="nt-view" id="ntList">
+  <header class="nt-lh"><h1>Notes</h1><label class="nt-search">${ICO('search')}<input id="ntQ" type="search" placeholder="Rechercher par titre" aria-label="Rechercher une note par titre" autocomplete="off" enterkeyhint="search"></label><button class="btn primary" id="ntNew">${ICO('plus')} Nouvelle note</button></header>
+  <div class="nt-grid" id="ntGrid"></div>
+</div>
+<div class="nt-view nt-ed out" id="ntEd" data-tool="pen" hidden>
+  <div class="nt-bar glass" id="ntBar" role="toolbar" aria-label="Outils de la note">
+    <button class="nt-back" data-nt="back" aria-label="Retour à la liste des notes">‹ Notes</button>
+    <input class="nt-ttl" id="ntTitle" maxlength="60" aria-label="Titre de la note" autocomplete="off" enterkeyhint="done">
+    <span class="nt-sep"></span>
+    <button class="ib on" data-nt="tool" data-tool="pen" aria-label="Stylo fin">${ICO('nib')}<i class="dotc" id="ntDotPen"></i></button>
+    <button class="ib" data-nt="tool" data-tool="hl" aria-label="Surligneur">${ICO('highlighter')}<i class="dotc" id="ntDotHl"></i></button>
+    <button class="ib" data-nt="tool" data-tool="erase" aria-label="Gomme : efface le trait entier">${ICO('eraser')}</button>
+    <span class="nt-sep"></span>
+    <button class="ib" data-nt="tool" data-tool="text" aria-label="Texte tapé">${ICO('text')}</button>
+    <button class="ib" data-nt="tool" data-tool="todo" aria-label="Liste à cocher">${ICO('check')}</button>
+    <button class="ib" data-nt="img" aria-label="Insérer une image">${ICO('imgadd')}</button>
+    <span class="nt-sep"></span>
+    <button class="ib" data-nt="tool" data-tool="space" aria-label="Insérer de l’espace">${ICO('space')}</button>
+    <button class="ib" data-nt="tool" data-tool="move" aria-label="Déplacer et redimensionner les blocs">${ICO('move')}</button>
+    <span class="nt-sep"></span>
+    <button class="ib" data-nt="undo" aria-label="Annuler">${ICO('undo')}</button>
+    <button class="ib" data-nt="redo" aria-label="Rétablir"><svg class="ic flip"><use href="#i-undo"/></svg></button>
+    <span class="nt-sep"></span>
+    <button class="ib" data-nt="paper" aria-label="Papier">${ICO('paper')}</button>
+    <button class="ib" data-nt="export" aria-label="Exporter en PNG ou en PDF">${ICO('export')}</button>
+    <button class="ib" data-nt="more" aria-label="Options de la note">${ICO('more')}</button>
+  </div>
+  <div class="nt-wrap" id="ntWrap">
+    <div class="nt-scroll" id="ntScroll"><div class="nt-sizer" id="ntSizer"><div class="nt-page" id="ntPage"><div class="nt-chunks" id="ntChunks"></div><div class="nt-blocks" id="ntBlocks"></div><div class="nt-guide" id="ntGuide"><em></em><i></i><i></i><b></b></div></div></div></div>
+    <canvas class="nt-live" id="ntLive"></canvas>
+  </div>
+  <div class="nt-pop glass" id="ntPop" hidden></div>
+</div>
+<div class="nt-exp" id="ntExp" hidden>Export en cours…</div>`;
+$('#app').appendChild(ntRoot);
+const ntFile = document.createElement('input'); ntFile.type = 'file'; ntFile.accept = 'image/*'; ntFile.hidden = true; ntRoot.appendChild(ntFile);
+
+/* ---------- enregistrement ---------- */
+async function ntLoadIndex() { try { NT.list = (await DB.get('nt:index')) || []; } catch (e) { NT.list = []; } }
+const ntSaveIndex = () => DB.set('nt:index', NT.list).catch(() => { });
+let ntSaveT = 0;
+function ntSaveSoon() { NT.dirty = true; clearTimeout(ntSaveT); ntSaveT = setTimeout(ntFlush, 700); }
+async function ntFlush() {
+  clearTimeout(ntSaveT); const n = NT.cur; if (!n || !NT.dirty) return; NT.dirty = false; n.ts = Date.now();
+  const sc = document.getElementById('ntScroll'); if (sc && !$('#ntEd').hidden) n.sy = sc.scrollTop;
+  try { await DB.set('nt:' + n.id, n); } catch (e) { flash('Impossible d’enregistrer la note.'); }
+  let m = NT.list.find(x => x.id === n.id); if (!m) { m = { id: n.id }; NT.list.push(m); }
+  Object.assign(m, { title: n.title, pin: !!n.pin, ts: n.ts }); ntSaveIndex();
+}
+function ntNormalize(n) {
+  n.paper = Object.assign({ k: 'ruled', c: 'white', m: true }, n.paper || {}); n.strokes = n.strokes || []; n.blocks = n.blocks || []; n.h = Math.max(1400, +n.h || 2600); n.title = n.title || 'Note';
+  n.strokes.forEach(st => { if (!st.bb) ntBB(st); }); return n;
+}
+function ntBB(st) { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; for (let i = 0; i < st.a.length; i += 3) { x0 = Math.min(x0, st.a[i]); x1 = Math.max(x1, st.a[i]); y0 = Math.min(y0, st.a[i + 1]); y1 = Math.max(y1, st.a[i + 1]); } const w = st.w + 2; st.bb = [x0 - w, y0 - w, x1 + w, y1 + w]; }
+
+/* ---------- dessin : papier, traits, blocs (le même code sert à l'écran, à l'export et aux vignettes) ---------- */
+function ntDrawPaper(c, y0, y1, n) {
+  const p = n.paper, dk = ntDark(), S = 44, top = 100, W = 1000;
+  c.fillStyle = ntPaperCol(p.c); c.fillRect(0, y0, W, y1 - y0); c.save(); c.lineWidth = 1.4;
+  if (p.k === 'ruled') { c.strokeStyle = dk ? 'rgba(255,255,255,.12)' : 'rgba(45,80,140,.22)'; c.beginPath(); for (let y = top + Math.max(0, Math.ceil((y0 - top) / S)) * S; y <= y1; y += S) { c.moveTo(0, y); c.lineTo(W, y); } c.stroke(); }
+  else if (p.k === 'grid') { c.strokeStyle = dk ? 'rgba(255,255,255,.10)' : 'rgba(45,80,140,.18)'; c.beginPath(); for (let y = Math.ceil(y0 / S) * S; y <= y1; y += S) { c.moveTo(0, y); c.lineTo(W, y); } for (let x = 0; x <= W; x += S) { c.moveTo(x, y0); c.lineTo(x, y1); } c.stroke(); }
+  else if (p.k === 'dots') { c.fillStyle = dk ? 'rgba(255,255,255,.26)' : 'rgba(45,80,140,.36)'; for (let y = Math.ceil(y0 / S) * S; y <= y1; y += S) for (let x = S; x < W; x += S) { c.beginPath(); c.arc(x, y, 1.9, 0, 6.2832); c.fill(); } }
+  if (p.m) { c.strokeStyle = dk ? 'rgba(255,125,125,.45)' : 'rgba(220,70,70,.5)'; c.lineWidth = 2; c.beginPath(); c.moveTo(118, y0); c.lineTo(118, y1); c.stroke(); }
+  c.restore();
+}
+function ntDrawStroke(c, st) {
+  const a = st.a, n = a.length / 3; if (!n) return; const col = ntInk(st.c); c.save(); c.lineJoin = 'round';
+  if (st.k === 'h') {
+    c.globalAlpha = ntDark() ? 0.5 : 0.4; c.strokeStyle = col; c.lineWidth = st.w; c.lineCap = 'butt'; c.beginPath(); c.moveTo(a[0], a[1]); if (n === 1) c.lineTo(a[0] + 0.1, a[1]);
+    for (let i = 1; i < n - 1; i++) c.quadraticCurveTo(a[i * 3], a[i * 3 + 1], (a[i * 3] + a[i * 3 + 3]) / 2, (a[i * 3 + 1] + a[i * 3 + 4]) / 2); if (n > 1) c.lineTo(a[(n - 1) * 3], a[(n - 1) * 3 + 1]); c.stroke();
+  } else {
+    c.strokeStyle = col; c.fillStyle = col; c.lineCap = 'round'; const wd = i => st.w * (0.5 + a[i * 3 + 2]);
+    if (n < 3) { c.beginPath(); c.arc(a[0], a[1], wd(0) / 2 + 0.2, 0, 6.2832); c.fill(); if (n === 2) { c.lineWidth = wd(1); c.beginPath(); c.moveTo(a[0], a[1]); c.lineTo(a[3], a[4]); c.stroke(); } }
+    else { let mx = a[0], my = a[1]; for (let i = 1; i < n - 1; i++) { const nx = (a[i * 3] + a[i * 3 + 3]) / 2, ny = (a[i * 3 + 1] + a[i * 3 + 4]) / 2; c.lineWidth = wd(i); c.beginPath(); c.moveTo(mx, my); c.quadraticCurveTo(a[i * 3], a[i * 3 + 1], nx, ny); c.stroke(); mx = nx; my = ny; } c.lineWidth = wd(n - 1); c.beginPath(); c.moveTo(mx, my); c.lineTo(a[(n - 1) * 3], a[(n - 1) * 3 + 1]); c.stroke(); }
+  }
+  c.restore();
+}
+function ntDrawStrokes(c, n, y0, y1) { c.save(); c.beginPath(); c.rect(0, y0, 1000, y1 - y0); c.clip(); for (const st of n.strokes) if (st.k === 'h' && st.bb[3] >= y0 && st.bb[1] <= y1) ntDrawStroke(c, st); for (const st of n.strokes) if (st.k !== 'h' && st.bb[3] >= y0 && st.bb[1] <= y1) ntDrawStroke(c, st); c.restore(); }
+function ntWrap(c, text, maxW) { const out = []; for (const para of String(text).split('\n')) { const words = para.split(/(\s+)/); let line = ''; for (const w of words) { const t = line + w; if (c.measureText(t).width > maxW && line.trim()) { out.push(line.trimEnd()); line = w.trimStart(); } else line = t; } out.push(line); } return out; }
+const ntImgs = new Map();
+const ntLoadImg = src => ntImgs.get(src) || (ntImgs.set(src, new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; })), ntImgs.get(src));
+async function ntDrawBlocks(c, n) {
+  const ff = ntFont(), ink = ntInk('ink'), acc = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#007aff';
+  for (const b of n.blocks) {
+    if (b.k === 'img') { try { c.drawImage(await ntLoadImg(b.src), b.x, b.y, b.w, b.h); } catch (e) { } }
+    else if (b.k === 'text') { c.font = `${b.b ? 700 : 500} ${b.z}px ${ff}`; c.fillStyle = ink; c.textBaseline = 'top'; const lh = b.z * 1.3; let y = b.y + 6; for (const ln of ntWrap(c, b.t, b.w - 16)) { c.fillText(ln, b.x + 8, y + (lh - b.z) / 2); y += lh; } }
+    else if (b.k === 'todo') {
+      c.font = `500 ${b.z}px ${ff}`; c.textBaseline = 'top'; const lh = b.z * 1.3; let y = b.y;
+      for (const it of b.items) {
+        const lines = ntWrap(c, it.t, b.w - 56), h = Math.max(36, lines.length * lh + 12);
+        c.beginPath(); c.arc(b.x + 15, y + 20, 13, 0, 6.2832); if (it.d) { c.fillStyle = acc; c.fill(); c.strokeStyle = '#fff'; c.lineWidth = 3; c.lineCap = 'round'; c.beginPath(); c.moveTo(b.x + 9, y + 20); c.lineTo(b.x + 13.5, y + 24.5); c.lineTo(b.x + 21.5, y + 15.5); c.stroke(); } else { c.strokeStyle = ntDark() ? '#9aa1ab' : '#6a7079'; c.lineWidth = 2.5; c.stroke(); }
+        c.fillStyle = ink; c.globalAlpha = it.d ? 0.55 : 1; let ty = y + 8; for (const ln of lines) { c.fillText(ln, b.x + 48, ty + (lh - b.z) / 2); if (it.d && ln) { const w = c.measureText(ln).width; c.fillRect(b.x + 48, ty + lh / 2, w, 2); } ty += lh; } c.globalAlpha = 1; y += h + 4;
+      }
+    }
+  }
+}
+function ntBlockH(b) { const el = document.querySelector(`#ntBlocks [data-id="${b.id}"]`); return b.k === 'img' ? b.h : (el ? el.offsetHeight : 120); }
+function ntContentBottom(n) { let m = 0; for (const st of n.strokes) m = Math.max(m, st.bb[3]); for (const b of n.blocks) m = Math.max(m, b.y + ntBlockH(b)); return m; }
+
+/* ---------- la page continue : tranches de 1000 unités créées à la demande ---------- */
+function ntLayout() {
+  const n = NT.cur; if (!n) return; const sc = $('#ntScroll'), w = $('#ntWrap'); NT.dpr = Math.min(2, window.devicePixelRatio || 1); NT.s = ntClamp(sc.clientWidth / 1000, 0.3, 1.12);
+  $('#ntSizer').style.width = (1000 * NT.s) + 'px'; $('#ntSizer').style.height = (n.h * NT.s) + 'px'; $('#ntPage').style.height = n.h + 'px'; $('#ntPage').style.transform = `scale(${NT.s})`; $('#ntChunks').style.height = n.h + 'px'; $('#ntBlocks').style.height = n.h + 'px'; $('#ntGuide').style.height = n.h + 'px';
+  const lv = $('#ntLive'); lv.width = Math.round(w.clientWidth * NT.dpr); lv.height = Math.round(w.clientHeight * NT.dpr); lv.style.width = w.clientWidth + 'px'; lv.style.height = w.clientHeight + 'px';
+}
+function ntRelayout() { NT.chunks.forEach(c => c.cv.remove()); NT.chunks.clear(); ntLayout(); ntEnsure(); }
+function ntMakeChunk(i) { const cv = document.createElement('canvas'); cv.width = Math.ceil(1000 * NT.s * NT.dpr); cv.height = Math.ceil(NT.CH * NT.s * NT.dpr); cv.style.cssText = `position:absolute;left:0;top:${i * NT.CH}px;width:1000px;height:${NT.CH}px`; $('#ntChunks').appendChild(cv); NT.chunks.set(i, { cv, ctx: cv.getContext('2d') }); ntRenderChunk(i); }
+function ntRenderChunk(i) {
+  const ch = NT.chunks.get(i), n = NT.cur; if (!ch || !n) return; const k = NT.s * NT.dpr, y0 = i * NT.CH, y1 = y0 + NT.CH, c = ch.ctx;
+  c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, ch.cv.width, ch.cv.height); c.setTransform(k, 0, 0, k, 0, -y0 * k); ntDrawPaper(c, y0, y1, n); ntDrawStrokes(c, n, y0, y1);
+}
+const ntRenderAll = () => NT.chunks.forEach((_, i) => ntRenderChunk(i));
+function ntRenderRange(y0, y1) { for (let i = Math.max(0, Math.floor(y0 / NT.CH)); i <= Math.floor(y1 / NT.CH); i++) if (NT.chunks.has(i)) ntRenderChunk(i); }
+function ntEnsure() {
+  const n = NT.cur; if (!n) return; const sc = $('#ntScroll'), top = sc.scrollTop / NT.s, bot = (sc.scrollTop + sc.clientHeight) / NT.s;
+  const a = Math.max(0, Math.floor(top / NT.CH) - 1), b = Math.min(Math.ceil(n.h / NT.CH) - 1, Math.floor(bot / NT.CH) + 1);
+  for (let i = a; i <= b; i++) if (!NT.chunks.has(i)) ntMakeChunk(i);
+  for (const [i, ch] of [...NT.chunks]) if (i < a - 2 || i > b + 2) { ch.cv.remove(); NT.chunks.delete(i); }
+}
+function ntGrow(y) { const n = NT.cur; if (y > n.h - 600) { n.h = Math.ceil(y + 1600); ntLayout(); ntEnsure(); } }
+const ntPage = () => $('#ntSizer').getBoundingClientRect();
+function ntPt(e) { const r = ntPage(); return { x: (e.clientX - r.left) / NT.s, y: (e.clientY - r.top) / NT.s, p: e.pointerType === 'pen' ? (e.pressure || 0.5) : 0.5 }; }
+const ntCap = (el, id) => { try { el.setPointerCapture(id); } catch (e) { } };
+/* getCoalescedEvents() renvoie une liste vide pour un événement non fusionné ou simulé : on retombe alors sur l'événement lui-même */
+const ntEvents = e => { const l = e.getCoalescedEvents ? e.getCoalescedEvents() : []; return l.length ? l : [e]; };
+
+/* ---------- annuler / rétablir ---------- */
+function ntPush(op) { NT.undo.push(op); if (NT.undo.length > 80) NT.undo.shift(); NT.redo.length = 0; ntSyncHist(); ntSaveSoon(); }
+function ntUndo() { const op = NT.undo.pop(); if (!op) return; op.u(); NT.redo.push(op); ntSyncHist(); ntSaveSoon(); }
+function ntRedo() { const op = NT.redo.pop(); if (!op) return; op.r(); NT.undo.push(op); ntSyncHist(); ntSaveSoon(); }
+function ntSyncHist() { const b = $('#ntBar'); b.querySelector('[data-nt=undo]').disabled = !NT.undo.length; b.querySelector('[data-nt=redo]').disabled = !NT.redo.length; }
+const ntSnap = () => NT.cur.blocks.map(b => ({ ...b, items: b.items && b.items.map(i => ({ ...i })) }));
+const ntSig = bs => JSON.stringify(bs.map(b => [b.id, b.x, b.y, b.w, b.h, b.t, b.z, b.b, b.items]));
+function ntPushBlocks(before) {
+  const n = NT.cur, after = ntSnap(); if (ntSig(before) === ntSig(after)) return;
+  const set = arr => { n.blocks = arr.map(b => ({ ...b, items: b.items && b.items.map(i => ({ ...i })) })); ntBuildBlocks(); };
+  ntPush({ u() { set(before); }, r() { set(after); } });
+}
+
+/* ---------- traits : stylo, surligneur ---------- */
+const sc0 = () => $('#ntScroll');
+function ntLiveDraw(st) {
+  const lv = $('#ntLive'), c = lv.getContext('2d'), k = NT.s * NT.dpr, sz = $('#ntSizer'); c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, lv.width, lv.height); if (!st) return;
+  c.setTransform(k, 0, 0, k, sz.offsetLeft * NT.dpr, -sc0().scrollTop * NT.dpr); ntDrawStroke(c, st);
+}
+let ntStroke = null;
+function ntStrokeStart(e) {
+  const p = ntPt(e), hl = NT.tool === 'hl'; ntStroke = { id: e.pointerId, st: { k: hl ? 'h' : 'p', c: hl ? NT_PREF.hl : NT_PREF.pen, w: hl ? NT_PREF.hlW : NT_PREF.penW, a: [p.x, p.y, p.p], bb: [p.x, p.y, p.x, p.y] }, pen: e.pointerType === 'pen' };
+  ntCap(sc0(), e.pointerId); ntLiveDraw(ntStroke.st); e.preventDefault();
+}
+function ntStrokeMove(e) {
+  const s = ntStroke; if (!s || e.pointerId !== s.id) return; const a = s.st.a, f = s.pen ? 0.8 : 0.55;
+  for (const q of ntEvents(e)) { const p = ntPt(q), lx = a[a.length - 3], ly = a[a.length - 2]; if (Math.hypot(p.x - lx, p.y - ly) < 0.9) continue; a.push(lx + (p.x - lx) * f, ly + (p.y - ly) * f, p.p); }
+  ntLiveDraw(s.st); e.preventDefault();
+}
+function ntStrokeEnd(e) {
+  const s = ntStroke; if (!s || e.pointerId !== s.id) return; ntStroke = null; ntLiveDraw(null); const st = s.st, n = NT.cur;
+  const lx = ntPt(e); if (st.a.length === 3 || Math.hypot(lx.x - st.a[st.a.length - 3], lx.y - st.a[st.a.length - 2]) > 1) st.a.push(lx.x, lx.y, lx.p);
+  ntBB(st); n.strokes.push(st); ntRenderRange(st.bb[1], st.bb[3]); ntGrow(st.bb[3]);
+  ntPush({ u() { const i = n.strokes.indexOf(st); if (i >= 0) n.strokes.splice(i, 1); ntRenderRange(st.bb[1], st.bb[3]); }, r() { n.strokes.push(st); ntRenderRange(st.bb[1], st.bb[3]); } });
+}
+/* gomme : efface le trait entier touché */
+let ntErase = null;
+function ntNear(st, x, y, r) { const a = st.a, rr = r + st.w / 2; if (a.length === 3) return Math.hypot(a[0] - x, a[1] - y) <= rr; for (let i = 0; i + 5 < a.length; i += 3) { const x0 = a[i], y0 = a[i + 1], dx = a[i + 3] - x0, dy = a[i + 4] - y0, L = dx * dx + dy * dy, t = L ? ntClamp(((x - x0) * dx + (y - y0) * dy) / L, 0, 1) : 0; if (Math.hypot(x0 + dx * t - x, y0 + dy * t - y) <= rr) return true; } return false; }
+function ntEraseAt(p) {
+  const n = NT.cur, r = 14, e = ntErase; for (let i = n.strokes.length - 1; i >= 0; i--) { const st = n.strokes[i]; if (p.x < st.bb[0] - r || p.x > st.bb[2] + r || p.y < st.bb[1] - r || p.y > st.bb[3] + r) continue; if (ntNear(st, p.x, p.y, r)) { e.list.push([i, st]); n.strokes.splice(i, 1); ntRenderRange(st.bb[1], st.bb[3]); } }
+}
+function ntEraseStart(e) { ntErase = { id: e.pointerId, list: [] }; ntCap(sc0(), e.pointerId); ntEraseAt(ntPt(e)); e.preventDefault(); }
+function ntEraseMove(e) { if (!ntErase || e.pointerId !== ntErase.id) return; for (const q of ntEvents(e)) ntEraseAt(ntPt(q)); e.preventDefault(); }
+function ntEraseEnd(e) {
+  const g = ntErase; if (!g || e.pointerId !== g.id) return; ntErase = null; if (!g.list.length) return; const n = NT.cur, list = g.list.slice().sort((a, b) => a[0] - b[0]);
+  ntPush({ u() { list.forEach(([i, st]) => { n.strokes.splice(Math.min(i, n.strokes.length), 0, st); ntRenderRange(st.bb[1], st.bb[3]); }); }, r() { list.forEach(([, st]) => { const i = n.strokes.indexOf(st); if (i >= 0) n.strokes.splice(i, 1); ntRenderRange(st.bb[1], st.bb[3]); }); } });
+}
+
+/* ---------- « insérer de l'espace » : on tire depuis une ligne, tout ce qui est dessous descend (ou remonte dans le vide) ---------- */
+let ntSp = null;
+function ntSpaceGuide(y0, dy) {
+  const g = $('#ntGuide'), em = g.querySelector('em'), ln = g.querySelectorAll('i'), b = g.querySelector('b'); g.style.display = 'block';
+  em.style.top = Math.min(y0, y0 + dy) + 'px'; em.style.height = Math.abs(dy) + 'px'; ln[0].style.top = y0 + 'px'; ln[1].style.top = (y0 + dy) + 'px'; b.style.top = (y0 + dy / 2 - 22) + 'px'; b.textContent = (dy > 0 ? '+' : '') + Math.round(dy);
+}
+function ntSpaceStart(e) { const p = ntPt(e); ntSp = { id: e.pointerId, y0: p.y, dy: 0 }; ntCap(sc0(), e.pointerId); ntSpaceGuide(p.y, 0); e.preventDefault(); }
+function ntSpaceMove(e) {
+  const s = ntSp; if (!s || e.pointerId !== s.id) return; const p = ntPt(e), n = NT.cur; let min = 1e9;
+  n.strokes.forEach(st => { if (st.bb[1] >= s.y0 - 4) min = Math.min(min, st.bb[1]); }); n.blocks.forEach(b => { if (b.y >= s.y0 - 4) min = Math.min(min, b.y); });
+  s.dy = Math.round(ntClamp(p.y - s.y0, min === 1e9 ? 0 : -(min - s.y0), 3000)); ntSpaceGuide(s.y0, s.dy); e.preventDefault();
+}
+function ntSpaceEnd(e) {
+  const s = ntSp; if (!s || e.pointerId !== s.id) return; ntSp = null; $('#ntGuide').style.display = 'none'; if (!s.dy) return;
+  const n = NT.cur, sh = n.strokes.filter(st => st.bb[1] >= s.y0 - 4), bl = n.blocks.filter(b => b.y >= s.y0 - 4);
+  const move = d => { sh.forEach(st => { for (let i = 1; i < st.a.length; i += 3) st.a[i] += d; st.bb[1] += d; st.bb[3] += d; }); bl.forEach(b => { b.y += d; }); n.h = Math.max(1400, n.h + d); };
+  const refresh = () => { ntLayout(); ntBuildBlocks(); ntRenderAll(); ntEnsure(); };
+  move(s.dy); refresh(); ntGrow(ntContentBottom(n)); ntPush({ u() { move(-s.dy); refresh(); }, r() { move(s.dy); refresh(); } });
+}
+
+/* ---------- le doigt fait défiler (sauf si « le doigt dessine ») ---------- */
+function ntPanStart(e, onTap) { NT.pan = { id: e.pointerId, y: e.clientY, x0: e.clientX, y0: e.clientY, moved: false, v: 0, t: performance.now(), onTap, e }; cancelAnimationFrame(NT.inr); ntCap(sc0(), e.pointerId); }
+function ntPanMove(e) {
+  const p = NT.pan; if (!p || e.pointerId !== p.id) return false; const now = performance.now();
+  if (!p.moved && Math.hypot(e.clientX - p.x0, e.clientY - p.y0) > 8) p.moved = true;
+  if (p.moved) { const dy = e.clientY - p.y; sc0().scrollTop -= dy; p.v = 0.8 * p.v + 0.2 * (dy / Math.max(1, now - p.t)); p.y = e.clientY; p.t = now; } return true;
+}
+function ntPanEnd(e) {
+  const p = NT.pan; if (!p || e.pointerId !== p.id) return false; NT.pan = null;
+  if (!p.moved) { if (p.onTap) p.onTap(e); } else if (Math.abs(p.v) > 0.05) ntInertia(p.v); return true;
+}
+function ntInertia(v) { const sc = sc0(); let last = performance.now(); const step = t => { const dt = Math.min(32, t - last); last = t; sc.scrollTop -= v * dt; v *= Math.pow(0.94, dt / 16); if (Math.abs(v) > 0.03) NT.inr = requestAnimationFrame(step); }; NT.inr = requestAnimationFrame(step); }
+
+sc0().addEventListener('pointerdown', e => {
+  if (e.target.closest('.nt-b')) return; cancelAnimationFrame(NT.inr); const t = NT.tool, finger = e.pointerType === 'touch', draw = t === 'pen' || t === 'hl' || t === 'erase';
+  ntPopClose();
+  if (t === 'space') return ntSpaceStart(e);
+  if (finger && (!settings.finger || !draw)) { ntPanStart(e, t === 'text' || t === 'todo' ? ev => ntBlockAt(ev, t) : null); return; }
+  if (t === 'pen' || t === 'hl') ntStrokeStart(e); else if (t === 'erase') ntEraseStart(e); else if (t === 'text' || t === 'todo') { ntBlockAt(e, t); }
+});
+sc0().addEventListener('pointermove', e => { if (ntPanMove(e)) return; ntStrokeMove(e); ntEraseMove(e); ntSpaceMove(e); });
+['pointerup', 'pointercancel'].forEach(ev => sc0().addEventListener(ev, e => { if (ntPanEnd(e)) return; ntStrokeEnd(e); ntEraseEnd(e); ntSpaceEnd(e); }));
+let ntScrollRaf = 0; sc0().addEventListener('scroll', () => { if (ntScrollRaf) return; ntScrollRaf = requestAnimationFrame(() => { ntScrollRaf = 0; ntEnsure(); if (NT.cur) { NT.cur.sy = sc0().scrollTop; } }); });
+window.addEventListener('resize', () => { if (NT.on) { ntTop(); if (NT.cur && !$('#ntEd').hidden) { ntRelayout(); ntBuildBlocks(); } } });
+
+/* ---------- blocs : texte tapé, listes à cocher, images ---------- */
+const ntB = id => NT.cur.blocks.find(b => b.id === id);
+function ntMkBlock(k, x, y) { const b = { id: ntId(), k, x: Math.round(x), y: Math.round(y), w: k === 'todo' ? 640 : 560, z: 30 }; if (k === 'text') { b.t = ''; b.b = false; } else if (k === 'todo') b.items = [{ t: '', d: 0 }]; return b; }
+function ntPlace(el, b) { el.style.left = b.x + 'px'; el.style.top = b.y + 'px'; el.style.width = b.w + 'px'; if (b.k === 'img') el.style.height = b.h + 'px'; el.dataset.low = b.y < 64 ? '1' : ''; }
+function ntTxStyle(t, b) { t.style.fontSize = b.z + 'px'; t.style.fontWeight = b.b ? 700 : 500; }
+function ntTodoFill(el, b) {
+  el.querySelectorAll('.nt-ti,.nt-add').forEach(x => x.remove());
+  b.items.forEach((it, i) => { const r = document.createElement('div'); r.className = 'nt-ti'; r.dataset.i = i; r.dataset.d = it.d ? '1' : '0'; r.innerHTML = `<button class="nt-ck" role="checkbox" aria-checked="${!!it.d}" aria-label="Fait">${ntTick}</button>`; const t = document.createElement('div'); t.className = 'nt-tx'; t.style.flex = '1'; t.contentEditable = 'true'; t.dataset.ph = 'Élément'; t.textContent = it.t; ntTxStyle(t, b); r.appendChild(t); el.appendChild(r); });
+  el.insertAdjacentHTML('beforeend', '<button class="nt-add" data-bk="add">+ Élément</button>');
+}
+function ntBlockEl(b) {
+  const el = document.createElement('div'); el.className = 'nt-b nt-' + b.k; el.dataset.id = b.id; ntPlace(el, b);
+  const tools = b.k === 'text' ? `<button data-bk="smaller" aria-label="Texte plus petit">A−</button><button data-bk="bigger" aria-label="Texte plus grand">A+</button><button data-bk="bold" aria-label="Gras" class="${b.b ? 'on' : ''}">B</button>` : b.k === 'todo' ? '<button data-bk="smaller" aria-label="Texte plus petit">A−</button><button data-bk="bigger" aria-label="Texte plus grand">A+</button>' : '';
+  el.innerHTML = `<div class="nt-bh"><span class="nt-grip" role="button" aria-label="Déplacer le bloc">⋮⋮</span>${tools}<button class="nt-del" data-bk="del" aria-label="Supprimer le bloc">${ICO('trash')}</button></div>`;
+  if (b.k === 'text') { const t = document.createElement('div'); t.className = 'nt-tx'; t.contentEditable = 'true'; t.dataset.ph = 'Texte…'; t.textContent = b.t; ntTxStyle(t, b); el.appendChild(t); }
+  else if (b.k === 'todo') ntTodoFill(el, b);
+  else { const im = document.createElement('img'); im.src = b.src; im.alt = ''; im.draggable = false; el.appendChild(im); }
+  if (b.k !== 'todo') el.insertAdjacentHTML('beforeend', '<span class="nt-rs"></span>'); else el.insertAdjacentHTML('beforeend', '<span class="nt-rs"></span>');
+  return el;
+}
+function ntBuildBlocks() { const host = $('#ntBlocks'); host.innerHTML = ''; NT.cur.blocks.forEach(b => host.appendChild(ntBlockEl(b))); }
+function ntBlockAt(e, kind) {
+  const p = ntPt(e), before = ntSnap(), n = NT.cur, b = ntMkBlock(kind, ntClamp(p.x - 20, 30, 1000 - 400), Math.max(10, p.y - 24)); n.blocks.push(b);
+  const el = ntBlockEl(b); $('#ntBlocks').appendChild(el); ntGrow(b.y + 200); ntPushBlocks(before); const t = el.querySelector('.nt-tx'); if (t) setTimeout(() => t.focus(), 30); if (e.preventDefault) e.preventDefault();
+}
+async function ntAddImage(file) {
+  const url = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(file); }), im = await ntLoadImg(url), k = Math.min(1, 1600 / Math.max(im.width, im.height)), cv = document.createElement('canvas');
+  cv.width = Math.max(1, Math.round(im.width * k)); cv.height = Math.max(1, Math.round(im.height * k)); const c = cv.getContext('2d'); if (file.type !== 'image/png') { c.fillStyle = '#fff'; c.fillRect(0, 0, cv.width, cv.height); } c.drawImage(im, 0, 0, cv.width, cv.height);
+  const src = file.type === 'image/png' ? cv.toDataURL('image/png') : cv.toDataURL('image/jpeg', 0.86), w = Math.min(640, im.width * k), h = w * cv.height / cv.width, n = NT.cur, before = ntSnap();
+  const b = { id: ntId(), k: 'img', x: Math.round((1000 - w) / 2), y: Math.round(sc0().scrollTop / NT.s + 90), w: Math.round(w), h: Math.round(h), src }; n.blocks.push(b); $('#ntBlocks').appendChild(ntBlockEl(b)); ntGrow(b.y + b.h); ntPushBlocks(before);
+}
+ntFile.addEventListener('change', async () => { const f = ntFile.files && ntFile.files[0]; ntFile.value = ''; if (f && NT.cur) { try { await ntAddImage(f); } catch (e) { flash('Image illisible.'); } } });
+let ntFocusBefore = null;
+const ntBlocksEl = $('#ntBlocks');
+ntBlocksEl.addEventListener('focusin', e => { if (e.target.classList.contains('nt-tx')) ntFocusBefore = ntSnap(); });
+ntBlocksEl.addEventListener('focusout', e => { if (e.target.classList.contains('nt-tx') && ntFocusBefore) { const before = ntFocusBefore; ntFocusBefore = null; ntPushBlocks(before); } });
+ntBlocksEl.addEventListener('input', e => {
+  const t = e.target.closest('.nt-tx'); if (!t) return; const el = t.closest('.nt-b'), b = ntB(el.dataset.id); if (!b) return; const txt = t.innerText.replace(/\u00a0/g, ' ').replace(/\n$/, '');
+  if (b.k === 'text') b.t = txt; else if (b.k === 'todo') { const it = b.items[+t.closest('.nt-ti').dataset.i]; if (it) it.t = txt; } ntSaveSoon();
+});
+ntBlocksEl.addEventListener('paste', e => { if (!e.target.closest('.nt-tx')) return; e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); });
+ntBlocksEl.addEventListener('keydown', e => {
+  const t = e.target.closest('.nt-tx'); if (!t) return; const el = t.closest('.nt-b'), b = ntB(el.dataset.id); if (!b || b.k !== 'todo') return; const row = t.closest('.nt-ti'), i = +row.dataset.i;
+  if (e.key === 'Enter') { e.preventDefault(); const before = ntSnap(); b.items.splice(i + 1, 0, { t: '', d: 0 }); ntTodoFill(el, b); ntPushBlocks(before); el.querySelectorAll('.nt-tx')[i + 1].focus(); }
+  else if (e.key === 'Backspace' && !t.innerText.replace(/\n/g, '') && b.items.length > 1) { e.preventDefault(); const before = ntSnap(); b.items.splice(i, 1); ntTodoFill(el, b); ntPushBlocks(before); el.querySelectorAll('.nt-tx')[Math.max(0, i - 1)].focus(); }
+});
+ntBlocksEl.addEventListener('click', e => {
+  const el = e.target.closest('.nt-b'); if (!el) return; const b = ntB(el.dataset.id); if (!b) return; const ck = e.target.closest('.nt-ck'), bk = e.target.closest('[data-bk]');
+  if (ck) { const before = ntSnap(), it = b.items[+ck.closest('.nt-ti').dataset.i]; it.d = it.d ? 0 : 1; ck.setAttribute('aria-checked', !!it.d); ck.closest('.nt-ti').dataset.d = it.d ? '1' : '0'; ntPushBlocks(before); return; }
+  if (!bk) return; const a = bk.dataset.bk, before = ntSnap();
+  if (a === 'del') { NT.cur.blocks = NT.cur.blocks.filter(x => x !== b); el.remove(); ntPushBlocks(before); }
+  else if (a === 'smaller' || a === 'bigger') { b.z = ntClamp(b.z + (a === 'bigger' ? 4 : -4), 16, 96); el.querySelectorAll('.nt-tx').forEach(t => ntTxStyle(t, b)); ntPushBlocks(before); }
+  else if (a === 'bold') { b.b = !b.b; el.querySelector('.nt-tx').style.fontWeight = b.b ? 700 : 500; bk.classList.toggle('on', b.b); ntPushBlocks(before); }
+  else if (a === 'add') { b.items.push({ t: '', d: 0 }); ntTodoFill(el, b); ntPushBlocks(before); const L = el.querySelectorAll('.nt-tx'); L[L.length - 1].focus(); }
+});
+/* déplacer et redimensionner */
+ntBlocksEl.addEventListener('pointerdown', e => {
+  const el = e.target.closest('.nt-b'); if (!el) return; const b = ntB(el.dataset.id); if (!b) return;
+  const rs = e.target.closest('.nt-rs'), grip = e.target.closest('.nt-grip'), body = NT.tool === 'move' && b.k === 'img' && !e.target.closest('[data-bk]');
+  if (!rs && !grip && !body) return; e.preventDefault(); e.stopPropagation();
+  const before = ntSnap(), x0 = e.clientX, y0 = e.clientY, bx = b.x, by = b.y, bw = b.w, bh = b.h, id = e.pointerId; ntCap(el, id);
+  const mv = ev => { if (ev.pointerId !== id) return; const dx = (ev.clientX - x0) / NT.s, dy = (ev.clientY - y0) / NT.s; if (rs) { b.w = Math.round(ntClamp(bw + dx, 160, 1000 - b.x)); if (b.k === 'img') b.h = Math.round(b.w * bh / bw); } else { b.x = Math.round(ntClamp(bx + dx, 0, 1000 - 80)); b.y = Math.round(Math.max(0, by + dy)); } ntPlace(el, b); };
+  const up = ev => { if (ev.pointerId !== id) return; el.removeEventListener('pointermove', mv); el.removeEventListener('pointerup', up); el.removeEventListener('pointercancel', up); ntGrow(b.y + (b.h || 160)); ntPushBlocks(before); };
+  el.addEventListener('pointermove', mv); el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+});
+
+/* ---------- modèles, liste, recherche, épingle ---------- */
+const ntTb = (t, x, y, o = {}) => Object.assign({ id: ntId(), k: 'text', x, y, w: 800, z: 30, t, b: false }, o);
+const ntTd = (x, y, items, o = {}) => Object.assign({ id: ntId(), k: 'todo', x, y, w: 780, z: 30, items: items.map(t => ({ t, d: 0 })) }, o);
+const NT_TPL = [
+  ['blank', 'Note vierge', 'Page lignée à remplir', () => ({ title: 'Note du ' + ntDate(), paper: { k: 'ruled', c: 'white', m: true }, blocks: [] })],
+  ['meeting', 'Réunion', 'Participants, ordre du jour, actions', () => ({ title: 'Réunion du ' + ntDate(), paper: { k: 'blank', c: 'white', m: false }, blocks: [ntTb('Réunion', 60, 56, { z: 64, b: true }), ntTb('Date : ' + ntDate() + '\nParticipants :', 60, 180), ntTb('Ordre du jour', 60, 340, { z: 40, b: true }), ntTd(60, 410, ['', '', '']), ntTb('Notes', 60, 660, { z: 40, b: true }), ntTb('Actions', 60, 1500, { z: 40, b: true }), ntTd(60, 1570, ['', '', ''])] })],
+  ['tasks', 'Liste de tâches', 'Huit cases à cocher', () => ({ title: 'À faire du ' + ntDate(), paper: { k: 'blank', c: 'white', m: false }, blocks: [ntTb('À faire', 60, 56, { z: 64, b: true }), ntTd(60, 190, ['', '', '', '', '', '', '', ''], { z: 34 })] })],
+  ['journal', 'Journal', 'Humeur, trois bonnes choses, notes', () => ({ title: 'Journal du ' + ntDate(), paper: { k: 'ruled', c: 'cream', m: true }, blocks: [ntTb('Journal', 150, 40, { z: 56, b: true }), ntTb(ntDate(), 150, 124, { z: 30 }), ntTb('Humeur :', 150, 200, { z: 34, b: true }), ntTb('Trois choses positives', 150, 330, { z: 34, b: true }), ntTd(150, 394, ['', '', ''], { w: 700 }), ntTb('Notes du jour', 150, 600, { z: 34, b: true })] })],
+  ['week', 'Semainier', 'Sept jours à remplir', () => ({ title: 'Semaine du ' + ntDate(), paper: { k: 'ruled', c: 'white', m: true }, h: 2700, blocks: [ntTb('Semaine du ' + ntDate(), 150, 36, { z: 50, b: true })].concat(['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].map((d, i) => ntTb(d, 150, 140 + i * 322, { z: 34, b: true }))) })]
+];
+const ntNorm = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const ntRel = ts => new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: new Date(ts).getFullYear() === new Date().getFullYear() ? undefined : 'numeric' });
+function ntRenderList() {
+  const q = ntNorm(NT.q.trim()), L = NT.list.filter(m => !q || ntNorm(m.title || '').includes(q)).sort((a, b) => (b.pin ? 1 : 0) - (a.pin ? 1 : 0) || b.ts - a.ts), g = $('#ntGrid');
+  const card = m => `<article class="nt-card" data-id="${m.id}"><button class="nt-open" data-open="${m.id}" aria-label="Ouvrir la note ${esc(m.title)}"><span class="nt-th"${m.thumb ? ` style="background-image:url('${m.thumb}')"` : ''}></span><b>${esc(m.title)}</b><small>${ntRel(m.ts)}</small></button><button class="nt-pinb${m.pin ? ' on' : ''}" data-pin="${m.id}" aria-pressed="${!!m.pin}" aria-label="${m.pin ? 'Désépingler' : 'Épingler'}">${ICO('pin')}</button></article>`;
+  if (!L.length) { g.innerHTML = `<p class="nt-empty">${q ? 'Aucune note ne porte ce titre.' : 'Aucune note pour l’instant.<br>Touche « Nouvelle note » pour commencer : page vierge, réunion, tâches, journal ou semainier.'}</p>`; return; }
+  const pins = L.filter(m => m.pin), rest = L.filter(m => !m.pin);
+  g.innerHTML = (pins.length && rest.length ? '<div class="nt-sec">Épinglées</div>' : '') + pins.map(card).join('') + (pins.length && rest.length ? '<div class="nt-sec">Récentes</div>' : '') + rest.map(card).join('');
+}
+async function ntThumb(n) {
+  try { const cv = document.createElement('canvas'), k = 0.3; cv.width = 300; cv.height = 375; const c = cv.getContext('2d'); c.setTransform(k, 0, 0, k, 0, 0); ntDrawPaper(c, 0, 1250, n); ntDrawStrokes(c, n, 0, 1250); await ntDrawBlocks(c, { ...n, blocks: n.blocks.filter(b => b.y < 1250) });
+    const m = NT.list.find(x => x.id === n.id); if (m) { m.thumb = cv.toDataURL('image/jpeg', 0.72); ntSaveIndex(); } } catch (e) { }
+}
+function ntShowList() {
+  NT.view = 'list'; $('#ntList').classList.remove('out'); const ed = $('#ntEd'); ed.classList.add('out'); ntPopClose(); setTimeout(() => { if (NT.view === 'list') ed.hidden = true; }, 330); ntRenderList();
+}
+async function ntOpen(id) {
+  await ntFlush(); let n; try { n = await DB.get('nt:' + id); } catch (e) { n = null; } if (!n) { flash('Note introuvable.'); return; }
+  NT.cur = ntNormalize(n); NT.undo = []; NT.redo = []; NT.view = 'ed'; $('#ntTitle').value = n.title; const ed = $('#ntEd'); ed.hidden = false;
+  NT.chunks.forEach(c => c.cv.remove()); NT.chunks.clear(); ntLayout(); ntBuildBlocks(); sc0().scrollTop = n.sy || 0; ntEnsure(); ntSyncHist(); ntDots(); ntPopClose();
+  requestAnimationFrame(() => { $('#ntList').classList.add('out'); ed.classList.remove('out'); });
+}
+async function ntCreate(key) {
+  const t = NT_TPL.find(x => x[0] === key) || NT_TPL[0], n = ntNormalize({ id: ntId(), created: Date.now(), ts: Date.now(), pin: false, ...t[3]() }); NT.cur = n; NT.dirty = true; await ntFlush(); await ntOpen(n.id);
+}
+async function ntBack() { const n = NT.cur; if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); if (n) { n.sy = sc0().scrollTop; NT.dirty = true; } await ntFlush(); ntShowList(); if (n) { await ntThumb(n); ntRenderList(); } }
+
+/* ---------- barre d'outils et fenêtres flottantes ---------- */
+function ntDots() { $('#ntDotPen').style.setProperty('--c', NT_PREF.pen === 'ink' ? 'var(--ink)' : NT_PREF.pen); $('#ntDotHl').style.setProperty('--c', NT_PREF.hl); }
+function ntPopClose() { const p = $('#ntPop'); p.hidden = true; p.dataset.for = ''; const ex = document.querySelector('#ntList .nt-tp'); if (ex) ex.remove(); }
+function ntPopOpen(btn, html, key) {
+  const p = $('#ntPop'), ed = $('#ntEd').getBoundingClientRect(), r = btn.getBoundingClientRect(); p.innerHTML = html; p.hidden = false; p.dataset.for = key;
+  p.style.left = ntClamp(r.left - ed.left, 10, Math.max(10, ed.width - p.offsetWidth - 10)) + 'px'; p.style.top = (r.bottom - ed.top + 8) + 'px';
+}
+function ntPopToggle(btn, html, key) { const p = $('#ntPop'); if (!p.hidden && p.dataset.for === key) ntPopClose(); else ntPopOpen(btn, html, key); }
+function ntPenPop(hl) {
+  const cols = hl ? NT_HL_COL : NT_PEN_COL, ws = hl ? NT_HL_W : NT_PEN_W, cur = hl ? NT_PREF.hl : NT_PREF.pen, cw = hl ? NT_PREF.hlW : NT_PREF.penW;
+  return `<h4>Couleur</h4><div class="nt-row">${cols.map(c => `<button class="nt-sw${c === cur ? ' on' : ''}" style="--c:${c === 'ink' ? 'var(--ink)' : c}" data-pc="${c}" aria-label="${c === 'ink' ? 'Encre (noir ou blanc selon le thème)' : 'Couleur ' + c}"></button>`).join('')}</div>
+  <h4>Épaisseur</h4><div class="nt-row">${ws.map(w => `<button class="nt-sz${w === cw ? ' on' : ''}" data-pw="${w}" aria-label="Épaisseur ${w}"><i style="width:26px;height:${Math.max(2, hl ? w / 4 : w * 1.3)}px"></i></button>`).join('')}</div>
+  <h4>Doigt</h4><div class="nt-tr"><span>Le doigt dessine</span><span class="sw"><input type="checkbox" id="ntFinger" ${settings.finger ? 'checked' : ''} aria-label="Le doigt dessine"><i></i></span></div>`;
+}
+function ntPaperPop() {
+  const p = NT.cur.paper; return `<h4>Papier</h4><div class="nt-row">${NT_PAPERS.map(([k, l]) => `<button class="nt-opt${p.k === k ? ' on' : ''}" data-pk="${k}">${l}</button>`).join('')}</div>
+  <h4>Couleur</h4><div class="nt-row">${Object.entries(NT_PCOL).map(([k, v]) => `<button class="nt-psw${p.c === k ? ' on' : ''}" style="--c:${ntDark() ? v[1] : v[0]}" data-pcol="${k}" aria-label="Papier ${v[2]}"></button>`).join('')}</div>
+  <h4>Marge</h4><div class="nt-tr"><span>Marge à gauche</span><span class="sw"><input type="checkbox" id="ntMargin" ${p.m ? 'checked' : ''} aria-label="Marge à gauche"><i></i></span></div>
+  <h4>Thème</h4><p style="margin:2px 2px 0;font-size:13px;color:var(--ink2);line-height:1.4">Le papier suit le thème de l’app : clair ou sombre.</p>`;
+}
+const ntExportPop = () => `<h4>Exporter la note</h4><div class="nt-menu"><button data-ex="png">${ICO('image')} Image PNG</button><button data-ex="pdf">${ICO('export')} Document PDF</button></div>`;
+const ntMorePop = () => `<div class="nt-menu"><button data-mo="pin">${ICO('pin')} ${NT.cur.pin ? 'Désépingler la note' : 'Épingler la note'}</button><button data-mo="del">${ICO('trash')} Supprimer la note</button></div>`;
+const ntTplPop = btn => { const p = document.createElement('div'); p.className = 'nt-pop glass nt-tp'; p.style.cssText = 'position:absolute;right:20px;top:64px;z-index:8'; p.innerHTML = `<h4>Nouvelle note</h4><div class="nt-menu">${NT_TPL.map(t => `<button data-tpl="${t[0]}"><span style="flex:1"><b style="display:block;font-size:15px">${t[1]}</b><small style="color:var(--ink2);font-weight:500;font-size:12.5px">${t[2]}</small></span></button>`).join('')}</div>`; $('#ntList').appendChild(p); };
+function ntTool(t, btn) {
+  if (NT.tool === t && (t === 'pen' || t === 'hl') && btn) return ntPopToggle(btn, ntPenPop(t === 'hl'), t);
+  NT.tool = t; $('#ntEd').dataset.tool = t; document.querySelectorAll('#ntBar [data-nt=tool]').forEach(b => b.classList.toggle('on', b.dataset.tool === t)); ntPopClose(); if (t !== 'text' && document.activeElement && document.activeElement.classList && document.activeElement.classList.contains('nt-tx')) document.activeElement.blur();
+}
+function ntSetPaper(patch) {
+  const n = NT.cur, before = { ...n.paper }, after = { ...before, ...patch }; if (JSON.stringify(before) === JSON.stringify(after)) return;
+  const set = p => { n.paper = { ...p }; ntRenderAll(); }; set(after); ntPush({ u() { set(before); }, r() { set(after); } });
+}
+let ntDelArm = 0;
+ntRoot.addEventListener('click', async e => {
+  const t = e.target, open = t.closest('[data-open]');
+  if (open) return ntOpen(open.dataset.open);
+  const pin = t.closest('[data-pin]'); if (pin) { const m = NT.list.find(x => x.id === pin.dataset.pin); if (m) { m.pin = !m.pin; ntSaveIndex(); try { const r = await DB.get('nt:' + m.id); if (r) { r.pin = m.pin; await DB.set('nt:' + m.id, r); } } catch (er) { } ntRenderList(); } return; }
+  if (t.closest('#ntNew')) { const ex = document.querySelector('#ntList .nt-tp'); if (ex) ex.remove(); else ntTplPop(t); return; }
+  const tp = t.closest('[data-tpl]'); if (tp) { ntPopClose(); return ntCreate(tp.dataset.tpl); }
+  const b = t.closest('[data-nt]'); if (b) {
+    const a = b.dataset.nt;
+    if (a === 'back') return ntBack(); if (a === 'tool') return ntTool(b.dataset.tool, b); if (a === 'undo') return ntUndo(); if (a === 'redo') return ntRedo();
+    if (a === 'img') { ntPopClose(); return ntFile.click(); }
+    if (a === 'paper') return ntPopToggle(b, ntPaperPop(), 'paper'); if (a === 'export') return ntPopToggle(b, ntExportPop(), 'export'); if (a === 'more') { ntDelArm = 0; return ntPopToggle(b, ntMorePop(), 'more'); }
+  }
+  const pc = t.closest('[data-pc]'); if (pc) { if (NT.tool === 'hl') NT_PREF.hl = pc.dataset.pc; else NT_PREF.pen = pc.dataset.pc; ntSavePref(); ntDots(); $('#ntPop').innerHTML = ntPenPop(NT.tool === 'hl'); return; }
+  const pw = t.closest('[data-pw]'); if (pw) { if (NT.tool === 'hl') NT_PREF.hlW = +pw.dataset.pw; else NT_PREF.penW = +pw.dataset.pw; ntSavePref(); $('#ntPop').innerHTML = ntPenPop(NT.tool === 'hl'); return; }
+  const pk = t.closest('[data-pk]'); if (pk) { ntSetPaper({ k: pk.dataset.pk }); $('#ntPop').innerHTML = ntPaperPop(); return; }
+  const pcol = t.closest('[data-pcol]'); if (pcol) { ntSetPaper({ c: pcol.dataset.pcol }); $('#ntPop').innerHTML = ntPaperPop(); return; }
+  const ex = t.closest('[data-ex]'); if (ex) { ntPopClose(); return ntExport(ex.dataset.ex); }
+  const mo = t.closest('[data-mo]'); if (mo) {
+    const n = NT.cur;
+    if (mo.dataset.mo === 'pin') { n.pin = !n.pin; NT.dirty = true; ntFlush(); ntPopClose(); flash(n.pin ? 'Note épinglée' : 'Note désépinglée'); return; }
+    if (!ntDelArm) { ntDelArm = 1; mo.classList.add('danger'); mo.lastChild.textContent = ' Toucher encore pour supprimer'; setTimeout(() => { ntDelArm = 0; }, 3500); return; }
+    const id = n.id; ntPopClose(); clearTimeout(ntSaveT); NT.dirty = false; NT.cur = null; try { await DB.del('nt:' + id); } catch (er) { } NT.list = NT.list.filter(x => x.id !== id); await ntSaveIndex(); ntShowList(); flash('Note supprimée');
+  }
+});
+ntRoot.addEventListener('change', e => {
+  if (e.target.id === 'ntFinger') { settings.finger = e.target.checked; LS.set('settings', settings); }
+  else if (e.target.id === 'ntMargin') { ntSetPaper({ m: e.target.checked }); }
+});
+$('#ntQ').addEventListener('input', e => { NT.q = e.target.value; ntRenderList(); });
+$('#ntTitle').addEventListener('input', e => { const n = NT.cur; if (!n) return; n.title = e.target.value.trim() || 'Note'; ntSaveSoon(); });
+$('#ntTitle').addEventListener('blur', e => { if (!e.target.value.trim()) e.target.value = (NT.cur && NT.cur.title) || 'Note'; });
+$('#ntTitle').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
+document.addEventListener('pointerdown', e => { const p = $('#ntPop'); if (!NT.on) return; if (!p.hidden && !e.target.closest('#ntPop,[data-nt]')) ntPopClose(); const tp = document.querySelector('#ntList .nt-tp'); if (tp && !e.target.closest('.nt-tp,#ntNew')) tp.remove(); }, true);
+document.addEventListener('keydown', e => { if (NT.on && e.key === 'Escape') ntPopClose(); });
+new MutationObserver(() => { if (NT.on && NT.cur && !$('#ntEd').hidden) ntRenderAll(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+window.addEventListener('pagehide', () => { if (NT.cur) { NT.dirty = true; ntFlush(); } });
+document.addEventListener('visibilitychange', () => { if (document.hidden && NT.cur) { NT.dirty = true; ntFlush(); } });
+
+/* ---------- export PNG et PDF ---------- */
+async function ntMakePdf(cv, k, H) {
+  const PH = 1414, pages = Math.max(1, Math.ceil(H / PH)), imgs = [];
+  for (let i = 0; i < pages; i++) {
+    const pc = document.createElement('canvas'); pc.width = cv.width; pc.height = Math.round(PH * k); const x = pc.getContext('2d'); x.fillStyle = ntPaperCol(NT.cur.paper.c); x.fillRect(0, 0, pc.width, pc.height); x.drawImage(cv, 0, Math.round(i * PH * k), cv.width, pc.height, 0, 0, pc.width, pc.height);
+    const bl = await new Promise(r => pc.toBlob(r, 'image/jpeg', 0.9)); imgs.push({ w: pc.width, h: pc.height, d: new Uint8Array(await bl.arrayBuffer()) });
+  }
+  const enc = new TextEncoder(), parts = [], off = []; let len = 0; const put = b => { const u = typeof b === 'string' ? enc.encode(b) : b; parts.push(u); len += u.length; };
+  put('%PDF-1.4\n'); put(new Uint8Array([0x25, 0xE2, 0xE3, 0xCF, 0xD3, 0x0A])); const obj = (id, fn) => { off[id] = len; put(id + ' 0 obj\n'); fn(); put('\nendobj\n'); };
+  const W = 595.28, Hh = 841.89; obj(1, () => put('<< /Type /Catalog /Pages 2 0 R >>')); obj(2, () => put(`<< /Type /Pages /Kids [${imgs.map((_, i) => (3 + i * 3) + ' 0 R').join(' ')}] /Count ${imgs.length} >>`));
+  imgs.forEach((im, i) => {
+    const pid = 3 + i * 3, iid = pid + 1, cid = pid + 2, cs = `q ${W} 0 0 ${Hh} 0 0 cm /Im0 Do Q`;
+    obj(pid, () => put(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${Hh}] /Resources << /XObject << /Im0 ${iid} 0 R >> >> /Contents ${cid} 0 R >>`));
+    obj(iid, () => { put(`<< /Type /XObject /Subtype /Image /Width ${im.w} /Height ${im.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${im.d.length} >>\nstream\n`); put(im.d); put('\nendstream'); });
+    obj(cid, () => put(`<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`));
+  });
+  const xref = len, N = 3 + imgs.length * 3; put(`xref\n0 ${N}\n0000000000 65535 f \n`); for (let i = 1; i < N; i++) put(String(off[i]).padStart(10, '0') + ' 00000 n \n'); put(`trailer\n<< /Size ${N} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
+  return new Blob(parts, { type: 'application/pdf' });
+}
+async function ntExport(kind) {
+  const n = NT.cur; if (!n) return; await ntFlush(); const exp = $('#ntExp'); exp.hidden = false; await new Promise(r => setTimeout(r, 30));
+  try {
+    const H = Math.max(1414, Math.ceil(ntContentBottom(n) + 120)), k = Math.min(1.6, Math.sqrt(16e6 / (1000 * H)), 15000 / H), cv = document.createElement('canvas'); cv.width = Math.round(1000 * k); cv.height = Math.round(H * k);
+    const c = cv.getContext('2d'); c.setTransform(k, 0, 0, k, 0, 0); ntDrawPaper(c, 0, H, n); ntDrawStrokes(c, n, 0, H); await ntDrawBlocks(c, n); const name = slug(n.title || 'note') || 'note';
+    const blob = kind === 'png' ? await new Promise(r => cv.toBlob(r, 'image/png')) : await ntMakePdf(cv, k, H); await deliverFile(blob, name + (kind === 'png' ? '.png' : '.pdf'), n.title);
+  } catch (err) { flash('Export impossible : ' + ((err && err.message) || 'erreur')); }
+  exp.hidden = true;
+}
+
+/* ---------- ouvrir et fermer l'espace Notes ---------- */
+function ntTop() { const tb = $('#topbar').getBoundingClientRect(), ap = $('#app').getBoundingClientRect(); ntRoot.style.top = Math.max(0, tb.bottom - ap.top + 6) + 'px'; }
+async function openNotes() {
+  if (typeof MP !== 'undefined' && MP) { flash('Une partie multijoueur est en cours.'); return; }
+  if (typeof G !== 'undefined' && G) { flash('Termine d’abord ta séance de dessin gestuel.'); return; }
+  if (NT.on) return; if (typeof closeEditSessions === 'function') closeEditSessions(); if (typeof closeInsp === 'function') closeInsp(); setLayersOpen(false);
+  await ntLoadIndex(); NT.on = true; document.documentElement.classList.add('nt-on'); ntRoot.hidden = false; ntTop(); ntShowList(); requestAnimationFrame(() => ntRoot.classList.add('show')); navSync();
+}
+function closeNotes() {
+  if (!NT.on) return; if (NT.cur) { NT.cur.sy = sc0().scrollTop; NT.dirty = true; } const fl = ntFlush(); NT.on = false; document.documentElement.classList.remove('nt-on'); ntRoot.classList.remove('show'); ntPopClose(); navSync();
+  fl.then(() => { setTimeout(() => { if (!NT.on) { ntRoot.hidden = true; $('#ntEd').hidden = true; NT.cur = null; NT.chunks.clear(); $('#ntChunks').innerHTML = ''; } }, 340); });
+}
+
 
 const GL = (() => {
   let state = 'idle';
