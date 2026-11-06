@@ -469,7 +469,7 @@ gomme fine,taille précise ---------- */
 .f-x{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#ebe6dd;color:#1d1b18}
 .f-x .ic{width:19px;height:19px}
 .f-back{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 14px 0 8px;border-radius:999px;background:#ebe6dd;font-weight:650;font-size:14px}
-.f-back .ic{width:18px;height:18px;transform:rotate(90deg)}
+.f-back .ic{width:18px;height:18px;transform:rotate(90deg);margin-top:-1px}
 .f-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:14px 0 6px}
 #sheet.folio h2{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(40px,7vw,64px);letter-spacing:-.025em;line-height:1}
 .f-head .sub{margin:8px 0 0;font-size:14px}
@@ -1698,8 +1698,8 @@ html[data-theme="dark"] #modeSeg .fab-caps em{background:#2a2f37;box-shadow:0 2p
 html:not(.dock-mini) #dock #grpColors #btnColor.on{background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,.2));box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),inset 0 1px 1px rgba(255,255,255,.6),0 0 0 1px var(--line),0 2px 6px -3px rgba(30,50,80,.2)}
 :root[data-theme=dark] html:not(.dock-mini) #dock #grpColors #btnColor.on,:root[data-theme=dark]:not(.dock-mini) #dock #grpColors #btnColor.on{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05));box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),inset 0 1px 1px rgba(255,255,255,.25),0 0 0 1px var(--line),0 2px 6px -3px rgba(0,0,0,.4)}
 /* menu des modes : la bibliothèque donne le verre ; bleu vif pour le mode choisi, ronds presque opaques pour les autres */
-#modeSeg.modefab{--mode-blue:var(--accent);--mode-off-g:rgb(255 255 255 / .9);--mode-on-g:rgb(0 122 255 / .94)}
-html[data-theme="dark"] #modeSeg.modefab{--mode-off-g:rgb(52 58 68 / .92);--mode-on-g:rgb(10 132 255 / .94)}
+#modeSeg.modefab{--mode-blue:#007aff;--mode-off-g:rgb(255 255 255 / .9);--mode-on-g:rgb(0 122 255 / .94)}
+html[data-theme="dark"] #modeSeg.modefab{--mode-blue:#0a84ff;--mode-off-g:rgb(52 58 68 / .92);--mode-on-g:rgb(10 132 255 / .94)}
 html[data-dg] #modeSeg.modefab > button.lg-button{background:var(--lg-glass-fill);--lg-glass-fill:var(--mode-off-g)}
 html[data-dg] #modeSeg.modefab > button.lg-button.on{--lg-glass-fill:var(--mode-on-g)}
 /* ---------- 1.21.0 : calques fins et allongés, options en panneau flottant, effets de calque ---------- */
@@ -1757,7 +1757,11 @@ html[data-dg] .btn.primary.cancel{background:var(--lg-glass-fill);--lg-glass-fil
 #nt{position:absolute;left:0;right:0;bottom:0;top:90px;z-index:9;display:flex;flex-direction:column;opacity:0;transform:translateY(14px);transition:opacity .28s var(--ease),transform .34s var(--ease);pointer-events:none;color:var(--ink)}
 #nt[hidden]{display:none}
 #nt.show{opacity:1;transform:none;pointer-events:auto}
-html.nt-on #dock,html.nt-on #layers,html.nt-on #layOpt,html.nt-on #insp,html.nt-on #btnNew,html.nt-on #btnLay,html.nt-on #btnFit,html.nt-on #btnUndo,html.nt-on #btnRedo,html.nt-on #topbar .ag[aria-label="Historique"],html.nt-on #topbar .ag[aria-label="Vue"]{display:none!important}
+html.nt-on{--accent:#e0a400;--accent-soft:rgba(224,164,0,.16)}
+html[data-theme="dark"].nt-on{--accent:#ffcf33;--accent-soft:rgba(255,207,51,.2)}
+html.anim-on{--accent:#e5403a;--accent-soft:rgba(229,64,58,.16)}
+html[data-theme="dark"].anim-on{--accent:#ff6a5f;--accent-soft:rgba(255,106,95,.2)}
+html.nt-on #dock,html.nt-on #layers,html.nt-on #layOpt,html.nt-on #insp,html.nt-on #btnNew,html.nt-on #btnLay,html.nt-on #btnFit,html.nt-on #btnUndo,html.nt-on #btnRedo,html.nt-on #btnLib,html.nt-on #btnTools,html.nt-on #btnMenu,html.nt-on #topbar .ag{display:none!important}
 .nt-view{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--stage);transition:opacity .26s var(--ease),transform .3s var(--ease)}
 .nt-view[hidden]{display:none}
 .nt-view.out{opacity:0;transform:translateX(-24px);pointer-events:none}
@@ -1788,7 +1792,8 @@ html[data-theme="dark"] .nt-pinb{background:rgba(40,44,52,.8)}
 .nt-bar .ib .dotc{position:absolute;right:6px;bottom:6px;width:9px;height:9px;border-radius:50%;background:var(--c,var(--ink));box-shadow:0 0 0 1.5px var(--paper)}
 .nt-bar .ib.on{color:var(--accent)}
 .nt-sep{flex:none;width:1px;height:24px;margin:0 4px;background:var(--line)}
-.nt-back{flex:none;display:flex;align-items:center;gap:2px;height:40px;padding:0 12px 0 8px;border-radius:20px;font-size:15px;font-weight:600;color:var(--accent)}
+.nt-back{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:4px;height:40px;padding:0 14px 0 10px;border-radius:20px;font-size:15px;font-weight:600;color:var(--accent);line-height:1}
+.nt-back .ic{width:20px;height:20px;margin:0}
 .nt-ttl{flex:1 1 150px;min-width:110px;max-width:340px;height:38px;margin:0 6px;padding:0 12px;border-radius:19px;border:0;background:var(--fill);font:inherit;font-size:16px;font-weight:650;color:var(--ink);outline:none}
 .nt-wrap{position:relative;flex:1;min-height:0;margin-top:6px}
 .nt-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:contain}
@@ -1802,7 +1807,8 @@ html[data-theme="dark"] .nt-pinb{background:rgba(40,44,52,.8)}
 .nt-guide b{position:absolute;right:20px;padding:4px 12px;border-radius:14px;background:var(--accent);color:#fff;font-size:26px;font-weight:700}
 /* blocs */
 .nt-b{position:absolute;pointer-events:none;color:var(--ink);box-sizing:border-box}
-.nt-ed[data-tool=text] .nt-text,.nt-ed[data-tool=text] .nt-todo,.nt-ed[data-tool=move] .nt-b{pointer-events:auto}
+.nt-text,.nt-todo{pointer-events:auto}
+.nt-ed[data-tool=move] .nt-b{pointer-events:auto}
 .nt-ed[data-tool=move] .nt-b{outline:2.5px dashed color-mix(in srgb,var(--accent) 70%,transparent);outline-offset:4px}
 .nt-text:focus-within,.nt-todo:focus-within{pointer-events:auto}
 .nt-bh{position:absolute;left:0;top:-52px;height:46px;display:none;align-items:center;gap:6px;padding:0 8px;border-radius:23px;background:var(--glass-strong);box-shadow:var(--shadow),inset 0 0 0 1px var(--glass-brd);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);z-index:5;white-space:nowrap}
@@ -1851,6 +1857,12 @@ html[data-theme="dark"] .nt-pinb{background:rgba(40,44,52,.8)}
 
 .nt-guide{top:0;bottom:0}
 .nt-b[data-low="1"] .nt-bh{top:auto;bottom:-52px}
+/* ---------- 1.25.0 : réglages Notes ---------- */
+.nt-zoom{flex:none;min-width:40px;text-align:center;font-size:13px;font-weight:650;color:var(--ink2);font-variant-numeric:tabular-nums}
+.nt-mdel{color:var(--danger)}
+.nt-opt.on{background:var(--accent);color:#fff}
+.nt-sw.on,.nt-sz.on,.nt-psw.on{box-shadow:0 0 0 2.5px var(--paper),0 0 0 5px var(--accent)}
+.nt-sz.on{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent)}
 </style>
 </head>
 <body>
@@ -2058,7 +2070,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.24.0";
+const APP_VERSION = "1.25.0";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -4916,7 +4928,7 @@ function bindUI() {
     const b = e.target.closest('button'); if (!b) return;
     const key = b.dataset.mode || b.dataset.nav, here = S.mode;
     if (MP && key !== 'free') return flash('Une partie multijoueur est en cours.');
-    if (key === 'notes') { if (NT.on) return; return spaceGo(key, b, () => openNotes()); }
+    if (key === 'notes') { if (NT.on) return; return spaceGo(key, b, () => { if (S.mode !== 'free') setMode('free'); openNotes(); }); }
   if (NT.on) { closeNotes(); if (key === here) return; }
   if (key === here) return;
     spaceGo(key, b, () => {
@@ -5364,6 +5376,15 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
+  { v: '1.25.0', date: '3 nov. 2026', items: [
+    ['Notes : plus de stylos', 'Trois profils (fin, feutre, pinceau), plus de couleurs et d’épaisseurs.'],
+    ['Notes : zoom', 'Pince à deux doigts ou touche − / + pour dézoomer et zoomer la page.'],
+    ['Notes : modifier après coup', 'Touche un texte ou une liste à cocher pour le reprendre, avec n’importe quel outil.'],
+    ['Notes : annuler à deux doigts', 'Deux doigts tapés annulent, trois doigts rétablissent.'],
+    ['Notes : traits fiables', 'Le trait se termine toujours quand tu lèves le stylo, même si le geste est interrompu.'],
+    ['Notes : menu rangé', 'La barre du haut est épurée ; papier, export, réglages de l’app, épingle et suppression sont réunis dans « Options de la note ».'],
+    ['Couleurs des espaces', 'Les éléments actifs passent au jaune dans Notes et au rouge dans Animation.'],
+    ['Corrections', 'La barre d’animation ne reste plus à l’écran en passant aux Notes ; le bouton retour est centré.']] },
   { v: '1.24.0', date: '3 nov. 2026', items: [
     ['Un espace Notes', 'Nouveau choix dans le menu des modes, entre Dessin et Animation : une liste de notes avec recherche par titre et épingle, et une page continue qui défile sans fin.'],
     ['Papiers et modèles', 'Papier uni, ligné, quadrillé ou pointillé, avec ou sans marge, en cinq couleurs, clair ou sombre comme l’app. Modèles : réunion, liste de tâches, journal, semainier.'],
@@ -7331,12 +7352,13 @@ const MF = (() => {
    « insérer de l'espace », export PNG et PDF, recherche par titre, épingle.
    Les notes sont enregistrées dans la base de l'app (clés « nt:index » et « nt:<id> »). Coordonnées en unités de page (largeur 1000).
    ====================================================================== */
-var NT = { on: false, list: [], cur: null, tool: 'pen', undo: [], redo: [], q: '', s: 1, dpr: 1, CH: 1000, chunks: new Map(), dirty: false, view: 'list', pan: null };
-const NT_PREF = Object.assign({ pen: 'ink', penW: 2.6, hl: '#ffd93d', hlW: 22 }, LS.get('nt', null) || {});
+var NT = { on: false, list: [], cur: null, tool: 'pen', undo: [], redo: [], q: '', s: 1, z: 1, fit: 1, dpr: 1, CH: 1000, chunks: new Map(), dirty: false, view: 'list', pan: null };
+const NT_PREF = Object.assign({ pen: 'ink', penW: 1.8, nib: 'fine', hl: '#ffd93d', hlW: 22 }, LS.get('nt', null) || {});
 const ntSavePref = () => LS.set('nt', NT_PREF);
 const NT_PAPERS = [['blank', 'Uni'], ['ruled', 'Ligné'], ['grid', 'Quadrillé'], ['dots', 'Pointillé']];
 const NT_PCOL = { white: ['#fdfdfb', '#1c1e22', 'Blanc'], cream: ['#f8f0dc', '#2a261c', 'Crème'], gray: ['#eceef1', '#26282c', 'Gris'], blue: ['#e7f0fb', '#1b2431', 'Bleu'], pink: ['#fbe8ee', '#2d1f25', 'Rose'] };
-const NT_PEN_COL = ['ink', '#2f6df6', '#e5403a', '#2ea44f', '#f58026', '#8e44ad'], NT_HL_COL = ['#ffd93d', '#6be585', '#ff8fb8', '#6fc3ff'], NT_PEN_W = [1.6, 2.6, 4.4], NT_HL_W = [14, 22, 34];
+const NT_PEN_COL = ['ink', '#2f6df6', '#e5403a', '#2ea44f', '#f58026', '#8e44ad', '#111111', '#c0392b'], NT_HL_COL = ['#ffd93d', '#6be585', '#ff8fb8', '#6fc3ff', '#c9a7ff'], NT_PEN_W = [1.2, 1.8, 2.6, 3.6, 5], NT_HL_W = [14, 22, 34];
+const NT_NIBS = [['fine', 'Fin', 'nib', 1], ['marker', 'Feutre', 'marker', 1.7], ['brush', 'Pinceau', 'brush', 1]];      /* profils de stylo : l'épaisseur varie plus ou moins avec la pression */
 const ntDark = () => document.documentElement.dataset.theme === 'dark';
 const ntInk = c => c === 'ink' ? (ntDark() ? '#f1eee8' : '#1d1b18') : c;
 const ntPaperCol = k => (NT_PCOL[k] || NT_PCOL.white)[ntDark() ? 1 : 0];
@@ -7355,7 +7377,7 @@ ntRoot.innerHTML = `
 </div>
 <div class="nt-view nt-ed out" id="ntEd" data-tool="pen" hidden>
   <div class="nt-bar glass" id="ntBar" role="toolbar" aria-label="Outils de la note">
-    <button class="nt-back" data-nt="back" aria-label="Retour à la liste des notes">‹ Notes</button>
+    <button class="nt-back" data-nt="back" aria-label="Retour à la liste des notes"><svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Notes</button>
     <input class="nt-ttl" id="ntTitle" maxlength="60" aria-label="Titre de la note" autocomplete="off" enterkeyhint="done">
     <span class="nt-sep"></span>
     <button class="ib on" data-nt="tool" data-tool="pen" aria-label="Stylo fin">${ICO('nib')}<i class="dotc" id="ntDotPen"></i></button>
@@ -7372,8 +7394,11 @@ ntRoot.innerHTML = `
     <button class="ib" data-nt="undo" aria-label="Annuler">${ICO('undo')}</button>
     <button class="ib" data-nt="redo" aria-label="Rétablir"><svg class="ic flip"><use href="#i-undo"/></svg></button>
     <span class="nt-sep"></span>
+    <button class="ib" data-nt="zoomout" aria-label="Dézoomer">${ICO('shrink')}</button>
+    <button class="ib" data-nt="zoomin" aria-label="Zoomer">${ICO('expand')}</button>
+    <b class="nt-zoom" id="ntZoom" aria-live="polite" hidden></b>
+    <span class="nt-sep"></span>
     <button class="ib" data-nt="paper" aria-label="Papier">${ICO('paper')}</button>
-    <button class="ib" data-nt="export" aria-label="Exporter en PNG ou en PDF">${ICO('export')}</button>
     <button class="ib" data-nt="more" aria-label="Options de la note">${ICO('more')}</button>
   </div>
   <div class="nt-wrap" id="ntWrap">
@@ -7394,7 +7419,7 @@ function ntSaveSoon() { NT.dirty = true; clearTimeout(ntSaveT); ntSaveT = setTim
 async function ntFlush() {
   clearTimeout(ntSaveT); const n = NT.cur; if (!n || !NT.dirty) return; NT.dirty = false; n.ts = Date.now();
   const sc = document.getElementById('ntScroll'); if (sc && !$('#ntEd').hidden) n.sy = sc.scrollTop;
-  try { await DB.set('nt:' + n.id, n); } catch (e) { flash('Impossible d’enregistrer la note.'); }
+  n.z = NT.z; try { await DB.set('nt:' + n.id, n); } catch (e) { flash('Impossible d’enregistrer la note.'); }
   let m = NT.list.find(x => x.id === n.id); if (!m) { m = { id: n.id }; NT.list.push(m); }
   Object.assign(m, { title: n.title, pin: !!n.pin, ts: n.ts }); ntSaveIndex();
 }
@@ -7420,7 +7445,7 @@ function ntDrawStroke(c, st) {
     c.globalAlpha = ntDark() ? 0.5 : 0.4; c.strokeStyle = col; c.lineWidth = st.w; c.lineCap = 'butt'; c.beginPath(); c.moveTo(a[0], a[1]); if (n === 1) c.lineTo(a[0] + 0.1, a[1]);
     for (let i = 1; i < n - 1; i++) c.quadraticCurveTo(a[i * 3], a[i * 3 + 1], (a[i * 3] + a[i * 3 + 3]) / 2, (a[i * 3 + 1] + a[i * 3 + 4]) / 2); if (n > 1) c.lineTo(a[(n - 1) * 3], a[(n - 1) * 3 + 1]); c.stroke();
   } else {
-    c.strokeStyle = col; c.fillStyle = col; c.lineCap = 'round'; const wd = i => st.w * (0.5 + a[i * 3 + 2]);
+    c.strokeStyle = col; c.fillStyle = col; c.lineCap = 'round'; const nb = (NT_NIBS.find(n => n[0] === st.nib) || NT_NIBS[0])[3], wd = i => st.w * (1 - nb * 0.5 + nb * a[i * 3 + 2]);
     if (n < 3) { c.beginPath(); c.arc(a[0], a[1], wd(0) / 2 + 0.2, 0, 6.2832); c.fill(); if (n === 2) { c.lineWidth = wd(1); c.beginPath(); c.moveTo(a[0], a[1]); c.lineTo(a[3], a[4]); c.stroke(); } }
     else { let mx = a[0], my = a[1]; for (let i = 1; i < n - 1; i++) { const nx = (a[i * 3] + a[i * 3 + 3]) / 2, ny = (a[i * 3 + 1] + a[i * 3 + 4]) / 2; c.lineWidth = wd(i); c.beginPath(); c.moveTo(mx, my); c.quadraticCurveTo(a[i * 3], a[i * 3 + 1], nx, ny); c.stroke(); mx = nx; my = ny; } c.lineWidth = wd(n - 1); c.beginPath(); c.moveTo(mx, my); c.lineTo(a[(n - 1) * 3], a[(n - 1) * 3 + 1]); c.stroke(); }
   }
@@ -7450,7 +7475,7 @@ function ntContentBottom(n) { let m = 0; for (const st of n.strokes) m = Math.ma
 
 /* ---------- la page continue : tranches de 1000 unités créées à la demande ---------- */
 function ntLayout() {
-  const n = NT.cur; if (!n) return; const sc = $('#ntScroll'), w = $('#ntWrap'); NT.dpr = Math.min(2, window.devicePixelRatio || 1); NT.s = ntClamp(sc.clientWidth / 1000, 0.3, 1.12);
+  const n = NT.cur; if (!n) return; const sc = $('#ntScroll'), w = $('#ntWrap'); NT.dpr = Math.min(2, window.devicePixelRatio || 1); NT.fit = sc.clientWidth / 1000; NT.z = ntClamp(NT.z || 1, 0.5, 2.5); NT.s = ntClamp(NT.fit * NT.z, 0.22, 2.6);
   $('#ntSizer').style.width = (1000 * NT.s) + 'px'; $('#ntSizer').style.height = (n.h * NT.s) + 'px'; $('#ntPage').style.height = n.h + 'px'; $('#ntPage').style.transform = `scale(${NT.s})`; $('#ntChunks').style.height = n.h + 'px'; $('#ntBlocks').style.height = n.h + 'px'; $('#ntGuide').style.height = n.h + 'px';
   const lv = $('#ntLive'); lv.width = Math.round(w.clientWidth * NT.dpr); lv.height = Math.round(w.clientHeight * NT.dpr); lv.style.width = w.clientWidth + 'px'; lv.style.height = w.clientHeight + 'px';
 }
@@ -7496,20 +7521,24 @@ function ntLiveDraw(st) {
 }
 let ntStroke = null;
 function ntStrokeStart(e) {
-  const p = ntPt(e), hl = NT.tool === 'hl'; ntStroke = { id: e.pointerId, st: { k: hl ? 'h' : 'p', c: hl ? NT_PREF.hl : NT_PREF.pen, w: hl ? NT_PREF.hlW : NT_PREF.penW, a: [p.x, p.y, p.p], bb: [p.x, p.y, p.x, p.y] }, pen: e.pointerType === 'pen' };
-  ntCap(sc0(), e.pointerId); ntLiveDraw(ntStroke.st); e.preventDefault();
+  const p = ntPt(e), hl = NT.tool === 'hl'; ntStroke = { id: e.pointerId, st: { k: hl ? 'h' : 'p', nib: hl ? undefined : NT_PREF.nib, c: hl ? NT_PREF.hl : NT_PREF.pen, w: hl ? NT_PREF.hlW : NT_PREF.penW, a: [p.x, p.y, p.p], bb: [p.x, p.y, p.x, p.y] }, pen: e.pointerType === 'pen' };
+  ntCap(sc0(), e.pointerId); ntLiveDraw(ntStroke.st); ntStrokeWatch(); e.preventDefault();
 }
 function ntStrokeMove(e) {
-  const s = ntStroke; if (!s || e.pointerId !== s.id) return; const a = s.st.a, f = s.pen ? 0.8 : 0.55;
+  const s = ntStroke; if (!s || e.pointerId !== s.id) return; ntStrokeLast = performance.now(); const a = s.st.a, f = s.pen ? 0.8 : 0.55;
   for (const q of ntEvents(e)) { const p = ntPt(q), lx = a[a.length - 3], ly = a[a.length - 2]; if (Math.hypot(p.x - lx, p.y - ly) < 0.9) continue; a.push(lx + (p.x - lx) * f, ly + (p.y - ly) * f, p.p); }
   ntLiveDraw(s.st); e.preventDefault();
 }
-function ntStrokeEnd(e) {
-  const s = ntStroke; if (!s || e.pointerId !== s.id) return; ntStroke = null; ntLiveDraw(null); const st = s.st, n = NT.cur;
-  const lx = ntPt(e); if (st.a.length === 3 || Math.hypot(lx.x - st.a[st.a.length - 3], lx.y - st.a[st.a.length - 2]) > 1) st.a.push(lx.x, lx.y, lx.p);
+/* filet de sécurité : si le pointerup du Pencil se perd (capture ratée, geste interrompu), on termine le trait au bout d'un court silence */
+let ntStrokeT = 0, ntStrokeLast = 0;
+function ntStrokeWatch() { ntStrokeLast = performance.now(); clearTimeout(ntStrokeT); const tick = () => { if (!ntStroke) return; if (performance.now() - ntStrokeLast > 140) { ntStrokeCommit(); return; } ntStrokeT = setTimeout(tick, 60); }; ntStrokeT = setTimeout(tick, 120); }
+function ntStrokeCommit(e) {
+  const s = ntStroke; if (!s) return; ntStroke = null; clearTimeout(ntStrokeT); ntLiveDraw(null); const st = s.st, n = NT.cur;
+  if (e) { const lx = ntPt(e); if (st.a.length === 3 || Math.hypot(lx.x - st.a[st.a.length - 3], lx.y - st.a[st.a.length - 2]) > 1) st.a.push(lx.x, lx.y, lx.p); }
   ntBB(st); n.strokes.push(st); ntRenderRange(st.bb[1], st.bb[3]); ntGrow(st.bb[3]);
   ntPush({ u() { const i = n.strokes.indexOf(st); if (i >= 0) n.strokes.splice(i, 1); ntRenderRange(st.bb[1], st.bb[3]); }, r() { n.strokes.push(st); ntRenderRange(st.bb[1], st.bb[3]); } });
 }
+function ntStrokeEnd(e) { const s = ntStroke; if (!s || e.pointerId !== s.id) return; ntStrokeCommit(e); }
 /* gomme : efface le trait entier touché */
 let ntErase = null;
 function ntNear(st, x, y, r) { const a = st.a, rr = r + st.w / 2; if (a.length === 3) return Math.hypot(a[0] - x, a[1] - y) <= rr; for (let i = 0; i + 5 < a.length; i += 3) { const x0 = a[i], y0 = a[i + 1], dx = a[i + 3] - x0, dy = a[i + 4] - y0, L = dx * dx + dy * dy, t = L ? ntClamp(((x - x0) * dx + (y - y0) * dy) / L, 0, 1) : 0; if (Math.hypot(x0 + dx * t - x, y0 + dy * t - y) <= rr) return true; } return false; }
@@ -7557,7 +7586,7 @@ function ntPanEnd(e) {
 function ntInertia(v) { const sc = sc0(); let last = performance.now(); const step = t => { const dt = Math.min(32, t - last); last = t; sc.scrollTop -= v * dt; v *= Math.pow(0.94, dt / 16); if (Math.abs(v) > 0.03) NT.inr = requestAnimationFrame(step); }; NT.inr = requestAnimationFrame(step); }
 
 sc0().addEventListener('pointerdown', e => {
-  if (e.target.closest('.nt-b')) return; cancelAnimationFrame(NT.inr); const t = NT.tool, finger = e.pointerType === 'touch', draw = t === 'pen' || t === 'hl' || t === 'erase';
+  if (e.target.closest('.nt-text,.nt-todo')) return; if (e.target.closest('.nt-b') && (NT.tool === 'move' || e.target.closest('.nt-rs,.nt-grip,[data-bk]'))) return; cancelAnimationFrame(NT.inr); const t = NT.tool, finger = e.pointerType === 'touch', draw = t === 'pen' || t === 'hl' || t === 'erase';
   ntPopClose();
   if (t === 'space') return ntSpaceStart(e);
   if (finger && (!settings.finger || !draw)) { ntPanStart(e, t === 'text' || t === 'todo' ? ev => ntBlockAt(ev, t) : null); return; }
@@ -7565,7 +7594,30 @@ sc0().addEventListener('pointerdown', e => {
 });
 sc0().addEventListener('pointermove', e => { if (ntPanMove(e)) return; ntStrokeMove(e); ntEraseMove(e); ntSpaceMove(e); });
 ['pointerup', 'pointercancel'].forEach(ev => sc0().addEventListener(ev, e => { if (ntPanEnd(e)) return; ntStrokeEnd(e); ntEraseEnd(e); ntSpaceEnd(e); }));
+/* deux doigts tapés : annuler (comme ailleurs dans l'app) ; à trois doigts : rétablir. On écoute sur le document (phase capture) pour voir tous les doigts même si un trait en cours a capturé le premier. */
+{ const tp = new Map(); let t0 = 0, moved = false, mx = 0;
+  const near = () => NT.on && !$('#ntEd').hidden;
+  document.addEventListener('pointerdown', e => { if (!near() || e.pointerType !== 'touch' || !e.target.closest('#ntScroll')) return; if (!tp.size) { t0 = performance.now(); moved = false; mx = 0; } tp.set(e.pointerId, { x: e.clientX, y: e.clientY }); mx = Math.max(mx, tp.size); }, true);
+  document.addEventListener('pointermove', e => { const p = tp.get(e.pointerId); if (p && Math.hypot(e.clientX - p.x, e.clientY - p.y) > 14) moved = true; }, true);
+  document.addEventListener('pointerup', e => {
+    if (!tp.has(e.pointerId)) return; tp.delete(e.pointerId); if (tp.size) return; const dt = performance.now() - t0;
+    if (!moved && dt < 340) { if (mx === 2) { if (ntStroke) { ntStroke = null; ntLiveDraw(null); } ntUndo(); flash('Annulé'); } else if (mx === 3) { ntRedo(); flash('Rétabli'); } }
+  }, true);
+  document.addEventListener('pointercancel', e => tp.delete(e.pointerId), true);
+}
+function ntZoom(f, cx, cy) {
+  const sc = $('#ntScroll'), r = $('#ntWrap').getBoundingClientRect(); cx = cx == null ? r.width / 2 : cx - r.left; cy = cy == null ? r.height / 2 : cy - r.top;
+  const z0 = NT.z, z1 = ntClamp(z0 * f, 0.5, 2.5); if (Math.abs(z1 - z0) < 1e-3) return; const wx = (sc.scrollLeft + cx) / NT.s, wy = (sc.scrollTop + cy) / NT.s;
+  NT.z = z1; ntRelayout(); NT.s && (sc.scrollLeft = wx * NT.s - cx, sc.scrollTop = Math.max(0, wy * NT.s - cy)); ntZoomBadge();
+}
+function ntZoomBadge() { const b = $('#ntZoom'); if (b) { b.textContent = Math.round(NT.z * 100) + ' %'; b.hidden = Math.abs(NT.z - 1) < 0.02; } }
+/* pincer à deux doigts : zoom (sauf si le doigt dessine et qu'on n'est pas sur un outil de défilement) */
+{ const pz = new Map(); let d0 = 0, z0 = 1, cx = 0, cy = 0;
+  sc0().addEventListener('pointerdown', e => { if (e.pointerType !== 'touch') return; pz.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (pz.size === 2) { const p = [...pz.values()]; d0 = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) || 1; z0 = NT.z; cx = (p[0].x + p[1].x) / 2; cy = (p[0].y + p[1].y) / 2; } }, true);
+  sc0().addEventListener('pointermove', e => { const p = pz.get(e.pointerId); if (!p) return; p.x = e.clientX; p.y = e.clientY; if (pz.size === 2) { const q = [...pz.values()], d = Math.hypot(q[0].x - q[1].x, q[0].y - q[1].y); ntZoom((d / d0) / (NT.z / z0), cx, cy); if (ntStroke) { ntStroke = null; ntLiveDraw(null); } if (NT.pan) NT.pan = null; } }, true);
+  ['pointerup', 'pointercancel'].forEach(ev => sc0().addEventListener(ev, e => pz.delete(e.pointerId), true)); }
 let ntScrollRaf = 0; sc0().addEventListener('scroll', () => { if (ntScrollRaf) return; ntScrollRaf = requestAnimationFrame(() => { ntScrollRaf = 0; ntEnsure(); if (NT.cur) { NT.cur.sy = sc0().scrollTop; } }); });
+$('#ntWrap').addEventListener('wheel', e => { if (!NT.on) return; if (e.ctrlKey || e.metaKey) { e.preventDefault(); ntZoom(Math.exp(-e.deltaY * 0.01), e.clientX, e.clientY); } }, { passive: false });
 window.addEventListener('resize', () => { if (NT.on) { ntTop(); if (NT.cur && !$('#ntEd').hidden) { ntRelayout(); ntBuildBlocks(); } } });
 
 /* ---------- blocs : texte tapé, listes à cocher, images ---------- */
@@ -7662,7 +7714,7 @@ function ntShowList() {
 }
 async function ntOpen(id) {
   await ntFlush(); let n; try { n = await DB.get('nt:' + id); } catch (e) { n = null; } if (!n) { flash('Note introuvable.'); return; }
-  NT.cur = ntNormalize(n); NT.undo = []; NT.redo = []; NT.view = 'ed'; $('#ntTitle').value = n.title; const ed = $('#ntEd'); ed.hidden = false;
+  NT.cur = ntNormalize(n); NT.z = n.z || 1; NT.undo = []; NT.redo = []; NT.view = 'ed'; $('#ntTitle').value = n.title; const ed = $('#ntEd'); ed.hidden = false;
   NT.chunks.forEach(c => c.cv.remove()); NT.chunks.clear(); ntLayout(); ntBuildBlocks(); sc0().scrollTop = n.sy || 0; ntEnsure(); ntSyncHist(); ntDots(); ntPopClose();
   requestAnimationFrame(() => { $('#ntList').classList.add('out'); ed.classList.remove('out'); });
 }
@@ -7681,7 +7733,7 @@ function ntPopOpen(btn, html, key) {
 function ntPopToggle(btn, html, key) { const p = $('#ntPop'); if (!p.hidden && p.dataset.for === key) ntPopClose(); else ntPopOpen(btn, html, key); }
 function ntPenPop(hl) {
   const cols = hl ? NT_HL_COL : NT_PEN_COL, ws = hl ? NT_HL_W : NT_PEN_W, cur = hl ? NT_PREF.hl : NT_PREF.pen, cw = hl ? NT_PREF.hlW : NT_PREF.penW;
-  return `<h4>Couleur</h4><div class="nt-row">${cols.map(c => `<button class="nt-sw${c === cur ? ' on' : ''}" style="--c:${c === 'ink' ? 'var(--ink)' : c}" data-pc="${c}" aria-label="${c === 'ink' ? 'Encre (noir ou blanc selon le thème)' : 'Couleur ' + c}"></button>`).join('')}</div>
+  return (hl ? '' : `<h4>Stylo</h4><div class="nt-row">${NT_NIBS.map(nb => `<button class="nt-opt${NT_PREF.nib === nb[0] ? ' on' : ''}" data-nib="${nb[0]}">${nb[1]}</button>`).join('')}</div>`) + `<h4>Couleur</h4><div class="nt-row">${cols.map(c => `<button class="nt-sw${c === cur ? ' on' : ''}" style="--c:${c === 'ink' ? 'var(--ink)' : c}" data-pc="${c}" aria-label="${c === 'ink' ? 'Encre (noir ou blanc selon le thème)' : 'Couleur ' + c}"></button>`).join('')}</div>
   <h4>Épaisseur</h4><div class="nt-row">${ws.map(w => `<button class="nt-sz${w === cw ? ' on' : ''}" data-pw="${w}" aria-label="Épaisseur ${w}"><i style="width:26px;height:${Math.max(2, hl ? w / 4 : w * 1.3)}px"></i></button>`).join('')}</div>
   <h4>Doigt</h4><div class="nt-tr"><span>Le doigt dessine</span><span class="sw"><input type="checkbox" id="ntFinger" ${settings.finger ? 'checked' : ''} aria-label="Le doigt dessine"><i></i></span></div>`;
 }
@@ -7692,7 +7744,7 @@ function ntPaperPop() {
   <h4>Thème</h4><p style="margin:2px 2px 0;font-size:13px;color:var(--ink2);line-height:1.4">Le papier suit le thème de l’app : clair ou sombre.</p>`;
 }
 const ntExportPop = () => `<h4>Exporter la note</h4><div class="nt-menu"><button data-ex="png">${ICO('image')} Image PNG</button><button data-ex="pdf">${ICO('export')} Document PDF</button></div>`;
-const ntMorePop = () => `<div class="nt-menu"><button data-mo="pin">${ICO('pin')} ${NT.cur.pin ? 'Désépingler la note' : 'Épingler la note'}</button><button data-mo="del">${ICO('trash')} Supprimer la note</button></div>`;
+const ntMorePop = () => `<div class="nt-menu"><button data-ex="png">${ICO('image')} Exporter en PNG</button><button data-ex="pdf">${ICO('export')} Exporter en PDF</button><button data-mo="pin">${ICO('pin')} ${NT.cur.pin ? 'Désépingler la note' : 'Épingler la note'}</button><button data-mo="settings">${ICO('gear')} Réglages de l’app</button><button data-mo="del" class="nt-mdel">${ICO('trash')} Supprimer la note</button></div>`;
 const ntTplPop = btn => { const p = document.createElement('div'); p.className = 'nt-pop glass nt-tp'; p.style.cssText = 'position:absolute;right:20px;top:64px;z-index:8'; p.innerHTML = `<h4>Nouvelle note</h4><div class="nt-menu">${NT_TPL.map(t => `<button data-tpl="${t[0]}"><span style="flex:1"><b style="display:block;font-size:15px">${t[1]}</b><small style="color:var(--ink2);font-weight:500;font-size:12.5px">${t[2]}</small></span></button>`).join('')}</div>`; $('#ntList').appendChild(p); };
 function ntTool(t, btn) {
   if (NT.tool === t && (t === 'pen' || t === 'hl') && btn) return ntPopToggle(btn, ntPenPop(t === 'hl'), t);
@@ -7713,8 +7765,10 @@ ntRoot.addEventListener('click', async e => {
     const a = b.dataset.nt;
     if (a === 'back') return ntBack(); if (a === 'tool') return ntTool(b.dataset.tool, b); if (a === 'undo') return ntUndo(); if (a === 'redo') return ntRedo();
     if (a === 'img') { ntPopClose(); return ntFile.click(); }
-    if (a === 'paper') return ntPopToggle(b, ntPaperPop(), 'paper'); if (a === 'export') return ntPopToggle(b, ntExportPop(), 'export'); if (a === 'more') { ntDelArm = 0; return ntPopToggle(b, ntMorePop(), 'more'); }
+    if (a === 'paper') return ntPopToggle(b, ntPaperPop(), 'paper'); if (a === 'more') { ntDelArm = 0; return ntPopToggle(b, ntMorePop(), 'more'); }
+    if (a === 'zoomin') return ntZoom(1.25); if (a === 'zoomout') return ntZoom(1 / 1.25);
   }
+  const nib = t.closest('[data-nib]'); if (nib) { NT_PREF.nib = nib.dataset.nib; ntSavePref(); $('#ntPop').innerHTML = ntPenPop(false); return; }
   const pc = t.closest('[data-pc]'); if (pc) { if (NT.tool === 'hl') NT_PREF.hl = pc.dataset.pc; else NT_PREF.pen = pc.dataset.pc; ntSavePref(); ntDots(); $('#ntPop').innerHTML = ntPenPop(NT.tool === 'hl'); return; }
   const pw = t.closest('[data-pw]'); if (pw) { if (NT.tool === 'hl') NT_PREF.hlW = +pw.dataset.pw; else NT_PREF.penW = +pw.dataset.pw; ntSavePref(); $('#ntPop').innerHTML = ntPenPop(NT.tool === 'hl'); return; }
   const pk = t.closest('[data-pk]'); if (pk) { ntSetPaper({ k: pk.dataset.pk }); $('#ntPop').innerHTML = ntPaperPop(); return; }
@@ -7723,6 +7777,7 @@ ntRoot.addEventListener('click', async e => {
   const mo = t.closest('[data-mo]'); if (mo) {
     const n = NT.cur;
     if (mo.dataset.mo === 'pin') { n.pin = !n.pin; NT.dirty = true; ntFlush(); ntPopClose(); flash(n.pin ? 'Note épinglée' : 'Note désépinglée'); return; }
+    if (mo.dataset.mo === 'settings') { ntPopClose(); openMenu(); return; }
     if (!ntDelArm) { ntDelArm = 1; mo.classList.add('danger'); mo.lastChild.textContent = ' Toucher encore pour supprimer'; setTimeout(() => { ntDelArm = 0; }, 3500); return; }
     const id = n.id; ntPopClose(); clearTimeout(ntSaveT); NT.dirty = false; NT.cur = null; try { await DB.del('nt:' + id); } catch (er) { } NT.list = NT.list.filter(x => x.id !== id); await ntSaveIndex(); ntShowList(); flash('Note supprimée');
   }
