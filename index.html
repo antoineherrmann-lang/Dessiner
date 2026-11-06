@@ -1724,6 +1724,31 @@ html[data-dg] #modeSeg.modefab > button.lg-button.on{--lg-glass-fill:var(--mode-
 .tx-sl .tx-size{gap:5px}
 .tx-sl .tx-size span{min-width:0;font-size:11.5px;white-space:nowrap}
 .tx-sl .tx-size output{min-width:28px}
+/* ---------- 1.22.0 ---------- */
+.lh{gap:6px}
+.lh b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lh .ib,.lh .pill{flex:none}
+.lr>button.lro{width:30px;color:var(--ink2)}
+.lr>button.lro.on{color:var(--accent)}
+#layOpt .lt-b span{display:none}
+#layOpt .lt-b{height:46px;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+#layOpt .dg-host.dg-range{width:auto;flex:1 1 0;min-width:0}
+#layOpt .orow{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;font-size:13px;color:var(--ink2)}
+#layOpt .orow b{min-width:42px;text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
+.lo-tiphint{margin:8px 2px 0}
+.lo-name{flex:1;min-width:0;height:34px;padding:0 10px;font-size:15px;font-weight:600}
+.fx-flat{display:block;width:100%;height:42px;margin-top:12px;border-radius:12px;background:var(--accent);color:#fff;font-size:14.5px;font-weight:600}
+#loTip{position:absolute;z-index:14;pointer-events:none;padding:7px 11px;border-radius:10px;background:#1d2024;color:#fff;font-size:13px;font-weight:600;white-space:nowrap;opacity:0;transform:translate(-50%,6px);transition:opacity .15s,transform .2s}
+html[data-theme="dark"] #loTip{background:#eceff3;color:#111}
+#loTip.show{opacity:1;transform:translate(-50%,0)}
+.btn.primary.cancel{background:var(--danger,#d6342a);color:#fff}
+html[data-dg] .btn.primary.cancel{background:var(--lg-glass-fill);--lg-glass-fill:rgb(214 52 42 / .94);--lg-tint:#d6342a!important}
+.dnd-ghost{position:fixed;z-index:200;width:112px;border-radius:10px;box-shadow:0 14px 34px rgba(20,35,55,.4);pointer-events:none;transform:translate(-50%,-62%) rotate(4deg);opacity:.96}
+.dcard.dnd-src{opacity:.35}
+.nbc-card{transition:transform .18s var(--ease),box-shadow .18s}
+#sheet.dnd .nbc-card:not(.nbc-new){box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 35%,transparent)}
+#sheet.dnd .nbc-card.dnd-over{transform:translateY(-4px) scale(1.04);box-shadow:0 0 0 3px var(--accent),0 12px 28px rgba(20,35,55,.3)}
+#sheet.dnd{touch-action:none}
 </style>
 </head>
 <body>
@@ -1924,7 +1949,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.21.0";
+const APP_VERSION = "1.22.0";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -2015,7 +2040,7 @@ const lid = () => 'l' + Math.random().toString(36).slice(2, 8);
 const mkLayer = name => ({ id: lid(), name, visible: true, locked: false, opacity: 1, group: null });
 const mkGroup = name => ({ id: 'g' + Math.random().toString(36).slice(2, 8), name, visible: true, locked: false, opacity: 1, collapsed: false });
 const newDoc = page => { const L = mkLayer('Calque 1'); return { page: { w: page.w, h: page.h }, strokes: [], layers: [L], groups: [], ref: null, active: L.id, undo: [], redo: [], view: { s: 1, tx: 0, ty: 0, rot: 0, fit: true, fitS: 1 } }; };
-const cleanFx = f => { if (!f || !['blur', 'motion', 'glass'].includes(f.t)) return undefined; const n = (v, a, b, d) => Number.isFinite(+v) ? Math.min(b, Math.max(a, +v)) : d; return { t: f.t, r: n(f.r, 0, 200, 12), a: n(f.a, 0, 360, 0), k: n(f.k, 0, 1, 0.18) }; };
+const cleanFx = f => { if (!f || !['blur', 'motion'].includes(f.t)) return undefined; const n = (v, a, b, d) => Number.isFinite(+v) ? Math.min(b, Math.max(a, +v)) : d; return { t: f.t, r: n(f.r, 0, 200, 12), a: n(f.a, 0, 360, 0), k: n(f.k, 0, 1, 0.18) }; };
 const cleanLayers = (raw, fallbackStrokes) => {
   let L = Array.isArray(raw) ? raw.filter(l => l && l.id).slice(0, MAX_LAYERS).map(l => ({
     id: String(l.id), name: String(l.name || 'Calque').slice(0, 40), visible: l.visible !== false, locked: !!l.locked,
@@ -2447,15 +2472,6 @@ function paintLayerFx(c, L, byL, cull) {
   const cl = cull ? [cull[0] - ext, cull[1] - ext, cull[2] + ext, cull[3] + ext] : null;
   const x = scratchCtx(8, c); if (!paintLayer(x, { ...L, fx: null, opacity: 1 }, byL, cl)) return false;
   const cw = c.canvas.width, ch = c.canvas.height;
-  if (fx.t === 'glass') { /* verre dépoli : le fond déjà dessiné, flouté, ne reste que dans les formes du calque ; un voile de leur couleur et un liseré clair en haut à gauche */
-    const B = scratchCtx(10, c); B.save(); B.setTransform(1, 0, 0, 1, 0, 0);
-    if (LFX_CTX) { B.filter = 'blur(' + r.toFixed(2) + 'px) saturate(1.5) brightness(1.06)'; B.drawImage(c.canvas, 0, 0); B.filter = 'none'; } else lfxBlur(B, c.canvas, r);
-    B.globalCompositeOperation = 'destination-in'; B.drawImage(x.canvas, 0, 0);
-    B.globalCompositeOperation = 'source-over'; B.globalAlpha = Math.min(1, fx.k == null ? 0.18 : +fx.k); B.drawImage(x.canvas, 0, 0); B.globalAlpha = 1;
-    const e = Math.max(1.5, sc * 1.2), rim = (ox, oy, a) => { const E = scratchCtx(11, c); E.save(); E.setTransform(1, 0, 0, 1, 0, 0); E.drawImage(x.canvas, 0, 0); E.globalCompositeOperation = 'destination-out'; E.drawImage(x.canvas, ox, oy); E.globalCompositeOperation = 'source-in'; E.fillStyle = '#fff'; E.fillRect(0, 0, cw, ch); E.restore(); B.globalAlpha = a; B.drawImage(E.canvas, 0, 0); B.globalAlpha = 1; };
-    rim(e, e, 0.85); rim(-e, -e, 0.3); B.restore();
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = L.opacity; c.drawImage(B.canvas, 0, 0); c.restore(); return true;
-  }
   const out = scratchCtx(9, c); out.save(); out.setTransform(1, 0, 0, 1, 0, 0);
   if (fx.t === 'blur') lfxBlur(out, x.canvas, r); else lfxMotion(out, x.canvas, r, (+fx.a || 0) * Math.PI / 180, c);
   out.restore(); c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = L.opacity; c.drawImage(out.canvas, 0, 0); c.restore(); return true;
@@ -2932,6 +2948,15 @@ function diagRender() {
    ===================================================================== */
 const ROT_DEAD = 0.14;           /* zone morte (8°) : un simple pincement ne fait pas tourner la feuille */
 const angNorm = a => Math.atan2(Math.sin(a), Math.cos(a));
+/* deux doigts qui glissent depuis le bord de l'écran (droit, ou gauche en mode main gauche) ouvrent les calques ; la feuille ne bouge pas */
+function edgeArm(g, a, b) {
+  if (settings.gEdge === false) return; const W = window.innerWidth, left = !!settings.lefty, band = 46;
+  if (left ? (a.x <= band && b.x <= band) : (W - a.x <= band && W - b.x <= band)) g.edge = { left, x0: (a.x + b.x) / 2, done: false };
+}
+function edgeMove(g, a, b) {
+  const e = g.edge, x = (a.x + b.x) / 2, dx = e.left ? x - e.x0 : e.x0 - x; if (dx > 14) g.moved = true;
+  if (!e.done && dx > 56) { e.done = true; g.moved = true; if (!layersOpen) setLayersOpen(true); }
+}
 function beginGesture() {
   const pts = [...P.touches.values()]; if (pts.length < 2) return;
   const a = pts[0], b = pts[1], v = V(), c0 = [(a.x + b.x) / 2 - stageLeft, (a.y + b.y) / 2 - stageTop];
@@ -2939,13 +2964,14 @@ function beginGesture() {
     d0: Math.hypot(a.x - b.x, a.y - b.y) || 1, c0, a0: Math.atan2(b.y - a.y, b.x - a.x), rot0: v.rot || 0,
     s0: v.s, w0: viewToWorld(c0[0], c0[1], v), t0: performance.now(), max: P.touches.size, moved: false, rotated: false, dLast: Math.hypot(a.x - b.x, a.y - b.y) || 1
   };
-  gestureArm(P.gesture);
+  edgeArm(P.gesture, a, b); gestureArm(P.gesture);
 }
 function updateGesture() {
   const g = P.gesture; if (!g) return;
   const pts = [...P.touches.values()]; if (pts.length < 2) return;
   const a = pts[0], b = pts[1], v = V();
   const d = Math.hypot(a.x - b.x, a.y - b.y), c = [(a.x + b.x) / 2 - stageLeft, (a.y + b.y) / 2 - stageTop]; g.dLast = d;
+  if (g.edge) { edgeMove(g, a, b); return; }
   if (g.max >= 3 && settings.gMenu !== false) { gestureSwipe3(g, pts); return; }                   /* trois doigts : glissement vers le bas = menu rapide, la feuille ne bouge pas */
   const da = angNorm(Math.atan2(b.y - a.y, b.x - a.x) - g.a0), rotD = Math.abs(da) > ROT_DEAD ? da - Math.sign(da) * ROT_DEAD : 0;
   v.s = clamp(g.s0 * d / g.d0, v.fitS * 0.4, 14); v.rot = angNorm(g.rot0 + rotD);
@@ -2983,7 +3009,7 @@ function endGesture() {
 function gestureStop() { const g = P.gesture; if (g) { clearTimeout(g.timer); clearTimeout(g.bt); } }
 function gestureArm(g) { g.timer = setTimeout(() => gestureHold(g), 430); }
 function gestureHold(g) {                                                      /* deux doigts maintenus : annuler en continu ; trois : rétablir en continu */
-  if (P.gesture !== g || g.moved || g.menuOpen || settings.gBurst === false || g.max >= 4) return;
+  if (P.gesture !== g || g.moved || g.edge || g.menuOpen || settings.gBurst === false || g.max >= 4) return;
   g.burst = g.max >= 3 ? 'redo' : 'undo'; g.n = 0; burstStep(g);
 }
 function burstStep(g) {
@@ -3431,6 +3457,7 @@ function settingsPane(tab) {
     <div class="row"><label class="t">Pipette par appui long<span class="hint">Maintiens un doigt sur la feuille : une loupe prend la couleur. Glisse pour viser, relâche pour la garder.</span></label>${swHtml('gEye', settings.gEye !== false)}</div>
     <div class="row"><label class="t">Pincer vite pour ajuster<span class="hint">Un pincement rapide à deux doigts recadre la feuille entière.</span></label>${swHtml('gPinch', settings.gPinch !== false)}</div>
     <div class="row"><label class="t">Quatre doigts : interface<span class="hint">Un tap à quatre doigts masque ou affiche les barres.</span></label>${swHtml('gFour', settings.gFour !== false)}</div>
+    <div class="row"><label class="t">Calques depuis le bord<span class="hint">Glisse deux doigts depuis le bord de l’écran (le gauche en mode main gauche) : le panneau Calques s’ouvre.</span></label>${swHtml('gEdge', settings.gEdge !== false)}</div>
     <div class="row"><label class="t">Glisser une couleur pour remplir<span class="hint">Maintiens le doigt ou le Pencil sur une couleur, puis glisse-la sur le dessin : la zone en dessous est remplie, comme avec le pot de peinture.</span></label>${swHtml('gDrop', settings.gDrop !== false)}</div>
     <div class="row"><label class="t">Trois doigts vers le bas : menu<span class="hint">Glisse trois doigts vers le bas : copier la feuille, coller, dupliquer ou effacer le calque.</span></label>${swHtml('gMenu', settings.gMenu !== false)}</div>
     <div class="sec">Pencil</div>
@@ -3610,6 +3637,7 @@ function refreshLayers() {
     return `
     <div class="lr${on ? (selGroup ? ' cur' : ' on') : ''}${L.group ? ' in' : ''}${L.visible ? '' : ' off'}" data-row="l" data-id="${L.id}" data-g="${L.group || ''}">
       <button data-ly="vis" data-id="${L.id}" aria-label="${L.visible ? 'Masquer' : 'Afficher'} le calque" aria-pressed="${L.visible}">${ICO(L.visible ? 'eye' : 'eyeoff')}</button>
+    ${on && !selGroup ? `<button class="lro${layOptOpen ? ' on' : ''}" data-ly="opts" aria-label="Réglages et effets du calque" aria-pressed="${layOptOpen}">${ICO('sliders')}</button>` : ''}
       <div class="lsel" data-ly="sel" data-id="${L.id}" role="button" tabindex="0"><canvas class="lt" width="80" height="80" data-id="${L.id}"></canvas>${nameHtml(L.id, L.name)}</div>
       ${L.locked ? `<button data-ly="lock" data-id="${L.id}" class="lkd" aria-label="Déverrouiller le calque" aria-pressed="true">${ICO('lock')}</button>` : ''}
       <button data-ly="grip" data-id="${L.id}" class="grip" aria-label="Déplacer le calque (glisser)">${ICO('grip')}</button>
@@ -3635,15 +3663,58 @@ function refreshLayers() {
   }
   layersEl.innerHTML = `
     <div class="lh"><b>Calques</b><span class="pill">${n}/${MAX_LAYERS}</span>
-      <button class="ib sm" data-ly="add" aria-label="Ajouter un calque"${n >= MAX_LAYERS ? ' disabled' : ''}>${ICO('plus')}</button><button class="ib sm${layOptOpen ? ' on' : ''}" data-ly="opts" aria-label="Options et effets du calque" aria-pressed="${layOptOpen}">${ICO('sliders')}</button><button class="ib sm" data-ly="close" aria-label="Fermer le panneau">${ICO('x')}</button></div>
+      <button class="ib sm" data-ly="add" aria-label="Ajouter un calque"${n >= MAX_LAYERS ? ' disabled' : ''}>${ICO('plus')}</button><button class="ib sm" data-ly="close" aria-label="Fermer le panneau">${ICO('x')}</button></div>
     <div class="ll">${html}</div>`;
   layersEl.scrollTop = keep;
   if (renamingId) { const inp = $('#lyName'); if (inp) { inp.focus(); inp.select(); } }
   schedThumbs(); layOptRefresh();
 }
+/* ---------- portfolio : maintenir un dessin puis le glisser sur un carnet pour l'y ranger ----------
+   Au doigt : appui long (le défilement reste libre avant). À la souris ou au Pencil : il suffit de glisser. Un fantôme suit le pointeur, le carnet visé se soulève, le bord haut et bas font défiler. */
+const DND = { on: false, t: 0, id: null, th: null, pid: null, sx: 0, sy: 0, x: 0, y: 0, ghost: null, over: null, raf: 0, noClick: false, kind: '' };
+function dndTarget(x, y) { for (const el of document.elementsFromPoint(x, y)) { const c = el.closest && el.closest('.nbc-card[data-nb="open"]'); if (c) return c; } return null; }
+function dndStart() {
+  if (!DND.th || !DND.th.isConnected) return; DND.on = true; clearTimeout(DND.t);
+  const img = DND.th.querySelector('img'), g = document.createElement('img'); g.className = 'dnd-ghost'; g.src = img ? img.currentSrc || img.src : ''; document.body.appendChild(g); DND.ghost = g;
+  DND.th.closest('.dcard').classList.add('dnd-src'); sheet.classList.add('dnd'); if (navigator.vibrate) navigator.vibrate(8); dndMove(DND.x, DND.y); dndLoop();
+}
+function dndMove(x, y) {
+  DND.x = x; DND.y = y; if (!DND.ghost) return; DND.ghost.style.left = x + 'px'; DND.ghost.style.top = y + 'px';
+  const t = dndTarget(x, y); if (t !== DND.over) { if (DND.over) DND.over.classList.remove('dnd-over'); DND.over = t; if (t) { t.classList.add('dnd-over'); if (navigator.vibrate) navigator.vibrate(5); } }
+}
+function dndLoop() {
+  if (!DND.on) return; const r = sheet.getBoundingClientRect(), zone = 70; let dy = 0;
+  if (DND.y < r.top + zone) dy = -Math.ceil((r.top + zone - DND.y) / 5); else if (DND.y > r.bottom - zone) dy = Math.ceil((DND.y - (r.bottom - zone)) / 5);
+  if (dy) { sheet.scrollTop += Math.max(-22, Math.min(22, dy)); dndMove(DND.x, DND.y); }
+  DND.raf = requestAnimationFrame(dndLoop);
+}
+async function dndEnd(drop) {
+  clearTimeout(DND.t); const was = DND.on, over = DND.over, id = DND.id; cancelAnimationFrame(DND.raf);
+  if (DND.ghost) DND.ghost.remove(); if (DND.over) DND.over.classList.remove('dnd-over'); sheet.classList.remove('dnd'); const src = sheet.querySelector('.dcard.dnd-src'); if (src) src.classList.remove('dnd-src');
+  DND.on = false; DND.ghost = null; DND.over = null; DND.th = null; DND.pid = null;
+  if (!was) return; DND.noClick = true; setTimeout(() => { DND.noClick = false; }, 80);
+  if (drop && over && id) { const nb = await NB.add(over.dataset.id, [id]); await openGallery(); flash(`Rangé dans « ${nb ? nb.name : 'ce carnet'} »`); }
+}
+sheet.addEventListener('pointerdown', e => {
+  if (!sheet.classList.contains('folio') || DND.on || FOLIO.pick || (e.pointerType === 'mouse' && e.button !== 0)) return;
+  const th = e.target.closest('.dcard .thumb'); if (!th || !sheet.querySelector('.nbc-card[data-nb="open"]')) return;
+  DND.th = th; DND.id = th.dataset.id; DND.pid = e.pointerId; DND.sx = DND.x = e.clientX; DND.sy = DND.y = e.clientY; DND.kind = e.pointerType; clearTimeout(DND.t);
+  if (e.pointerType === 'touch') DND.t = setTimeout(dndStart, 320);
+}, true);
+window.addEventListener('pointermove', e => {
+  if (e.pointerId !== DND.pid) return;
+  if (DND.on) { dndMove(e.clientX, e.clientY); return; }
+  DND.x = e.clientX; DND.y = e.clientY; const far = Math.hypot(e.clientX - DND.sx, e.clientY - DND.sy);
+  if (DND.kind === 'touch') { if (far > 9) { clearTimeout(DND.t); DND.th = null; DND.pid = null; } }            /* on fait défiler : ce n'est pas un glissé-déposé */
+  else if (far > 7) dndStart();
+}, true);
+['pointerup', 'pointercancel'].forEach(ev => window.addEventListener(ev, e => { if (e.pointerId === DND.pid) dndEnd(ev === 'pointerup'); }, true));
+document.addEventListener('touchmove', e => { if (DND.on) e.preventDefault(); }, { passive: false });
+sheet.addEventListener('click', e => { if (DND.noClick) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+sheet.addEventListener('contextmenu', e => { if (e.target.closest('.dcard .thumb')) e.preventDefault(); });
 /* ---------- options du calque : un panneau flottant sur le côté, ouvert par le bouton réglages du panneau Calques ---------- */
 var layOptOpen = !!LS.get('layOpt', false), layOptEl = null;
-const FX_TYPES = [['', 'Aucun'], ['blur', 'Flou'], ['motion', 'Mouvement'], ['glass', 'Verre']], FX_DEF = { blur: 12, motion: 40, glass: 14 };
+const FX_TYPES = [['', 'Aucun'], ['blur', 'Flou'], ['motion', 'Mouvement']], FX_DEF = { blur: 12, motion: 40 };
 function layOptPlace() {
   if (!layOptEl) return; const ap = $('#app').getBoundingClientRect(), lr = layersEl.getBoundingClientRect(), w = layOptEl.offsetWidth || 272;
   let left = lr.left - ap.left - w - 10; if (left < 8) left = lr.right - ap.left + 10;           /* à gauche du panneau Calques, sinon à droite (mode main gauche) */
@@ -3655,28 +3726,40 @@ function layOptRefresh() {
   const show = layersOpen && layOptOpen; layOptEl.classList.toggle('show', show); if (!show) return;
   const d = S.docs.free, act = activeLayer(d), n = d.layers.length;
   const tile = (ly, ic, short, label, o = {}) => `<button class="lt-b${o.danger ? ' danger' : ''}${o.on ? ' on' : ''}" data-ly="${ly}"${o.id ? ` data-id="${o.id}"` : ''} aria-label="${label}" title="${label}"${o.dis ? ' disabled' : ''}${o.pressed != null ? ` aria-pressed="${o.pressed}"` : ''}>${ICO(ic)}<span>${short}</span></button>`;
-  const head = (t, name) => `<div class="lo-h"><b>${t}</b><span class="ln">${esc(name)}</span><button class="ib sm" data-ly="opts" aria-label="Fermer les options">${ICO('x')}</button></div>`;
+  const head = (t, name) => `<div class="lo-h"><b>${t}</b><input class="txt lo-name" id="loName" maxlength="40" value="${esc(name)}" aria-label="Nom (toucher pour renommer)" autocomplete="off" enterkeyhint="done"><button class="ib sm" data-ly="opts" aria-label="Fermer les options">${ICO('x')}</button></div>`;
   const G = selGroup && groupById(d, selGroup);
   if (G) {
     const members = d.layers.filter(l => l.group === G.id).length, op = Math.round(G.opacity * 100);
     layOptEl.innerHTML = head('Groupe', G.name) + `<div class="orow"><span>Opacité</span><input type="range" min="0" max="100" value="${op}" data-ly="gop" aria-label="Opacité du groupe"><b id="opv">${op} %</b></div>
-      <div class="ltools g4" role="toolbar" aria-label="Actions du groupe">${tile('gren', 'edit', 'Renommer', 'Renommer le groupe')}${tile('glock', G.locked ? 'lock' : 'unlock', G.locked ? 'Débloquer' : 'Bloquer', (G.locked ? 'Déverrouiller' : 'Verrouiller') + ' le groupe', { id: G.id, on: G.locked, pressed: !!G.locked })}${tile('ungroup', 'ungroup', 'Dégrouper', 'Dégrouper')}${tile('gdel', 'trash', 'Supprimer', 'Supprimer le groupe', { danger: true, dis: members >= n })}</div>`;
+      <div class="ltools g4" role="toolbar" aria-label="Actions du groupe">${tile('glock', G.locked ? 'lock' : 'unlock', G.locked ? 'Débloquer' : 'Bloquer', (G.locked ? 'Déverrouiller' : 'Verrouiller') + ' le groupe', { id: G.id, on: G.locked, pressed: !!G.locked })}${tile('ungroup', 'ungroup', 'Dégrouper', 'Dégrouper')}${tile('gdel', 'trash', 'Supprimer', 'Supprimer le groupe', { danger: true, dis: members >= n })}</div>`;
   } else {
     const L = act, si = siblingInfo(d, L), fx = L.fx || null, op = Math.round(L.opacity * 100), cur = fx ? fx.t : '';
     const row = (lab, key, min, max, val, unit) => `<div class="orow"><span>${lab}</span><input type="range" min="${min}" max="${max}" step="1" value="${Math.round(val)}" data-ly="${key}" aria-label="${lab}"><b id="${key}v">${Math.round(val)}${unit}</b></div>`;
     const rows = !fx ? '<p class="lo-hint">Un effet transforme tout le calque sans toucher à ses traits : tu peux le retirer à tout moment.</p>'
       : fx.t === 'blur' ? row('Rayon', 'fxr', 0, 60, fx.r, '')
-      : fx.t === 'motion' ? row('Distance', 'fxr', 0, 120, fx.r, '') + row('Angle', 'fxa', 0, 359, fx.a, '°')
-      : row('Flou', 'fxr', 0, 40, fx.r, '') + row('Voile', 'fxk', 0, 100, fx.k * 100, ' %');
+      : row('Distance', 'fxr', 0, 120, fx.r, '') + row('Angle', 'fxa', 0, 359, fx.a, '°');
     layOptEl.innerHTML = head('Calque', L.name) + `<div class="orow"><span>Opacité</span><input type="range" min="0" max="100" value="${op}" data-ly="op" aria-label="Opacité du calque"><b id="opv">${op} %</b></div>
       <div class="ltools" role="toolbar" aria-label="Actions du calque">
         ${tile('dup', 'copy', 'Dupliquer', 'Dupliquer le calque', { dis: n >= MAX_LAYERS })}${tile('merge', 'merge', 'Fusionner', fx ? 'Retire l’effet avant de fusionner' : 'Fusionner avec le calque du dessous', { dis: !si.canMerge || !!fx })}${L.group ? tile('ungroupone', 'ungroup', 'Sortir', 'Sortir du groupe') : tile('group', 'folder', 'Grouper', 'Grouper ce calque')}${tile('up', 'up', 'Monter', 'Monter le calque', { dis: !si.canUp })}${tile('down', 'down', 'Descendre', 'Descendre le calque', { dis: !si.canDown })}
-        ${tile('move', 'move', 'Déplacer', 'Déplacer, agrandir, tourner le calque')}${tile('deform', 'warp', 'Déformer', 'Déformer le calque')}${tile('ren', 'edit', 'Renommer', 'Renommer le calque')}${tile('lock', L.locked ? 'lock' : 'unlock', L.locked ? 'Débloquer' : 'Bloquer', (L.locked ? 'Déverrouiller' : 'Verrouiller') + ' le calque', { id: L.id, on: L.locked, pressed: !!L.locked })}${tile('del', 'trash', 'Supprimer', 'Supprimer le calque', { danger: true, dis: n <= 1 })}
-      </div>
+        ${tile('move', 'move', 'Déplacer', 'Déplacer, agrandir, tourner le calque')}${tile('deform', 'warp', 'Déformer', 'Déformer le calque')}${tile('lock', L.locked ? 'lock' : 'unlock', L.locked ? 'Débloquer' : 'Bloquer', (L.locked ? 'Déverrouiller' : 'Verrouiller') + ' le calque', { id: L.id, on: L.locked, pressed: !!L.locked })}${tile('del', 'trash', 'Supprimer', 'Supprimer le calque', { danger: true, dis: n <= 1 })}
+      </div><p class="lo-hint lo-tiphint">Maintiens une icône pour voir son nom.</p>
       <div class="lo-t">Effets</div>
-      <div class="fx-chips" role="radiogroup" aria-label="Effet du calque">${FX_TYPES.map(([k, l]) => `<button data-ly="fx" data-v="${k}" role="radio" aria-checked="${cur === k}" class="${cur === k ? 'on' : ''}">${l}</button>`).join('')}</div>${rows}`;
+      <div class="fx-chips" role="radiogroup" aria-label="Effet du calque">${FX_TYPES.map(([k, l]) => `<button data-ly="fx" data-v="${k}" role="radio" aria-checked="${cur === k}" class="${cur === k ? 'on' : ''}">${l}</button>`).join('')}</div>${rows}${fx ? '<button class="fx-flat" data-ly="fxflat">Aplatir l’effet</button><p class="lo-hint">Le calque devient une image : l’effet est définitif (on peut annuler).</p>' : ''}`;
   }
   layOptPlace();
+}
+/* aplatir l'effet : le calque est dessiné avec son effet puis remplacé par une image (déformer un calque fait pareil) ; « annuler » le rétablit */
+async function layFxFlatten() {
+  const d = S.docs.free, L = activeLayer(d); if (!L || !L.fx) return;
+  if (!d.strokes.some(t => t.layer === L.id)) { flash('Ce calque est vide : rien à aplatir.'); return; }
+  const W = d.page.w, H = d.page.h, ext = L.fx.t === 'motion' ? (+L.fx.r || 0) : (+L.fx.r || 0) * 2.2, e = Math.min(ext, 0.25 * Math.min(W, H)), bx0 = -e, by0 = -e, bx1 = W + e, by1 = H + e;
+  const k = Math.min(2, 4096 / Math.max(bx1 - bx0, by1 - by0), Math.sqrt(14e6 / ((bx1 - bx0) * (by1 - by0)))), cv = document.createElement('canvas'); cv.width = Math.max(1, Math.ceil((bx1 - bx0) * k)); cv.height = Math.max(1, Math.ceil((by1 - by0) * k));
+  const x = cv.getContext('2d'); x.setTransform(k, 0, 0, k, -bx0 * k, -by0 * k);
+  drawLayers(x, { ...d, layers: [{ ...L, opacity: 1, visible: true, group: null }], groups: [], strokes: d.strokes.filter(t => t.layer === L.id) }, null);
+  const reg = await imgRegisterCanvas(cv); if (!reg) { flash('Impossible d’aplatir cet effet.'); return; }
+  const before = snapshot(d), im = { id: reg.id, cx: (bx0 + bx1) / 2, cy: (by0 + by1) / 2, w: bx1 - bx0, h: by1 - by0, rot: 0, flip: false };
+  d.strokes = d.strokes.filter(t => t.layer !== L.id); d.strokes.push({ tool: 'image', color: '#000000', alpha: 1, layer: L.id, im, p: imgCorners(im) }); L.fx = undefined; L.rev = (L.rev || 0) + 1;
+  pushOp({ k: 'snap', before, after: snapshot(d) }); requestRender(); markDirty(); refreshLayers(); flash('Effet aplati : le calque est maintenant une image');
 }
 function layFxSet(t) {
   const d = S.docs.free, L = activeLayer(d); if (!L) return;
@@ -3689,11 +3772,23 @@ function layFxEdit(key, v) {
   requestRender(); markDirty();
 }
 function layOptBind() {
+  layOptEl.addEventListener('change', e => {
+    if (e.target.id !== 'loName') return; const d = S.docs.free, T = selGroup && groupById(d, selGroup) ? groupById(d, selGroup) : activeLayer(d), v = e.target.value.trim().slice(0, 40); if (!T) return;
+    if (v && v !== T.name) { T.name = v; markDirty(); refreshLayers(); } else e.target.value = T.name;
+  });
+  layOptEl.addEventListener('keydown', e => { if (e.target.id === 'loName') { if (e.key === 'Enter') e.target.blur(); else if (e.key === 'Escape') { e.target.value = (selGroup && groupById(S.docs.free, selGroup) ? groupById(S.docs.free, selGroup) : activeLayer(S.docs.free)).name; e.target.blur(); } } });
+  /* les icônes n'ont plus de texte : en maintenant le doigt, leur nom apparaît (et l'action n'est pas lancée) */
+  let tipT = 0, tipOn = false; const tipEl = () => document.getElementById('loTip') || (() => { const t = document.createElement('div'); t.id = 'loTip'; t.setAttribute('role', 'tooltip'); $('#app').appendChild(t); return t; })();
+  const hideTip = () => { const t = document.getElementById('loTip'); if (t) t.classList.remove('show'); };
+  layOptEl.addEventListener('pointerdown', e => { const b = e.target.closest('.lt-b'); if (!b) return; clearTimeout(tipT); tipT = setTimeout(() => { tipOn = true; const t = tipEl(), ap = $('#app').getBoundingClientRect(), r = b.getBoundingClientRect(); t.textContent = b.getAttribute('aria-label') || ''; t.style.left = (r.left - ap.left + r.width / 2) + 'px'; t.style.top = (r.top - ap.top - 38) + 'px'; t.classList.add('show'); }, 380); });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => layOptEl.addEventListener(ev, () => { clearTimeout(tipT); if (tipOn) setTimeout(hideTip, 1100); }));
+  layOptEl.addEventListener('click', e => { if (tipOn) { e.stopImmediatePropagation(); e.preventDefault(); tipOn = false; } }, true);
   layOptEl.addEventListener('click', e => {
     const el = e.target.closest('[data-ly]'); if (!el || el.disabled) return; const k = el.dataset.ly;
     if (k === 'op' || k === 'gop' || k === 'fxr' || k === 'fxa' || k === 'fxk') return;
     if (k === 'opts') return layOptToggle(false);
     if (k === 'fx') return layFxSet(el.dataset.v);
+    if (k === 'fxflat') return layFxFlatten();
     if (renamingId && k !== 'ren' && k !== 'gren') commitRename();
     layerAction(k, el.dataset.id);
   });
@@ -3759,7 +3854,7 @@ function layerAction(a, id) {
     case 'close': return setLayersOpen(false);
     case 'move': return layerMoveStart();
     case 'deform': return layerDeformStart();
-    case 'sel': selGroup = null; if (d.active !== L.id) { d.active = L.id; markDirty(); } return refreshLayers();
+    case 'sel': if (!selGroup && d.active === L.id) { layOptToggle(); return; } selGroup = null; if (d.active !== L.id) { d.active = L.id; markDirty(); } return refreshLayers();
     case 'vis': L.visible = !L.visible; requestRender(); refreshLayers(); markDirty(); return;
     case 'lock': L.locked = !L.locked; refreshLayers(); markDirty(); return;
     case 'ren': renamingId = L.id; return refreshLayers();
@@ -5117,6 +5212,15 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
+  { v: '1.22.0', date: '3 nov. 2026', items: [
+    ['Calques : réglages à portée de doigt', 'Le bouton réglages est maintenant à côté de l’œil du calque choisi, et un second toucher sur le calque ouvre ses réglages. L’en-tête du panneau ne déborde plus.'],
+    ['Renommer d’un toucher', 'Le nom du calque, en haut de ses réglages, se modifie directement.'],
+    ['Noms des icônes au maintien', 'Les icônes des réglages n’ont plus de texte : maintiens une icône pour voir son nom.'],
+    ['Aplatir l’effet', 'Un bouton transforme le calque flouté en image définitive (on peut annuler). L’effet « verre » est retiré.'],
+    ['Calques depuis le bord', 'Glisse deux doigts depuis le bord droit de l’écran (le gauche en mode main gauche) pour ouvrir les calques.'],
+    ['Annuler en rouge partout', 'Déplacer, déformer et poser une image ont le même bouton Annuler rouge, à la place de la petite croix.'],
+    ['Stylos : la taille en haut', 'Dans les réglages des stylos, la taille du trait passe avant la liste des pinceaux.'],
+    ['Portfolio : glisser dans un carnet', 'Maintiens un dessin puis glisse-le sur un carnet pour l’y ranger.']] },
   { v: '1.21.0', date: '3 nov. 2026', items: [
     ['Calques plus fins', 'Le panneau Calques est plus étroit et plus allongé. Ses options (opacité, actions, effets) passent dans un panneau flottant sur le côté, qu’on ouvre avec le bouton réglages de l’en-tête.'],
     ['Effets de calque', 'Flou, flou directionnel (distance et angle) et verre dépoli (le fond flouté ne reste que dans les formes du calque). Les effets s’appliquent aussi à l’export et ne touchent pas aux traits.'],
@@ -5444,6 +5548,7 @@ const SEC_RENDER = { brushes: () => brushGridRender(), sizeopts: () => sizeRende
 let inspPanel = null;
 const popIsOpen = k => insp.classList.contains('show') && inspPanel === KEY2PANEL[k];
 function inspRender() {
+  const sz0 = document.getElementById('sizeopts'); if (sz0 && inspB.firstElementChild !== sz0) inspB.insertBefore(sz0, inspB.firstElementChild);        /* la taille du trait passe avant la liste des pinceaux */
   const P = PANELS[inspPanel], on = P.secs();
   const grn = inspPanel === 'brush' && S.tool === 'grain';
   insp.querySelector('.insp-h use').setAttribute('href', '#i-' + (grn ? 'grain' : inspPanel === 'fill' && settings.fillMode === 'grad' ? 'gradient' : P.ic)); insp.querySelector('.insp-h b').textContent = grn ? 'Grain' : inspPanel === 'brush' ? BRUSHES[S.brush].label : P.t;
@@ -7530,8 +7635,7 @@ plEl.innerHTML = `<div class="pl-surface"></div><div class="pl-box"><img alt="">
     <button class="ib snapb" data-pl="magnet" aria-label="Aimant activé" aria-pressed="true" title="Aimant activé : centre et bords (toucher pour le couper)"><svg class="ic"><use href="#i-magnet"/></svg></button>
     <button class="ib" data-pl="flip" aria-label="Retourner" title="Retourner"><svg class="ic"><use href="#i-flip"/></svg></button>
     
-    <button class="btn primary" data-pl="ok">Poser</button>
-    <button class="xbtn pl-x" data-pl="drop" aria-label="Fermer sans poser cette image" title="Fermer sans poser"><svg class="ic"><use href="#i-x"/></svg></button></div>`;
+    <button class="btn primary cancel" data-pl="drop" aria-label="Annuler sans poser cette image">Annuler</button><button class="btn primary" data-pl="ok">Poser</button></div>`;
 $('#app').appendChild(plEl);
 const plBox = plEl.querySelector('.pl-box'), plImg = plBox.querySelector('img'), plSurface = plEl.querySelector('.pl-surface');
 function imgCanInsert() {
@@ -7858,8 +7962,7 @@ lmEl.innerHTML = `<div class="pl-surface"></div><div class="pl-box lm-box"><i cl
     <button class="ib" data-lm="center" aria-label="Centrer sur la feuille" title="Centrer sur la feuille"><svg class="ic"><use href="#i-center"/></svg></button>
     <button class="ib snapb" data-lm="magnet" aria-label="Aimant activé" aria-pressed="true" title="Aimant activé : centre et bords (toucher pour le couper)"><svg class="ic"><use href="#i-magnet"/></svg></button>
     <label class="pl-own lm-all"><input type="checkbox" data-lm="all"><span>Toutes les images</span></label>
-    <button class="btn" data-lm="cancel" aria-label="Annuler le déplacement">Annuler</button><button class="btn primary" data-lm="ok" aria-label="Valider la position">Valider</button>
-    <button class="xbtn pl-x" data-lm="ok" aria-label="Fermer en gardant le déplacement" title="Fermer (le déplacement est gardé)"><svg class="ic"><use href="#i-x"/></svg></button></div>`;
+    <button class="btn primary cancel" data-lm="cancel" aria-label="Annuler le déplacement">Annuler</button><button class="btn primary" data-lm="ok" aria-label="Valider la position">Valider</button></div>`;
 $('#app').appendChild(lmEl);
 const lmSurface = lmEl.querySelector('.pl-surface'), lmBox = lmEl.querySelector('.pl-box');
 const xfData = st => ({ p: st.p.slice(), im: st.im ? { ...st.im } : null, g: st.g ? { ...st.g } : null, sym: st.sym ? { ...st.sym } : null, tx: st.tx ? { ...st.tx, _k: undefined, _L: undefined } : null, color: st.tx ? st.color : undefined });
@@ -8163,8 +8266,7 @@ dfEl.innerHTML = `<canvas id="dfCv"></canvas><svg class="df-svg" aria-hidden="tr
     <div class="seg df-seg" role="tablist" aria-label="Type de déformation"><button data-df="persp" class="on" role="tab" aria-selected="true">Perspective</button><button data-df="warp" role="tab" aria-selected="false">Gondoler</button></div>
     <button class="ib" data-df="flipx" aria-label="Miroir horizontal" title="Miroir horizontal"><svg class="ic"><use href="#i-flip"/></svg></button>
     <button class="ib df-fy" data-df="flipy" aria-label="Miroir vertical" title="Miroir vertical"><svg class="ic"><use href="#i-flip"/></svg></button>
-    <button class="btn" data-df="reset">Réinitialiser</button><button class="btn primary" data-df="ok">Appliquer</button>
-    <button class="xbtn pl-x" data-df="cancel" aria-label="Fermer sans appliquer" title="Fermer sans appliquer"><svg class="ic"><use href="#i-x"/></svg></button></div>`;
+    <button class="btn" data-df="reset">Réinitialiser</button><button class="btn primary cancel" data-df="cancel" aria-label="Annuler la déformation">Annuler</button><button class="btn primary" data-df="ok">Appliquer</button></div>`;
 $('#app').appendChild(dfEl);
 let dfCv = dfEl.querySelector('#dfCv'); const dfHs = dfEl.querySelector('.df-hs'), dfSvg = dfEl.querySelector('.df-svg'), dfSvgQ = dfSvg.querySelector('.df-q'), dfSvgG = dfSvg.querySelector('.df-g');
 
