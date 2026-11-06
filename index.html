@@ -1669,7 +1669,14 @@ html[data-theme="dark"] #modeSeg.modefab{--mode-blue:#0a84ff;--mode-off:#303640}
 #modeSeg.modefab > .nav-ind{display:none}
 #modeSeg.modefab > button{position:absolute;top:0;left:0;width:var(--fab,44px);height:var(--fab,44px);padding:0;margin:0;gap:0;display:grid;place-items:center;border-radius:50%;
   background:var(--mode-off);box-shadow:none;color:var(--ink);opacity:0;visibility:hidden;pointer-events:none;transform:scale(.4)}
-#modeSeg.modefab > button.on{opacity:1;visibility:visible;pointer-events:auto;transform:none;background:var(--mode-blue);color:#fff}
+#modeSeg.modefab > button.on{opacity:1;visibility:visible;pointer-events:auto;transform:none;background:var(--mode-c,var(--mode-blue));color:#fff}
+#modeSeg.modefab > button[data-mode=free].on{--mode-c:#007aff}
+#modeSeg.modefab > button[data-nav=notes].on{--mode-c:#e0a400}
+#modeSeg.modefab > button[data-mode=anim].on{--mode-c:#e5403a}
+#modeSeg.modefab > button[data-nav=games].on{--mode-c:#b13dff}
+html[data-theme="dark"] #modeSeg.modefab > button[data-nav=notes].on{--mode-c:#ffcf33;color:#1a1400}
+html[data-theme="dark"] #modeSeg.modefab > button[data-mode=anim].on{--mode-c:#ff6a5f}
+html[data-theme="dark"] #modeSeg.modefab > button[data-mode=free].on{--mode-c:#0a84ff}
 #modeSeg.modefab > button span{display:none}
 #modeSeg.modefab > button .ic{width:21px;height:21px;opacity:1}
 #modeSeg.modefab.open > button{opacity:1;visibility:visible;pointer-events:auto;transform:none;top:calc(var(--slot,0)*var(--step,54px));box-shadow:0 2px 8px rgba(20,30,45,.22)}
@@ -1702,6 +1709,9 @@ html:not(.dock-mini) #dock #grpColors #btnColor.on{background:linear-gradient(18
 html[data-theme="dark"] #modeSeg.modefab{--mode-blue:#0a84ff;--mode-off-g:rgb(52 58 68 / .92);--mode-on-g:rgb(10 132 255 / .94)}
 html[data-dg] #modeSeg.modefab > button.lg-button{background:var(--lg-glass-fill);--lg-glass-fill:var(--mode-off-g)}
 html[data-dg] #modeSeg.modefab > button.lg-button.on{--lg-glass-fill:var(--mode-on-g)}
+html[data-dg] #modeSeg.modefab > button[data-nav=notes].lg-button.on{--lg-glass-fill:rgb(224 164 0 / .95)}
+html[data-dg] #modeSeg.modefab > button[data-mode=anim].lg-button.on{--lg-glass-fill:rgb(229 64 58 / .95)}
+html[data-dg] #modeSeg.modefab > button[data-nav=games].lg-button.on{--lg-glass-fill:rgb(177 61 255 / .95)}
 /* ---------- 1.21.0 : calques fins et allongés, options en panneau flottant, effets de calque ---------- */
 #layers{width:min(248px,calc(100% - 24px - var(--sal) - var(--sar)));padding:10px;min-height:min(470px,calc(100% - var(--sat) - var(--sab) - 100px))}
 #layers .lsel{height:42px}
@@ -1761,7 +1771,11 @@ html.nt-on{--accent:#e0a400;--accent-soft:rgba(224,164,0,.16)}
 html[data-theme="dark"].nt-on{--accent:#ffcf33;--accent-soft:rgba(255,207,51,.2)}
 html.anim-on{--accent:#e5403a;--accent-soft:rgba(229,64,58,.16)}
 html[data-theme="dark"].anim-on{--accent:#ff6a5f;--accent-soft:rgba(255,106,95,.2)}
-html.nt-on #dock,html.nt-on #layers,html.nt-on #layOpt,html.nt-on #insp,html.nt-on #btnNew,html.nt-on #btnLay,html.nt-on #btnFit,html.nt-on #btnUndo,html.nt-on #btnRedo,html.nt-on #btnLib,html.nt-on #btnTools,html.nt-on #btnMenu,html.nt-on #topbar .ag{display:none!important}
+html.nt-on #dock,html.nt-on #layers,html.nt-on #layOpt,html.nt-on #insp,html.nt-on #btnNew,html.nt-on #btnLay,html.nt-on #btnFit,html.nt-on #btnUndo,html.nt-on #btnRedo,html.nt-on #btnLib,html.nt-on #btnTools,html.nt-on #btnMenu,html.nt-on #topbar .ag[aria-label="Vue"],html.nt-on #topbar .ag[aria-label="Historique"]{display:none!important}
+#btnNotes{display:none}
+html.nt-on #btnNotes{display:grid}
+html.nt-on #btnNotes.on{color:#fff;background:var(--accent)}
+html[data-dg].nt-on #btnNotes.on{--lg-glass-fill:rgb(224 164 0 / .9)}
 .nt-view{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--stage);transition:opacity .26s var(--ease),transform .3s var(--ease)}
 .nt-view[hidden]{display:none}
 .nt-view.out{opacity:0;transform:translateX(-24px);pointer-events:none}
@@ -1795,7 +1809,7 @@ html[data-theme="dark"] .nt-pinb{background:rgba(40,44,52,.8)}
 .nt-back{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:4px;height:40px;padding:0 14px 0 10px;border-radius:20px;font-size:15px;font-weight:600;color:var(--accent);line-height:1}
 .nt-back .ic{width:20px;height:20px;margin:0}
 .nt-ttl{flex:1 1 150px;min-width:110px;max-width:340px;height:38px;margin:0 6px;padding:0 12px;border-radius:19px;border:0;background:var(--fill);font:inherit;font-size:16px;font-weight:650;color:var(--ink);outline:none}
-.nt-wrap{position:relative;flex:1;min-height:0;margin-top:6px}
+.nt-wrap{position:relative;flex:1;min-height:0;margin-top:0}
 .nt-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:contain}
 .nt-sizer{position:relative;margin:0 auto}
 .nt-page{position:absolute;left:0;top:0;width:1000px;transform-origin:0 0;overflow:hidden}
@@ -1812,7 +1826,7 @@ html[data-theme="dark"] .nt-pinb{background:rgba(40,44,52,.8)}
 .nt-ed[data-tool=move] .nt-b{outline:2.5px dashed color-mix(in srgb,var(--accent) 70%,transparent);outline-offset:4px}
 .nt-text:focus-within,.nt-todo:focus-within{pointer-events:auto}
 .nt-bh{position:absolute;left:0;top:-52px;height:46px;display:none;align-items:center;gap:6px;padding:0 8px;border-radius:23px;background:var(--glass-strong);box-shadow:var(--shadow),inset 0 0 0 1px var(--glass-brd);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);z-index:5;white-space:nowrap}
-.nt-ed[data-tool=move] .nt-b .nt-bh,.nt-b:focus-within .nt-bh{display:flex}
+.nt-ed[data-tool=move] .nt-b .nt-bh,.nt-b:focus-within .nt-bh,.nt-b.nt-sel .nt-bh{display:flex}
 .nt-bh button,.nt-grip{min-width:38px;height:36px;border-radius:18px;display:grid;place-items:center;font-size:20px;font-weight:700;color:var(--ink);padding:0 6px;pointer-events:auto}
 .nt-bh button.on{background:var(--accent);color:#fff}
 .nt-grip{cursor:grab;touch-action:none;font-size:22px;letter-spacing:-2px}
@@ -1863,6 +1877,34 @@ html[data-theme="dark"] .nt-pinb{background:rgba(40,44,52,.8)}
 .nt-opt.on{background:var(--accent);color:#fff}
 .nt-sw.on,.nt-sz.on,.nt-psw.on{box-shadow:0 0 0 2.5px var(--paper),0 0 0 5px var(--accent)}
 .nt-sz.on{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent)}
+/* ---------- 1.26.0 : barre d'outils verticale à gauche + menu flottant ---------- */
+#ntEd{flex-direction:row;align-items:stretch;padding:12px 12px 12px calc(12px + var(--sal));gap:12px}
+#ntList{padding-top:6px}
+/* barre d'outils verticale, comme le dock de Dessin */
+#ntBar{flex:none;align-self:center;flex-direction:column;align-items:center;gap:6px;margin:0;padding:10px 7px;max-height:100%;overflow-y:auto;overflow-x:hidden;border-radius:26px;scrollbar-width:none}
+#ntBar::-webkit-scrollbar{display:none}
+#ntBar .ib{width:42px;height:42px;flex:none}
+#ntBar .nt-sep{width:24px;height:1px;margin:3px 0}
+.nt-zoom{order:0;min-width:0;font-size:11px;padding:2px 0}
+/* page à droite, dans une carte */
+.nt-wrap{border-radius:20px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+/* bouton flottant du menu (en haut à gauche de la page) */
+/* le menu flottant s'ouvre sous le bouton */
+.nt-menu-pop{position:absolute;left:12px;top:8px;z-index:12;width:290px;max-width:calc(100% - 24px);padding:14px;border-radius:22px;animation:panelin .26s var(--ease)}
+.nt-menu-pop[hidden]{display:none}
+.nt-mback{display:inline-flex;align-items:center;justify-content:center;gap:4px;height:40px;padding:0 16px 0 10px;border-radius:20px;background:var(--fill);font-size:15px;font-weight:650;color:var(--accent);line-height:1}
+.nt-mback .ic{width:20px;height:20px}
+.nt-mlbl{display:block;margin:14px 2px 6px;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+#ntMenu .nt-ttl{display:block;width:100%;height:44px;margin:0;box-sizing:border-box;border-radius:14px;background:var(--fill);padding:0 14px;font-size:16px;font-weight:650}
+.nt-mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.nt-mb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:66px;border-radius:16px;background:var(--fill);font-size:12.5px;font-weight:600;color:var(--ink);text-align:center}
+.nt-mb .ic{width:22px;height:22px}
+.nt-mb.on{background:var(--accent);color:#fff}
+.nt-mb.nt-mdel{color:var(--danger)}
+.nt-mb.nt-mdel.arm{background:var(--danger);color:#fff}
+/* en mode main gauche : barre et menu à droite */
+.lefty #ntEd{flex-direction:row-reverse;padding:12px calc(12px + var(--sar)) 12px 12px}
+
 </style>
 </head>
 <body>
@@ -1885,8 +1927,8 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
   <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l1.1-4.1L16.3 4.7a2 2 0 012.8 0l.2.2a2 2 0 010 2.8L8.1 18.9z"/><path d="M14.3 6.7l3 3"/><path d="M4 20l4.1-1.1"/></symbol>
   <symbol id="i-eraser" viewBox="0 0 24 24"><path d="M9.2 19.5H20"/><path d="M5.3 14.2L13 6.5a2 2 0 012.8 0l3.7 3.7a2 2 0 010 2.8l-6.5 6.5H9.6L5.3 17a2 2 0 010-2.8z"/><path d="M9.7 10l6.3 6.3"/></symbol>
   <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7.5L4.5 12 9 16.5"/><path d="M5 12h9a4.5 4.5 0 010 9H10"/></symbol>
-  <symbol id="i-shrink" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
-  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+  <symbol id="i-shrink" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.5-4.5M8 11h6"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.5-4.5M11 8v6M8 11h6"/></symbol>
   <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3.5 3.5l17 17"/><path d="M10.2 6.2A10 10 0 0112 6c5 0 8.6 3.8 9.8 6-.5.9-1.5 2.3-3 3.6M6.5 7.4C4.4 8.7 2.9 10.7 2.2 12c1.2 2.2 4.8 6 9.8 6 1.4 0 2.6-.3 3.7-.7"/><path d="M9.9 9.9a3 3 0 004.2 4.2"/></symbol>
   <symbol id="i-ink" viewBox="0 0 24 24"><path d="M12 3l5.2 8L12 21 6.8 11z"/><path d="M12 11.6V21"/><circle cx="12" cy="9.4" r="1.1"/></symbol>
   <symbol id="i-airbrush" viewBox="0 0 24 24"><path d="M4 12h6v8H4z"/><path d="M5.5 12V9.5h3V12"/><path d="M10 15.2h2.6"/><circle cx="15.6" cy="9" r=".8"/><circle cx="19" cy="6.4" r=".8"/><circle cx="19.2" cy="11.4" r=".8"/><circle cx="16.4" cy="14.2" r=".8"/><circle cx="20.2" cy="15.4" r=".6"/></symbol>
@@ -1985,6 +2027,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
       <div class="ag" role="group" aria-label="Feuille">
         <button class="ib" id="btnNew" aria-label="Nouvelle feuille" title="Nouvelle feuille (maintiens pour choisir le format)"><svg class="ic"><use href="#i-plus"/></svg></button>
         <button class="ib" id="btnLib" aria-label="Mes dessins" title="Mes dessins"><svg class="ic"><use href="#i-folder"/></svg></button>
+        <button class="ib" id="btnNotes" aria-label="Mes notes" title="Mes notes"><svg class="ic"><use href="#i-folder"/></svg></button>
       </div>
       <div class="ag" role="group" aria-label="Historique">
         <button class="ib" id="btnUndo" aria-label="Annuler" title="Annuler" disabled><svg class="ic"><use href="#i-undo"/></svg></button>
@@ -2070,7 +2113,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.25.0";
+const APP_VERSION = "1.26.1";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -5376,6 +5419,14 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
+  { v: '1.26.1', date: '3 nov. 2026', items: [
+    ['Notes : menu au bon endroit', 'Le bouton du menu de la note (nom, toutes les notes, réglages) est maintenant dans la barre du haut, à la place de « Mes dessins », au lieu de flotter sur la barre d’outils.'],
+    ['Icônes de zoom', 'Les boutons réduire et agrandir utilisent des loupes − et +, plus claires.']] },
+  { v: '1.26.0', date: '3 nov. 2026', items: [
+    ['Notes : barre à gauche', 'Comme en Dessin, les outils sont dans une barre verticale à gauche. Le nom de la note, toutes les notes et les réglages sont réunis dans un menu flottant, ouvert par le bouton rond en haut à gauche.'],
+    ['Outils plus réactifs', 'Les boutons d’outils réagissent dès qu’on les touche, plus besoin d’appuyer plusieurs fois.'],
+    ['Suppression des blocs', 'La corbeille des textes et des listes à cocher fonctionne de nouveau.'],
+    ['Bouton des modes coloré', 'Le bouton de changement de mode prend la couleur du mode : bleu en Dessin, jaune en Notes, rouge en Animation, violet en Multijoueur.']] },
   { v: '1.25.0', date: '3 nov. 2026', items: [
     ['Notes : plus de stylos', 'Trois profils (fin, feutre, pinceau), plus de couleurs et d’épaisseurs.'],
     ['Notes : zoom', 'Pince à deux doigts ou touche − / + pour dézoomer et zoomer la page.'],
@@ -7376,10 +7427,20 @@ ntRoot.innerHTML = `
   <div class="nt-grid" id="ntGrid"></div>
 </div>
 <div class="nt-view nt-ed out" id="ntEd" data-tool="pen" hidden>
-  <div class="nt-bar glass" id="ntBar" role="toolbar" aria-label="Outils de la note">
-    <button class="nt-back" data-nt="back" aria-label="Retour à la liste des notes"><svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Notes</button>
-    <input class="nt-ttl" id="ntTitle" maxlength="60" aria-label="Titre de la note" autocomplete="off" enterkeyhint="done">
-    <span class="nt-sep"></span>
+  <div class="nt-menu-pop glass" id="ntMenu" hidden role="dialog" aria-label="Menu de la note">
+    <button class="nt-mback" data-nt="back" aria-label="Retour à toutes les notes"><svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Toutes les notes</button>
+    <label class="nt-mlbl">Nom de la note</label>
+    <input class="nt-ttl" id="ntTitle" maxlength="60" aria-label="Nom de la note" autocomplete="off" enterkeyhint="done">
+    <div class="nt-mgrid">
+      <button class="nt-mb" data-nt="paper">${ICO('paper')}<span>Papier</span></button>
+      <button class="nt-mb" data-ex="png">${ICO('image')}<span>Export PNG</span></button>
+      <button class="nt-mb" data-ex="pdf">${ICO('export')}<span>Export PDF</span></button>
+      <button class="nt-mb" data-mo="pin" id="ntPinB">${ICO('pin')}<span>Épingler</span></button>
+      <button class="nt-mb" data-mo="settings">${ICO('gear')}<span>Réglages</span></button>
+      <button class="nt-mb nt-mdel" data-mo="del">${ICO('trash')}<span>Supprimer</span></button>
+    </div>
+  </div>
+  <div class="nt-bar glass" id="ntBar" role="toolbar" aria-label="Outils de la note" aria-orientation="vertical">
     <button class="ib on" data-nt="tool" data-tool="pen" aria-label="Stylo fin">${ICO('nib')}<i class="dotc" id="ntDotPen"></i></button>
     <button class="ib" data-nt="tool" data-tool="hl" aria-label="Surligneur">${ICO('highlighter')}<i class="dotc" id="ntDotHl"></i></button>
     <button class="ib" data-nt="tool" data-tool="erase" aria-label="Gomme : efface le trait entier">${ICO('eraser')}</button>
@@ -7394,12 +7455,9 @@ ntRoot.innerHTML = `
     <button class="ib" data-nt="undo" aria-label="Annuler">${ICO('undo')}</button>
     <button class="ib" data-nt="redo" aria-label="Rétablir"><svg class="ic flip"><use href="#i-undo"/></svg></button>
     <span class="nt-sep"></span>
-    <button class="ib" data-nt="zoomout" aria-label="Dézoomer">${ICO('shrink')}</button>
-    <button class="ib" data-nt="zoomin" aria-label="Zoomer">${ICO('expand')}</button>
+    <button class="ib" data-nt="zoomout" aria-label="Réduire">${ICO('shrink')}</button>
+    <button class="ib" data-nt="zoomin" aria-label="Agrandir">${ICO('expand')}</button>
     <b class="nt-zoom" id="ntZoom" aria-live="polite" hidden></b>
-    <span class="nt-sep"></span>
-    <button class="ib" data-nt="paper" aria-label="Papier">${ICO('paper')}</button>
-    <button class="ib" data-nt="more" aria-label="Options de la note">${ICO('more')}</button>
   </div>
   <div class="nt-wrap" id="ntWrap">
     <div class="nt-scroll" id="ntScroll"><div class="nt-sizer" id="ntSizer"><div class="nt-page" id="ntPage"><div class="nt-chunks" id="ntChunks"></div><div class="nt-blocks" id="ntBlocks"></div><div class="nt-guide" id="ntGuide"><em></em><i></i><i></i><b></b></div></div></div></div>
@@ -7586,6 +7644,7 @@ function ntPanEnd(e) {
 function ntInertia(v) { const sc = sc0(); let last = performance.now(); const step = t => { const dt = Math.min(32, t - last); last = t; sc.scrollTop -= v * dt; v *= Math.pow(0.94, dt / 16); if (Math.abs(v) > 0.03) NT.inr = requestAnimationFrame(step); }; NT.inr = requestAnimationFrame(step); }
 
 sc0().addEventListener('pointerdown', e => {
+  document.querySelectorAll('#ntBlocks .nt-b.nt-sel').forEach(x => x.classList.remove('nt-sel'));
   if (e.target.closest('.nt-text,.nt-todo')) return; if (e.target.closest('.nt-b') && (NT.tool === 'move' || e.target.closest('.nt-rs,.nt-grip,[data-bk]'))) return; cancelAnimationFrame(NT.inr); const t = NT.tool, finger = e.pointerType === 'touch', draw = t === 'pen' || t === 'hl' || t === 'erase';
   ntPopClose();
   if (t === 'space') return ntSpaceStart(e);
@@ -7666,12 +7725,13 @@ ntBlocksEl.addEventListener('keydown', e => {
   if (e.key === 'Enter') { e.preventDefault(); const before = ntSnap(); b.items.splice(i + 1, 0, { t: '', d: 0 }); ntTodoFill(el, b); ntPushBlocks(before); el.querySelectorAll('.nt-tx')[i + 1].focus(); }
   else if (e.key === 'Backspace' && !t.innerText.replace(/\n/g, '') && b.items.length > 1) { e.preventDefault(); const before = ntSnap(); b.items.splice(i, 1); ntTodoFill(el, b); ntPushBlocks(before); el.querySelectorAll('.nt-tx')[Math.max(0, i - 1)].focus(); }
 });
+ntBlocksEl.addEventListener('pointerdown', e => { const bk0 = e.target.closest('[data-bk]'); if (bk0 && bk0.dataset.bk === 'del') { e.preventDefault(); e.stopPropagation(); const el = e.target.closest('.nt-b'), b = ntB(el.dataset.id); if (b) { const before = ntSnap(); NT.cur.blocks = NT.cur.blocks.filter(x => x !== b); el.remove(); ntPushBlocks(before); } } }, true);     /* supprimer dès l'appui, avant que le focus ne bouge */
 ntBlocksEl.addEventListener('click', e => {
   const el = e.target.closest('.nt-b'); if (!el) return; const b = ntB(el.dataset.id); if (!b) return; const ck = e.target.closest('.nt-ck'), bk = e.target.closest('[data-bk]');
+  if (!e.target.closest('.nt-tx,[data-bk],.nt-ck,.nt-rs,.nt-grip,.nt-add')) { document.querySelectorAll('#ntBlocks .nt-b.nt-sel').forEach(x => x.classList.remove('nt-sel')); el.classList.add('nt-sel'); }
   if (ck) { const before = ntSnap(), it = b.items[+ck.closest('.nt-ti').dataset.i]; it.d = it.d ? 0 : 1; ck.setAttribute('aria-checked', !!it.d); ck.closest('.nt-ti').dataset.d = it.d ? '1' : '0'; ntPushBlocks(before); return; }
   if (!bk) return; const a = bk.dataset.bk, before = ntSnap();
-  if (a === 'del') { NT.cur.blocks = NT.cur.blocks.filter(x => x !== b); el.remove(); ntPushBlocks(before); }
-  else if (a === 'smaller' || a === 'bigger') { b.z = ntClamp(b.z + (a === 'bigger' ? 4 : -4), 16, 96); el.querySelectorAll('.nt-tx').forEach(t => ntTxStyle(t, b)); ntPushBlocks(before); }
+  if (a === 'smaller' || a === 'bigger') { b.z = ntClamp(b.z + (a === 'bigger' ? 4 : -4), 16, 96); el.querySelectorAll('.nt-tx').forEach(t => ntTxStyle(t, b)); ntPushBlocks(before); }
   else if (a === 'bold') { b.b = !b.b; el.querySelector('.nt-tx').style.fontWeight = b.b ? 700 : 500; bk.classList.toggle('on', b.b); ntPushBlocks(before); }
   else if (a === 'add') { b.items.push({ t: '', d: 0 }); ntTodoFill(el, b); ntPushBlocks(before); const L = el.querySelectorAll('.nt-tx'); L[L.length - 1].focus(); }
 });
@@ -7714,14 +7774,14 @@ function ntShowList() {
 }
 async function ntOpen(id) {
   await ntFlush(); let n; try { n = await DB.get('nt:' + id); } catch (e) { n = null; } if (!n) { flash('Note introuvable.'); return; }
-  NT.cur = ntNormalize(n); NT.z = n.z || 1; NT.undo = []; NT.redo = []; NT.view = 'ed'; $('#ntTitle').value = n.title; const ed = $('#ntEd'); ed.hidden = false;
+  NT.cur = ntNormalize(n); NT.z = n.z || 1; NT.undo = []; NT.redo = []; NT.view = 'ed'; ntMenuToggle(false); $('#ntTitle').value = n.title; const ed = $('#ntEd'); ed.hidden = false;
   NT.chunks.forEach(c => c.cv.remove()); NT.chunks.clear(); ntLayout(); ntBuildBlocks(); sc0().scrollTop = n.sy || 0; ntEnsure(); ntSyncHist(); ntDots(); ntPopClose();
   requestAnimationFrame(() => { $('#ntList').classList.add('out'); ed.classList.remove('out'); });
 }
 async function ntCreate(key) {
   const t = NT_TPL.find(x => x[0] === key) || NT_TPL[0], n = ntNormalize({ id: ntId(), created: Date.now(), ts: Date.now(), pin: false, ...t[3]() }); NT.cur = n; NT.dirty = true; await ntFlush(); await ntOpen(n.id);
 }
-async function ntBack() { const n = NT.cur; if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); if (n) { n.sy = sc0().scrollTop; NT.dirty = true; } await ntFlush(); ntShowList(); if (n) { await ntThumb(n); ntRenderList(); } }
+async function ntBack() { ntMenuToggle(false); const n = NT.cur; if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); if (n) { n.sy = sc0().scrollTop; NT.dirty = true; } await ntFlush(); ntShowList(); if (n) { await ntThumb(n); ntRenderList(); } }
 
 /* ---------- barre d'outils et fenêtres flottantes ---------- */
 function ntDots() { $('#ntDotPen').style.setProperty('--c', NT_PREF.pen === 'ink' ? 'var(--ink)' : NT_PREF.pen); $('#ntDotHl').style.setProperty('--c', NT_PREF.hl); }
@@ -7750,11 +7810,21 @@ function ntTool(t, btn) {
   if (NT.tool === t && (t === 'pen' || t === 'hl') && btn) return ntPopToggle(btn, ntPenPop(t === 'hl'), t);
   NT.tool = t; $('#ntEd').dataset.tool = t; document.querySelectorAll('#ntBar [data-nt=tool]').forEach(b => b.classList.toggle('on', b.dataset.tool === t)); ntPopClose(); if (t !== 'text' && document.activeElement && document.activeElement.classList && document.activeElement.classList.contains('nt-tx')) document.activeElement.blur();
 }
+/* la barre réagit dès que le doigt se pose (plus besoin d'attendre le relâchement, ni de toucher deux fois) */
+function ntBarTap(e) {
+  const b = e.target.closest('#ntBar [data-nt], #ntMenu [data-nt]'); if (!b) return; const a = b.dataset.nt;
+  if (a === 'tool') { e.preventDefault(); ntTool(b.dataset.tool, b); return; }
+  if (a === 'zoomin' || a === 'zoomout' || a === 'undo' || a === 'redo') { e.preventDefault(); if (a === 'zoomin') ntZoom(1.25); else if (a === 'zoomout') ntZoom(1 / 1.25); else if (a === 'undo') ntUndo(); else ntRedo(); }
+}
 function ntSetPaper(patch) {
   const n = NT.cur, before = { ...n.paper }, after = { ...before, ...patch }; if (JSON.stringify(before) === JSON.stringify(after)) return;
   const set = p => { n.paper = { ...p }; ntRenderAll(); }; set(after); ntPush({ u() { set(before); }, r() { set(after); } });
 }
 let ntDelArm = 0;
+ntRoot.addEventListener('pointerdown', e => { if (e.target.closest('#ntBar, #ntMenu')) ntBarTap(e); });
+function ntMenuPlace() { const m = $('#ntMenu'), btn = $('#btnNotes'), ed = $('#ntEd'); if (!m || !btn || !ed) return; const r = btn.getBoundingClientRect(), er = ed.getBoundingClientRect(); m.style.left = Math.max(8, Math.min(r.left - er.left, er.width - m.offsetWidth - 8)) + 'px'; m.style.top = Math.max(6, r.bottom - er.top + 8) + 'px'; m.style.right = 'auto'; }
+function ntMenuToggle(v) { const m = $('#ntMenu'), btn = $('#btnNotes'), open = v == null ? m.hidden : v; m.hidden = !open; if (btn) { btn.setAttribute('aria-expanded', String(open)); btn.classList.toggle('on', open); } if (open) ntMenuPlace(); if (open) { const pb = $('#ntPinB'); if (pb) { pb.classList.toggle('on', !!(NT.cur && NT.cur.pin)); pb.querySelector('span').textContent = NT.cur && NT.cur.pin ? 'Épinglée' : 'Épingler'; } } }
+$('#btnNotes').addEventListener('click', () => { if (!NT.on) return; ntPopClose(); ntMenuToggle(); });
 ntRoot.addEventListener('click', async e => {
   const t = e.target, open = t.closest('[data-open]');
   if (open) return ntOpen(open.dataset.open);
@@ -7763,22 +7833,21 @@ ntRoot.addEventListener('click', async e => {
   const tp = t.closest('[data-tpl]'); if (tp) { ntPopClose(); return ntCreate(tp.dataset.tpl); }
   const b = t.closest('[data-nt]'); if (b) {
     const a = b.dataset.nt;
-    if (a === 'back') return ntBack(); if (a === 'tool') return ntTool(b.dataset.tool, b); if (a === 'undo') return ntUndo(); if (a === 'redo') return ntRedo();
+    if (a === 'back') return ntBack(); if (a === 'tool' || a === 'undo' || a === 'redo' || a === 'zoomin' || a === 'zoomout') return;       /* déjà fait au pointerdown */
     if (a === 'img') { ntPopClose(); return ntFile.click(); }
-    if (a === 'paper') return ntPopToggle(b, ntPaperPop(), 'paper'); if (a === 'more') { ntDelArm = 0; return ntPopToggle(b, ntMorePop(), 'more'); }
-    if (a === 'zoomin') return ntZoom(1.25); if (a === 'zoomout') return ntZoom(1 / 1.25);
+    if (a === 'paper') return ntPopToggle(b, ntPaperPop(), 'paper');
   }
   const nib = t.closest('[data-nib]'); if (nib) { NT_PREF.nib = nib.dataset.nib; ntSavePref(); $('#ntPop').innerHTML = ntPenPop(false); return; }
   const pc = t.closest('[data-pc]'); if (pc) { if (NT.tool === 'hl') NT_PREF.hl = pc.dataset.pc; else NT_PREF.pen = pc.dataset.pc; ntSavePref(); ntDots(); $('#ntPop').innerHTML = ntPenPop(NT.tool === 'hl'); return; }
   const pw = t.closest('[data-pw]'); if (pw) { if (NT.tool === 'hl') NT_PREF.hlW = +pw.dataset.pw; else NT_PREF.penW = +pw.dataset.pw; ntSavePref(); $('#ntPop').innerHTML = ntPenPop(NT.tool === 'hl'); return; }
   const pk = t.closest('[data-pk]'); if (pk) { ntSetPaper({ k: pk.dataset.pk }); $('#ntPop').innerHTML = ntPaperPop(); return; }
   const pcol = t.closest('[data-pcol]'); if (pcol) { ntSetPaper({ c: pcol.dataset.pcol }); $('#ntPop').innerHTML = ntPaperPop(); return; }
-  const ex = t.closest('[data-ex]'); if (ex) { ntPopClose(); return ntExport(ex.dataset.ex); }
+  const ex = t.closest('[data-ex]'); if (ex) { ntPopClose(); ntMenuToggle(false); return ntExport(ex.dataset.ex); }
   const mo = t.closest('[data-mo]'); if (mo) {
     const n = NT.cur;
-    if (mo.dataset.mo === 'pin') { n.pin = !n.pin; NT.dirty = true; ntFlush(); ntPopClose(); flash(n.pin ? 'Note épinglée' : 'Note désépinglée'); return; }
-    if (mo.dataset.mo === 'settings') { ntPopClose(); openMenu(); return; }
-    if (!ntDelArm) { ntDelArm = 1; mo.classList.add('danger'); mo.lastChild.textContent = ' Toucher encore pour supprimer'; setTimeout(() => { ntDelArm = 0; }, 3500); return; }
+    if (mo.dataset.mo === 'pin') { n.pin = !n.pin; NT.dirty = true; ntFlush(); const pb = $('#ntPinB'); if (pb) { pb.classList.toggle('on', n.pin); pb.querySelector('span').textContent = n.pin ? 'Épinglée' : 'Épingler'; } flash(n.pin ? 'Note épinglée' : 'Note désépinglée'); return; }
+    if (mo.dataset.mo === 'settings') { ntPopClose(); ntMenuToggle(false); openMenu(); return; }
+    if (!ntDelArm) { ntDelArm = 1; mo.classList.add('arm'); const sp = mo.querySelector('span'); if (sp) sp.textContent = 'Confirmer ?'; setTimeout(() => { ntDelArm = 0; mo.classList.remove('arm'); if (sp) sp.textContent = 'Supprimer'; }, 3500); return; }
     const id = n.id; ntPopClose(); clearTimeout(ntSaveT); NT.dirty = false; NT.cur = null; try { await DB.del('nt:' + id); } catch (er) { } NT.list = NT.list.filter(x => x.id !== id); await ntSaveIndex(); ntShowList(); flash('Note supprimée');
   }
 });
@@ -7790,7 +7859,7 @@ $('#ntQ').addEventListener('input', e => { NT.q = e.target.value; ntRenderList()
 $('#ntTitle').addEventListener('input', e => { const n = NT.cur; if (!n) return; n.title = e.target.value.trim() || 'Note'; ntSaveSoon(); });
 $('#ntTitle').addEventListener('blur', e => { if (!e.target.value.trim()) e.target.value = (NT.cur && NT.cur.title) || 'Note'; });
 $('#ntTitle').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
-document.addEventListener('pointerdown', e => { const p = $('#ntPop'); if (!NT.on) return; if (!p.hidden && !e.target.closest('#ntPop,[data-nt]')) ntPopClose(); const tp = document.querySelector('#ntList .nt-tp'); if (tp && !e.target.closest('.nt-tp,#ntNew')) tp.remove(); }, true);
+document.addEventListener('pointerdown', e => { if (!NT.on) return; const p = $('#ntPop'), mn = $('#ntMenu'); if (mn && !mn.hidden && !e.target.closest('#ntMenu,#btnNotes,#ntPop')) ntMenuToggle(false); if (!p.hidden && !e.target.closest('#ntPop,[data-nt],#ntMenu')) ntPopClose(); const tp = document.querySelector('#ntList .nt-tp'); if (tp && !e.target.closest('.nt-tp,#ntNew')) tp.remove(); }, true);
 document.addEventListener('keydown', e => { if (NT.on && e.key === 'Escape') ntPopClose(); });
 new MutationObserver(() => { if (NT.on && NT.cur && !$('#ntEd').hidden) ntRenderAll(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 window.addEventListener('pagehide', () => { if (NT.cur) { NT.dirty = true; ntFlush(); } });
