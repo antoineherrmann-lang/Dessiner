@@ -1988,6 +1988,27 @@ html[data-theme="dark"] .nt-ruler{background:linear-gradient(180deg,rgba(62,68,8
 .nt-read[hidden]{display:none}
 .nt-qsn{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:7;padding:8px 16px;border-radius:999px;font-size:14.5px;font-weight:650;pointer-events:none;white-space:nowrap;animation:panelin .2s var(--ease)}
 .nt-qsn[hidden]{display:none}
+/* ---------- 1.31.0 : règle des Notes = règle de Dessin ---------- */
+#ntRuler{position:absolute;left:0;top:0;z-index:3;display:none;pointer-events:none;transform-origin:50% 50%;border-radius:10px;
+  background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(236,240,246,.66));box-shadow:0 0 0 1px rgba(40,60,90,.18),0 10px 28px rgba(20,35,55,.18),inset 0 1px 0 rgba(255,255,255,.9);
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+#ntRuler.show{display:block}
+#ntRuler .rl-ticks{position:absolute;inset:0;border-radius:inherit;
+  background:repeating-linear-gradient(90deg,rgba(30,45,70,.55) 0 1px,transparent 1px 10px) top/100% 11px no-repeat,repeating-linear-gradient(90deg,rgba(30,45,70,.7) 0 1.5px,transparent 1.5px 50px) top/100% 20px no-repeat,
+  repeating-linear-gradient(90deg,rgba(30,45,70,.55) 0 1px,transparent 1px 10px) bottom/100% 11px no-repeat,repeating-linear-gradient(90deg,rgba(30,45,70,.7) 0 1.5px,transparent 1.5px 50px) bottom/100% 20px no-repeat}
+#ntRuler .rl-ang{position:absolute;left:50%;top:50%;translate:-50% -50%;padding:3px 10px;border-radius:999px;background:rgba(29,32,36,.82);color:#fff;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;opacity:.0;transition:opacity .2s}
+#ntRuler.turn .rl-ang,#ntRuler.drag .rl-ang{opacity:1}
+#ntRuler{z-index:3}
+/* ---------- 1.31.0 : actions sur les notes de la liste ---------- */
+.nt-morb{position:absolute;top:8px;left:8px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.78);color:var(--ink2);box-shadow:0 1px 4px rgba(20,35,55,.18)}
+html[data-theme="dark"] .nt-morb{background:rgba(40,44,52,.8)}
+.nt-morb .ic{width:18px;height:18px}
+.nt-cm{position:absolute;z-index:20;min-width:250px}
+.nt-ren{position:absolute;left:10px;right:10px;bottom:34px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:12px;border:2px solid var(--accent);background:var(--raise);font:inherit;font-size:15px;font-weight:650;color:var(--ink);outline:none;z-index:3}
+.nt-menu button.arm{background:var(--danger);color:#fff}
+/* ---------- 1.31.0 : poignée de la barre des notes = vraie cible tactile ---------- */
+#ntEd.dock-left .nt-grab,#ntEd.dock-right .nt-grab{width:100%;height:34px}
+#ntEd.dock-bottom .nt-grab{width:34px;height:100%;min-height:44px}
 </style>
 </head>
 <body>
@@ -2030,6 +2051,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 <symbol id="i-ntrot" viewBox="0 0 24 24"><path d="M20 12a8 8 0 11-2.6-5.9"/><path d="M20 4v5h-5"/></symbol>
 <symbol id="i-ntdup" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0013.5 4h-7A2.5 2.5 0 004 6.5v7A2.5 2.5 0 006.5 16H8"/></symbol>
 <symbol id="i-ntok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-ntline" viewBox="0 0 24 24"><path d="M5 19L19 5"/><circle cx="5" cy="19" r="1.7"/><circle cx="19" cy="5" r="1.7"/></symbol>
 <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3.5l8.5 4.6-8.5 4.6-8.5-4.6z"/><path d="M3.5 12.2l8.5 4.6 8.5-4.6"/><path d="M3.5 16.2l8.5 4.6 8.5-4.6"/></symbol>
   <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M10.6 5.7A9.6 9.6 0 0112 5.5c6 0 9.5 6.5 9.5 6.5a16.6 16.6 0 01-2.9 3.7M6.4 7.4C3.8 9.1 2.5 12 2.5 12S6 18.5 12 18.5c1.5 0 2.8-.4 4-.9"/><path d="M9.9 9.9a3 3 0 004.2 4.2"/><path d="M4 4l16 16"/></symbol>
@@ -2206,7 +2228,7 @@ setTimeout(function(){window.__bootDone()},12000)})();</script>
 
 <script>
 'use strict';
-const APP_VERSION = "1.30.1";
+const APP_VERSION = "1.31.0";
 
 const $ = (s, el = document) => el.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -3701,7 +3723,7 @@ const segHtml = (key, items, cur) => `<div class="seg sm">${items.map(([v, l]) =
 
 /* ---------- Réglages : quatre onglets par thème ---------- */
 const SET_TABS = [['draw', 'Dessin'], ['view', 'Affichage'], ['data', 'Données'], ['about', 'À propos']];
-function settingsPane(tab) {
+function settingsPaneBase(tab) {
   if (tab === 'draw') return `
     <div class="sec">Trait</div>
     <div class="row"><label class="t">Lissage du trait<span class="hint">0 % : trait brut. 100 % : très doux. Jusqu’à 200 % : lissage extrême, pour des courbes parfaitement régulières (avec plus de retard).</span></label><div class="rng"><input type="range" min="0" max="200" step="1" value="${settings.smooth}" data-range="smooth" aria-label="Lissage du trait"><b data-rangeval="smooth">${settings.smooth} %</b></div></div>
@@ -3735,7 +3757,7 @@ function settingsPane(tab) {
     <div class="sec">Stockage</div>
     <div id="storBox"><p class="sub" style="margin:4px 0 0">Calcul en cours…</p></div>
     <div class="sec">Sauvegarde</div>
-    <p class="sub" style="margin:2px 0 0">Un fichier .json avec tous tes dessins, à ranger dans Fichiers ou iCloud. Utile si Safari vide un jour son stockage.</p>
+    <p class="sub" style="margin:2px 0 0">Un fichier .json avec tous tes dessins et toutes tes notes, à ranger dans Fichiers ou iCloud. Utile si Safari vide un jour son stockage.</p>
     <div class="row btns"><button class="btn" data-lib="backup">Exporter tout</button><label class="btn" for="libImport">Importer</label><input type="file" id="libImport" accept=".json,application/json" hidden></div>
     <div class="sec">Mises à jour</div>
     <div id="updBox"></div>`;
@@ -3768,8 +3790,8 @@ function settingsSwap(tab) {
   out.finished.then(() => { put(); out.cancel(); const inn = pane.animate([{ opacity: 0, transform: `translateX(${16 * dir}px)` }, { opacity: 1, transform: 'none' }], { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)' }); inn.finished.then(() => inn.cancel(), () => {}); }, () => {});
   return true;
 }
-function openMenu(tab) {
-  tab = SET_TABS.some(t => t[0] === tab) ? tab : LS.get('setTab', 'draw'); if (!SET_TABS.some(t => t[0] === tab)) tab = 'draw'; LS.set('setTab', tab);
+function openMenu(tab) { setTabsForMode(); if (tab === 'draw' && NT.on) tab = 'notes'; else if (tab === 'notes' && !NT.on) tab = 'draw';
+  tab = SET_TABS.some(t => t[0] === tab) ? tab : LS.get('setTab', 'draw'); if (!SET_TABS.some(t => t[0] === tab)) tab = SET_TABS[0][0]; LS.set('setTab', tab);
   if (sheet.classList.contains('open') && sheet.classList.contains('settings') && settingsSwap(tab)) return;
   openSheet(`
     <h2>Réglages</h2><p class="sub">Préférences de l’app · version ${APP_VERSION}</p>
@@ -3842,7 +3864,7 @@ sheet.addEventListener('change', e => {
   if (o === 'grid') requestRender(); if (o === 'diag') diagRender();
   if (o === 'anim') { document.documentElement.classList.toggle('noanim', !settings.anim); LG.flag(); }
   if (o === 'glasslib') GL.sync();
-  if (o === 'lefty') { document.documentElement.classList.toggle('lefty', !!settings.lefty); requestAnimationFrame(() => { if (V().fit) fitView(); else { V().fitS = fitScale().s; requestRender(); } }); }
+  if (o === 'lefty') { document.documentElement.classList.toggle('lefty', !!settings.lefty); if (NT.on && !NT.dockUser) ntDockSet(ntDockAuto()); requestAnimationFrame(() => { if (V().fit) fitView(); else { V().fitS = fitScale().s; requestRender(); } }); }
 });
 sheet.addEventListener('click', async e => {
   const bb = e.target.closest('button[data-bench]');
@@ -4350,14 +4372,15 @@ async function fillStorage() {
   let est = null; try { if (navigator.storage && navigator.storage.estimate) est = await navigator.storage.estimate(); } catch (e) { }
   const list = await LIB.list(); await LIB.fixSizes();
   if (!$('#storBox')) return;                                                            /* la fenêtre a été fermée entre-temps */
-  const lib = list.reduce((a, m) => a + (m.bytes || 0), 0), cur = approxBytes(S.docs.free.strokes.map(s => ({ p: s.p })), '');
+  const nts = await ntStorageInfo(); const lib = list.reduce((a, m) => a + (m.bytes || 0), 0), cur = approxBytes(S.docs.free.strokes.map(s => ({ p: s.p })), '');
   const usage = est && est.usage, quota = est && est.quota, pct = usage && quota ? usage / quota : null, warn = pct !== null && pct > 0.8;
   const per = S.persisted === null ? 'inconnu' : S.persisted ? 'oui' : 'non';
   box.innerHTML = `
     ${usage ? `<div class="sbar${warn ? ' warn' : ''}" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct * 100)}"><i style="width:${Math.max(0.5, pct * 100).toFixed(1)}%"></i></div>
     <div class="srow"><span>Utilisé par l’app</span><b>${fmtBytes(usage)} sur ${fmtBytes(quota)} (${pct < 0.01 ? '< 1' : Math.round(pct * 100)} %)</b></div>` : '<div class="srow"><span>Le navigateur ne donne pas son estimation.</span></div>'}
     <div class="srow"><span>Mes dessins (${list.length})</span><b>${fmtBytes(lib)}</b></div>
-    <div class="srow"><span>Feuille en cours</span><b>${fmtBytes(cur)}</b></div>
+    <div class="srow"><span>Mes notes (${nts.n})</span><b>${fmtBytes(nts.bytes)}</b></div>
+ <div class="srow"><span>Feuille en cours</span><b>${fmtBytes(cur)}</b></div>
     <div class="srow"><span>Stockage protégé contre le nettoyage</span><b>${per}</b></div>
     ${warn ? '<div class="swarn">Le stockage est presque plein. Exporte une sauvegarde (Mes dessins → Exporter tout), puis supprime des dessins.</div>' : ''}
     ${S.persisted === false && navigator.storage && navigator.storage.persist ? '<div class="row btns"><button class="btn" data-stor="persist">Protéger le stockage</button></div>' : ''}
@@ -4539,7 +4562,7 @@ async function openGallery() {
         <div class="f-hero-act"><button class="btn primary" data-lib="open" data-id="${hero.id}">Reprendre le dessin</button><button class="btn" data-lib="view" data-id="${hero.id}">Voir la fiche</button></div><div class="f-acts">${acts(hero).replace('data-lib="open"', 'data-lib="open" data-dup="1"')}</div></div></section>` : ''}
     ${rest.length ? `<div class="dgrid f-grid${FOLIO.pick ? ' picking' : ''}">${rest.map(card).join('')}</div>` : (all.length ? '' : `<div class="f-empty"><b>Ton portfolio t’attend.</b><p>Enregistre un dessin depuis la feuille : il apparaîtra ici, prêt à être exposé.</p></div>`)}
     ${FOLIO.pick && FOLIO.pickNb ? nbBar : FOLIO.pick ? `<div class="f-pickbar"><span><b>Deux œuvres côte à côte</b><br>${FOLIO.pick.length ? 'Choisis la seconde œuvre.' : 'Touche deux œuvres à comparer.'}</span><button class="btn" data-lib="cmp">Annuler</button></div>` : ''}
-    <footer class="f-foot"><div><b>Sauvegarde complète</b><p>Un fichier .json avec tous tes dessins, à ranger dans Fichiers ou iCloud. Utile si Safari vide un jour son stockage.</p></div>
+    <footer class="f-foot"><div><b>Sauvegarde complète</b><p>Un fichier .json avec tous tes dessins et toutes tes notes, à ranger dans Fichiers ou iCloud. Utile si Safari vide un jour son stockage.</p></div>
       <div class="row btns"><button class="btn" data-lib="backup"${all.length ? '' : ' disabled'}>Exporter tout</button><label class="btn" for="libImport">Importer</label><input type="file" id="libImport" accept=".json,application/json" hidden></div></footer>`, true, 'folio');
   folioLayout(); if (keepScroll) sheet.scrollTop = keepScroll; else if (keepPos) sheet.scrollTop = keepPos;
   folioUpgrade(tk);
@@ -4587,7 +4610,7 @@ async function openDrawing(id) {
 async function backupAll() {
   const list = await LIB.list(), recs = [];
   for (const m of list) { const r = await LIB.get(m.id); if (r) { delete r.thumb; if (r.ref) r.refData = await DB.get('libref:' + m.id) || null; recs.push(r); } }
-  const blob = new Blob([JSON.stringify({ app: 'dessiner', ver: 1, exported: Date.now(), drawings: recs, notebooks: await NB.list() })], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify({ app: 'dessiner', ver: 1, exported: Date.now(), drawings: recs, notebooks: await NB.list(), notes: await ntAllNotes() })], { type: 'application/json' });
   await deliverFile(blob, `dessiner-sauvegarde-${dayKey()}.json`, 'Sauvegarde Dessiner');
 }
 async function importBackup(file) {
@@ -4615,7 +4638,9 @@ async function importBackup(file) {
       }
       await NB.save();
     }
-    await openGallery(); flash(n ? n + (n > 1 ? ' dessins importés' : ' dessin importé') : 'Rien de nouveau à importer.');
+    let nn = 0; if (Array.isArray(data.notes)) nn = await ntRestoreNotes(data.notes);
+ if (NT.on) { closeSheet(); await ntLoadIndex(); ntRenderList(); } else await openGallery();
+ const parts = []; if (n) parts.push(n + (n > 1 ? ' dessins' : ' dessin')); if (nn) parts.push(nn + (nn > 1 ? ' notes' : ' note')); flash(parts.length ? parts.join(' et ') + (n + nn > 1 ? ' importés' : ' importé') : 'Rien de nouveau à importer.');
   } catch (e) { flash('Fichier de sauvegarde invalide.'); }
 }
 let delArm = { id: null, t: 0 };
@@ -5512,6 +5537,15 @@ sheet.addEventListener('input', e => {
    Nouveautés : affichées une fois après une mise à jour, consultables dans les réglages
    ===================================================================== */
 const CHANGELOG = [
+  { v: '1.31.0', date: '8 nov. 2026', items: [
+    ['Notes : traits droits', 'Un bouton transforme chaque trait en ligne droite, du point posé à la pointe, aimantée tous les 15°.'],
+    ['Notes : la même règle que Dessin', 'Même apparence, même épaisseur à l’écran, mêmes gestes (un doigt ou la souris la déplace, deux doigts la tournent, le stylet dessine).'],
+    ['Notes : actions sur la liste', 'Chaque note a un menu « … » : renommer, exporter en PNG ou PDF, épingler, supprimer, sans ouvrir la note.'],
+    ['Notes : zoom et défilement', 'Un doigt fait défiler, y compris depuis un texte. Deux doigts déplacent et zooment la page ensemble, sans à-coups ni cumul.'],
+    ['Notes : écriture plus fidèle', 'Le trait suit exactement le stylet, même très vite, et se pose pile où il est dessiné. Le stylet dessine aussi sur un texte, un simple toucher y place le curseur.'],
+    ['Réglages adaptés au mode', 'En Notes : onglet Notes (écriture, doigt et paume, papier des nouvelles notes, barre d’outils, reprise). Les options de dessin sans objet disparaissent.'],
+    ['Sauvegarde : les notes en font partie', '« Exporter tout » et « Importer » incluent maintenant les notes ; le stockage les compte.'],
+    ['Stylet sur les boutons', 'Un tap du stylet déclenche toujours le bouton, même quand l’iPad n’envoie pas de clic.']]},
   { v: '1.30.1', date: '3 nov. 2026', items: [
     ['Notes : le tactile refonctionne', 'Le doigt ne défilait plus, ne zoomait plus, ne déplaçait plus la barre d’outils ni la règle : le filtre de la paume prenait un vrai doigt pour une paume. Il ne se fie plus à la taille du contact : un doigt n’est ignoré que s’il se pose pendant que le stylet écrit (ou un quart de seconde après). Un interrupteur « Ignorer la paume » est dans la fenêtre du stylo.']] },
   { v: '1.30.0', date: '3 nov. 2026', items: [
@@ -7566,7 +7600,8 @@ ntRoot.innerHTML = `
     <button class="ib" data-nt="tool" data-tool="space" aria-label="Insérer de l’espace">${ICO('space')}</button>
     <span class="nt-sep"></span>
     <button class="ib" data-nt="paper" aria-label="Papier">${ICO('paper')}</button>
-    <button class="ib" id="btnNtRuler" data-nt="ruler" aria-label="Règle : traits parfaitement droits" aria-pressed="false">${ICO('ruler')}</button>
+    <button class="ib" id="btnNtRuler" data-nt="ruler" aria-label="Règle" aria-pressed="false">${ICO('ruler')}</button>
+    <button class="ib" id="btnNtLine" data-nt="line" aria-label="Traits droits : chaque trait devient une droite" aria-pressed="false">${ICO('ntline')}</button>
     <span class="nt-sep"></span>
     <button class="ib" data-nt="zoomout" aria-label="Réduire">${ICO('zoomout')}</button>
     <button class="ib" data-nt="zoomin" aria-label="Agrandir">${ICO('zoomin')}</button>
@@ -7587,13 +7622,14 @@ const ntFile = document.createElement('input'); ntFile.type = 'file'; ntFile.acc
 async function ntLoadIndex() { try { NT.list = (await DB.get('nt:index')) || []; } catch (e) { NT.list = []; } }
 const ntSaveIndex = () => DB.set('nt:index', NT.list).catch(() => { });
 let ntSaveT = 0;
-function ntSaveSoon() { NT.dirty = true; clearTimeout(ntSaveT); ntSaveT = setTimeout(ntFlush, 700); }
+function ntSaveSoon() { NT.dirty = true; clearTimeout(ntSaveT); ntSaveT = setTimeout(() => { if (ntStroke && ++NT.sdef < 12) ntSaveSoon(); else { NT.sdef = 0; ntFlush(); } }, 900); }
+NT.sdef = 0;
 async function ntFlush() {
   clearTimeout(ntSaveT); const n = NT.cur; if (!n || !NT.dirty) return; NT.dirty = false; n.ts = Date.now();
   const sc = document.getElementById('ntScroll'); if (sc && !$('#ntEd').hidden) n.sy = sc.scrollTop;
   n.z = NT.z; try { await DB.set('nt:' + n.id, n); } catch (e) { flash('Impossible d’enregistrer la note.'); }
   let m = NT.list.find(x => x.id === n.id); if (!m) { m = { id: n.id }; NT.list.push(m); }
-  Object.assign(m, { title: n.title, pin: !!n.pin, ts: n.ts }); ntSaveIndex();
+  Object.assign(m, { title: n.title, pin: !!n.pin, ts: n.ts, bytes: ntApproxBytes(n) }); ntSaveIndex();
 }
 function ntNormalize(n) {
   n.paper = Object.assign({ k: 'ruled', c: 'white', m: true }, n.paper || {}); n.strokes = n.strokes || []; n.blocks = n.blocks || []; n.h = Math.max(1400, +n.h || 2600); n.title = n.title || 'Note';
@@ -7613,7 +7649,7 @@ function ntDrawPaper(c, y0, y1, n) {
 }
 const ntPathCache = new WeakMap();
 function ntStrokePath(st) {
-  const a = st.a, n = a.length / 3, key = n + ':' + a[1] + ':' + a[a.length - 2] + ':' + st.w + ':' + st.ps + ':' + st.tp, hit = ntPathCache.get(st); if (hit && hit.key === key) return hit;
+  const a = st.a, n = a.length / 3, key = n + ':' + a[1] + ':' + a[a.length - 3] + ':' + a[a.length - 2] + ':' + st.w + ':' + st.ps + ':' + st.tp, hit = ntPathCache.get(st); if (hit && hit.key === key) return hit;
   const ps = st.ps == null ? 0.77 : st.ps, tp = st.tp == null ? 0 : st.tp, base = st.w, calli = st.nib === 'calli', g = p => 0.35 + 1.3 * p;
   const P = [[a[0], a[1], a[2]]];
   if (n > 2) {
@@ -7675,7 +7711,12 @@ async function ntDrawBlocks(c, n) {
     }
   }
 }
-function ntBlockH(b) { const el = document.querySelector(`#ntBlocks [data-id="${b.id}"]`); return b.k === 'img' ? b.h : (el ? el.offsetHeight : 120); }
+const ntMeasCx = document.createElement('canvas').getContext('2d');
+function ntBlockH(b) {                                           /* hauteur réelle si le bloc est à l'écran, sinon estimée avec les mêmes polices et le même retour à la ligne */
+  if (b.k === 'img') return b.h; const el = document.querySelector(`#ntBlocks [data-id="${b.id}"]`); if (el) return el.offsetHeight; const c = ntMeasCx, ff = ntFont(), lh = b.z * 1.3;
+  if (b.k === 'text') { c.font = `${b.b ? 700 : 500} ${b.z}px ${ff}`; return ntWrap(c, b.t || '', b.w - 16).length * lh + 12; }
+  c.font = `500 ${b.z}px ${ff}`; return b.items.reduce((h, it) => h + Math.max(36, ntWrap(c, it.t || '', b.w - 56).length * lh + 12) + 4, 0) + 30;
+}
 function ntContentBottom(n) { let m = 0; for (const st of n.strokes) m = Math.max(m, st.bb[3]); for (const b of n.blocks) m = Math.max(m, b.y + ntBlockH(b)); return m; }
 
 /* ---------- la page continue : tranches de 1000 unités créées à la demande ---------- */
@@ -7688,8 +7729,16 @@ function ntRelayout() { const sc = sc0(), wy = NT.s ? sc.scrollTop / NT.s : 0; N
 function ntSyncScale() { if (!NT.cur) return; const sc = sc0(); if (sc.clientWidth > 0 && Math.abs(ntClamp(sc.clientWidth / 1000 * (NT.z || 1), 0.22, 2.6) - NT.s) > 0.004) ntRelayout(); }
 function ntMakeChunk(i) { const cv = document.createElement('canvas'); cv.width = Math.ceil(1000 * NT.s * NT.dpr); cv.height = Math.ceil(NT.CH * NT.s * NT.dpr); cv.style.cssText = `position:absolute;left:0;top:${i * NT.CH}px;width:1000px;height:${NT.CH}px`; $('#ntChunks').appendChild(cv); NT.chunks.set(i, { cv, ctx: cv.getContext('2d') }); ntRenderChunk(i); }
 function ntRenderChunk(i) {
-  const ch = NT.chunks.get(i), n = NT.cur; if (!ch || !n) return; const k = NT.s * NT.dpr, y0 = i * NT.CH, y1 = y0 + NT.CH, c = ch.ctx;
-  c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, ch.cv.width, ch.cv.height); c.setTransform(k, 0, 0, k, 0, -y0 * k); ntDrawPaper(c, y0, y1, n); ntDrawImages(c, n, y0, y1, NT.sel && NT.sel.id); ntDrawStrokes(c, n, y0, y1);
+  const ch = NT.chunks.get(i), n = NT.cur; if (!ch || !n) return; const kx = ch.cv.width / 1000, ky = ch.cv.height / NT.CH, y0 = i * NT.CH, y1 = y0 + NT.CH, c = ch.ctx;
+  c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, ch.cv.width, ch.cv.height); c.setTransform(kx, 0, 0, ky, 0, -y0 * ky); ntDrawPaper(c, y0, y1, n); ntDrawImages(c, n, y0, y1, NT.sel && NT.sel.id); ntDrawStrokes(c, n, y0, y1);
+}
+/* un stylo se pose toujours au-dessus des autres traits : le nouveau trait peut être ajouté sans tout redessiner (un surligneur, lui, passe dessous : on redessine) */
+function ntPaintStroke(st) {
+  if (st.k === 'h') { ntRenderRange(st.bb[1], st.bb[3]); return; }
+  for (let i = Math.max(0, Math.floor(st.bb[1] / NT.CH)); i <= Math.floor(st.bb[3] / NT.CH); i++) {
+    const ch = NT.chunks.get(i); if (!ch) continue; const c = ch.ctx, kx = ch.cv.width / 1000, ky = ch.cv.height / NT.CH, y0 = i * NT.CH;
+    c.save(); c.setTransform(kx, 0, 0, ky, 0, -y0 * ky); c.beginPath(); c.rect(0, y0, 1000, NT.CH); c.clip(); ntDrawStroke(c, st); c.restore();
+  }
 }
 const ntRenderAll = () => NT.chunks.forEach((_, i) => ntRenderChunk(i));
 function ntRenderRange(y0, y1) { for (let i = Math.max(0, Math.floor(y0 / NT.CH)); i <= Math.floor(y1 / NT.CH); i++) if (NT.chunks.has(i)) ntRenderChunk(i); }
@@ -7721,9 +7770,31 @@ function ntPushBlocks(before) {
 
 /* ---------- traits : stylo, surligneur ---------- */
 const sc0 = () => $('#ntScroll');
-function ntLiveDraw(st) {
-  const lv = $('#ntLive'), c = lv.getContext('2d'), k = NT.s * NT.dpr, sz = $('#ntSizer'); c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, lv.width, lv.height); if (!st) return;
-  c.setTransform(k, 0, 0, k, sz.offsetLeft * NT.dpr, -sc0().scrollTop * NT.dpr); ntDrawStroke(c, st);
+function ntLiveDraw(st, pred) {
+  const lv = document.getElementById('ntLive'), c = lv.getContext('2d'), wr = document.getElementById('ntWrap').getBoundingClientRect(), sr = document.getElementById('ntSizer').getBoundingClientRect();
+  c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, lv.width, lv.height); if (!st) return;
+  const kx = lv.width / (wr.width || 1), ky = lv.height / (wr.height || 1);                 /* position et échelle exactes, jamais arrondies : le trait en direct tombe pile où la page l'affichera */
+  c.setTransform(kx * NT.s, 0, 0, ky * NT.s, (sr.left - wr.left) * kx, (sr.top - wr.top) * ky); ntDrawStroke(c, pred && pred.length ? { ...st, a: st.a.concat(pred) } : st);
+}
+/* lissage centré sur l'arc : il gomme le tremblement fin sans jamais retarder le trait. Aux extrémités le rayon rétrécit : le trait finit exactement sous la pointe.
+   Un trait rapide (points espacés de plus que le rayon) n'est pas touché. */
+function ntSmoothArr(r, sm, pen) {
+  const n = r.length / 3; sm = sm == null ? 0.3 : sm; const R = (pen ? sm : Math.min(1, sm * 1.25 + 0.1)) * 8;
+  if (n < 3 || R < 0.4) return r.slice(); const cum = new Float64Array(n); for (let i = 1; i < n; i++) cum[i] = cum[i - 1] + Math.hypot(r[i * 3] - r[i * 3 - 3], r[i * 3 + 1] - r[i * 3 - 2]);
+  const out = r.slice(), tot = cum[n - 1];
+  for (let i = 1; i < n - 1; i++) {
+    const rad = Math.min(R, cum[i], tot - cum[i]); if (rad < 0.3) continue; let sx = 0, sy = 0, sw = 0;
+    for (let k = i; k >= 0 && cum[i] - cum[k] <= rad; k--) { const w = 1 - (cum[i] - cum[k]) / (rad + 1e-6); sx += r[k * 3] * w; sy += r[k * 3 + 1] * w; sw += w; }
+    for (let k = i + 1; k < n && cum[k] - cum[i] <= rad; k++) { const w = 1 - (cum[k] - cum[i]) / (rad + 1e-6); sx += r[k * 3] * w; sy += r[k * 3 + 1] * w; sw += w; }
+    out[i * 3] = sx / sw; out[i * 3 + 1] = sy / sw;
+  }
+  return out;
+}
+/* un trait qui n'a presque pas bougé et qui a démarré sur un bloc de texte est un toucher : on place le curseur au lieu de laisser un point d'encre */
+function ntIsTap(s) { const r = s.raw || s.st.a; let far = 0; for (let i = 3; i < r.length; i += 3) far = Math.max(far, Math.hypot(r[i] - r[0], r[i + 1] - r[1])); return far < 6 && performance.now() - s.t0 < 450; }
+function ntBlockTap(s) {
+  const tx = s.tapBlk.closest && s.tapBlk.closest('.nt-tx') || (s.tapBlk.closest('.nt-b') && s.tapBlk.closest('.nt-b').querySelector('.nt-tx')); if (!tx || s.tapBlk.closest('button')) return;
+  tx.focus(); try { const r = document.caretRangeFromPoint ? document.caretRangeFromPoint(s.cx, s.cy) : null; if (r && tx.contains(r.startContainer)) { const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); } } catch (er) { }
 }
 /* ---------- fiabilité du stylet et rejet de la paume ---------- */
 NT.down = new Set(); NT.penDown = new Set(); NT.penLast = 0; NT.penUp = 0; NT.palmMsgT = -1e9;
@@ -7743,24 +7814,24 @@ document.addEventListener('pointermove', e => { if (e.pointerType === 'pen' && N
 let ntStroke = null;
 function ntStrokeStart(e) {
   if (ntStroke) ntStrokeCommit(); ntSyncScale();       /* un trait encore ouvert est terminé avant d'en commencer un autre */
-  const p = ntPt(e), hl = NT.tool === 'hl'; const cfg = hl ? null : ntNibCfg(NT_PREF.nib); ntStroke = { id: e.pointerId, st: hl ? { k: 'h', c: NT_PREF.hl, w: NT_PREF.hlW, op: NT_PREF.hlOp, a: [p.x, p.y, p.p], bb: [p.x, p.y, p.x, p.y] } : { k: 'p', nib: NT_PREF.nib, c: NT_PREF.pen, w: cfg.w, op: cfg.op, ps: cfg.ps, tp: cfg.tp, sm: cfg.sm, a: [p.x, p.y, p.p], bb: [p.x, p.y, p.x, p.y] }, pen: e.pointerType === 'pen' }; ntRulerArm(p);
+  const p = ntPt(e), hl = NT.tool === 'hl'; const cfg = hl ? null : ntNibCfg(NT_PREF.nib); ntStroke = { id: e.pointerId, st: hl ? { k: 'h', c: NT_PREF.hl, w: NT_PREF.hlW, op: NT_PREF.hlOp, a: [p.x, p.y, p.p], bb: [p.x, p.y, p.x, p.y] } : { k: 'p', nib: NT_PREF.nib, c: NT_PREF.pen, w: cfg.w, op: cfg.op, ps: cfg.ps, tp: cfg.tp, sm: cfg.sm, a: [p.x, p.y, p.p], bb: [p.x, p.y, p.x, p.y] }, pen: e.pointerType === 'pen' }; ntStroke.raw = ntStroke.st.a.slice(); ntRulerArm(p); ntLineArm();
   ntCap(sc0(), e.pointerId); ntLiveDraw(ntStroke.st); ntStrokeWatch(); ntQsArm(e); e.preventDefault();
   { const hit = NT.cur && ntImgAt(p.x, p.y); clearTimeout(NT.lpT); if (hit) { const id = e.pointerId; NT.lpT = setTimeout(() => {      /* stylet gardé appuyé sur une image sans bouger : on la sélectionne */
     const s = ntStroke; if (!s || s.id !== id) return; const a = s.st.a; let far = 0; for (let i = 3; i < a.length; i += 3) far = Math.max(far, Math.hypot(a[i] - a[0], a[i + 1] - a[1]));
     if (far < 7) { ntStroke = null; clearTimeout(ntStrokeT); clearTimeout(NT.qsT); ntLiveDraw(null); ntSelSet(hit.id); } }, 520); } }
 }
 function ntStrokeMove(e) {
-  const s = ntStroke; if (!s) { if (NT.restartId === e.pointerId && e.buttons) ntStrokeStart(e); return; } if (e.pointerId !== s.id) return; ntStrokeLast = performance.now(); if (s.snapped) { ntQsAdjust(e); ntLiveDraw(s.st); e.preventDefault(); return; } if (s.rl) { ntRlMove(s, e); e.preventDefault(); return; } ntQsWatch(e); const a = s.st.a, f = ntSmoothF(s.st, s.pen);
-  for (const q of ntEvents(e)) { const p = ntPt(q), lx = a[a.length - 3], ly = a[a.length - 2]; if (Math.hypot(p.x - lx, p.y - ly) < 0.9) continue; a.push(lx + (p.x - lx) * f, ly + (p.y - ly) * f, p.p); }
-  ntLiveDraw(s.st); e.preventDefault();
+  const s = ntStroke; if (!s) { if (NT.restartId === e.pointerId && e.buttons) ntStrokeStart(e); return; } if (e.pointerId !== s.id) return; ntStrokeLast = performance.now(); if (s.snapped) { ntQsAdjust(e); ntLiveDraw(s.st); e.preventDefault(); return; } if (s.rl) { ntRlMove(s, e); e.preventDefault(); return; } if (s.ln) { ntLnMove(s, e); e.preventDefault(); return; } ntQsWatch(e); const r = s.raw; for (const q of ntEvents(e)) { const p = ntPt(q), lx = r[r.length - 3], ly = r[r.length - 2]; if (Math.hypot(p.x - lx, p.y - ly) < 0.6) continue; r.push(p.x, p.y, p.p); }
+  s.st.a = ntSmoothArr(r, s.st.sm, s.pen); let pr = null; if (s.pen && e.getPredictedEvents) { try { pr = []; for (const q of e.getPredictedEvents().slice(0, 2)) { const p = ntPt(q); pr.push(p.x, p.y, p.p); } } catch (er) { pr = null; } }
+  ntLiveDraw(s.st, pr); e.preventDefault();
 }
 /* filet de sécurité : si le pointerup du Pencil se perd (capture ratée, geste interrompu), on termine le trait au bout d'un court silence */
 let ntStrokeT = 0, ntStrokeLast = 0;
 function ntStrokeWatch() { ntStrokeLast = performance.now(); clearTimeout(ntStrokeT); const tick = () => { if (!ntStroke) return; if (ntStroke.snapped && NT.down.has(ntStroke.id) && performance.now() - ntStrokeLast < 6000) { ntStrokeT = setTimeout(tick, 150); return; } const idle = performance.now() - ntStrokeLast; if (!NT.down.has(ntStroke.id) && idle > 90) { ntStrokeCommit(); return; } if (idle > 1200) { NT.restartId = ntStroke.id; ntStrokeCommit(); return; } ntStrokeT = setTimeout(tick, 60); }; ntStrokeT = setTimeout(tick, 120); }
 function ntStrokeCommit(e) {
-  const s = ntStroke; if (!s) return; ntStroke = null; clearTimeout(ntStrokeT); clearTimeout(NT.qsT); ntReadHide(); ntLiveDraw(null); const st = s.st, n = NT.cur;
-  if (e && !s.snapped && !s.rl) { const lx = ntPt(e); if (st.a.length === 3 || Math.hypot(lx.x - st.a[st.a.length - 3], lx.y - st.a[st.a.length - 2]) > 1) st.a.push(lx.x, lx.y, lx.p); }
-  ntBB(st); n.strokes.push(st); ntRenderRange(st.bb[1], st.bb[3]); ntGrow(st.bb[3]);
+  const s = ntStroke; if (!s) return; ntStroke = null; clearTimeout(ntStrokeT); clearTimeout(NT.qsT); ntReadHide(); ntLiveDraw(null); const st = s.st, n = NT.cur; if (s.tapBlk && ntIsTap(s)) { ntBlockTap(s); return; }
+  if (!s.snapped && !s.rl && !s.ln && s.raw) { const r = s.raw; if (e) { const lx = ntPt(e); if (r.length === 3 || Math.hypot(lx.x - r[r.length - 3], lx.y - r[r.length - 2]) > 0.6) r.push(lx.x, lx.y, lx.p); } st.a = ntSmoothArr(r, st.sm, s.pen); }
+  ntBB(st); n.strokes.push(st); ntPaintStroke(st); ntGrow(st.bb[3]);
   ntPush({ u() { const i = n.strokes.indexOf(st); if (i >= 0) n.strokes.splice(i, 1); ntRenderRange(st.bb[1], st.bb[3]); }, r() { n.strokes.push(st); ntRenderRange(st.bb[1], st.bb[3]); } });
 }
 function ntStrokeEnd(e) { const s = ntStroke; if (!s || e.pointerId !== s.id) return; ntStrokeCommit(e); }
@@ -7798,11 +7869,11 @@ function ntSpaceEnd(e) {
 }
 
 /* ---------- le doigt fait défiler (sauf si « le doigt dessine ») ---------- */
-function ntPanStart(e, onTap) { NT.pan = { id: e.pointerId, y: e.clientY, x0: e.clientX, y0: e.clientY, moved: false, v: 0, t: performance.now(), onTap, e }; cancelAnimationFrame(NT.inr); ntCap(sc0(), e.pointerId); }
+function ntPanStart(e, onTap, nocap) { NT.pan = { id: e.pointerId, y: e.clientY, x: e.clientX, x0: e.clientX, y0: e.clientY, moved: false, v: 0, t: performance.now(), onTap, e }; cancelAnimationFrame(NT.inr); if (!nocap) ntCap(sc0(), e.pointerId); }
 function ntPanMove(e) {
   const p = NT.pan; if (!p || e.pointerId !== p.id) return false; const now = performance.now();
   if (!p.moved && Math.hypot(e.clientX - p.x0, e.clientY - p.y0) > 8) p.moved = true;
-  if (p.moved) { const dy = e.clientY - p.y; sc0().scrollTop -= dy; p.v = 0.8 * p.v + 0.2 * (dy / Math.max(1, now - p.t)); p.y = e.clientY; p.t = now; } return true;
+  if (p.moved) { const dy = e.clientY - p.y, dx = e.clientX - p.x; sc0().scrollTop -= dy; sc0().scrollLeft -= dx; p.x = e.clientX; p.v = 0.8 * p.v + 0.2 * (dy / Math.max(1, now - p.t)); p.y = e.clientY; p.t = now; } return true;
 }
 function ntPanEnd(e) {
   const p = NT.pan; if (!p || e.pointerId !== p.id) return false; NT.pan = null;
@@ -7812,19 +7883,19 @@ function ntInertia(v) { const sc = sc0(); let last = performance.now(); const st
 
 sc0().addEventListener('pointerdown', e => {
   document.querySelectorAll('#ntBlocks .nt-b.nt-sel').forEach(x => x.classList.remove('nt-sel'));
-  if (ntPalm(e)) { e.preventDefault(); return; } if (e.pointerType === 'touch' && ntRgTouch(e)) return; if (e.target.closest('.nt-text,.nt-todo')) return; if (!e.target.closest('#ntImgUi')) { if (NT.sel) ntSelSet(null); const ae = document.activeElement; if (ae && ae.classList && ae.classList.contains('nt-tx')) ae.blur(); ntBlkCtxClear(); } if (e.target.closest('.nt-b') && (NT.tool === 'move' || e.target.closest('.nt-rs,.nt-grip,[data-bk]'))) return; cancelAnimationFrame(NT.inr); const t = NT.tool, finger = e.pointerType === 'touch', draw = t === 'pen' || t === 'hl' || t === 'erase';
+  if (ntPalm(e)) { e.preventDefault(); return; } if ((e.pointerType === 'touch' || e.pointerType === 'mouse') && ntRgTouch(e)) return; if (e.target.closest('.nt-text,.nt-todo')) { if (e.pointerType === 'touch') { ntPanStart(e, null, true); return; } if (!(NT.tool === 'pen' || NT.tool === 'hl') || e.target.closest('.nt-rs,.nt-grip,[data-bk]')) return; } if (!e.target.closest('#ntImgUi')) { if (NT.sel) ntSelSet(null); const ae = document.activeElement; if (ae && ae.classList && ae.classList.contains('nt-tx')) ae.blur(); ntBlkCtxClear(); } if (e.target.closest('.nt-b') && (NT.tool === 'move' || e.target.closest('.nt-rs,.nt-grip,[data-bk]'))) return; cancelAnimationFrame(NT.inr); const t = NT.tool, finger = e.pointerType === 'touch', draw = t === 'pen' || t === 'hl' || t === 'erase';
   ntPopClose();
   if (t === 'space') return ntSpaceStart(e);
   if (t === 'move' && ntImgPick(e)) return;
   if (finger && (!settings.finger || !draw)) { ntPanStart(e, t === 'text' || t === 'todo' ? ev => ntBlockAt(ev, t) : ev => ntImgTapSel(ev)); return; }
-  if (t === 'pen' || t === 'hl') ntStrokeStart(e); else if (t === 'erase') ntEraseStart(e); else if (t === 'text' || t === 'todo') { ntBlockAt(e, t); }
+  if (t === 'pen' || t === 'hl') { ntStrokeStart(e); if (ntStroke && e.target.closest('.nt-text,.nt-todo')) { ntStroke.tapBlk = e.target; ntStroke.t0 = performance.now(); ntStroke.cx = e.clientX; ntStroke.cy = e.clientY; } } else if (t === 'erase') ntEraseStart(e); else if (t === 'text' || t === 'todo') { ntBlockAt(e, t); }
 });
 sc0().addEventListener('pointermove', e => { if (ntPanMove(e)) return; ntStrokeMove(e); ntEraseMove(e); ntSpaceMove(e); });
 ['pointerup', 'pointercancel'].forEach(ev => sc0().addEventListener(ev, e => { if (ntPanEnd(e)) return; ntStrokeEnd(e); ntEraseEnd(e); ntSpaceEnd(e); }));
 /* deux doigts tapés : annuler (comme ailleurs dans l'app) ; à trois doigts : rétablir. On écoute sur le document (phase capture) pour voir tous les doigts même si un trait en cours a capturé le premier. */
 { const tp = new Map(); let t0 = 0, moved = false, mx = 0;
   const near = () => NT.on && !$('#ntEd').hidden;
-  document.addEventListener('pointerdown', e => { if (!near() || e.pointerType !== 'touch' || !e.target.closest('#ntScroll') || ntPalm(e) || ntRulerBusy(e)) return; if (!tp.size) { t0 = performance.now(); moved = false; mx = 0; } tp.set(e.pointerId, { x: e.clientX, y: e.clientY }); mx = Math.max(mx, tp.size); }, true);
+  document.addEventListener('pointerdown', e => { if (settings.ntTap === false || !near() || e.pointerType !== 'touch' || !e.target.closest('#ntScroll') || ntPalm(e) || ntRulerBusy(e)) return; if (!tp.size) { t0 = performance.now(); moved = false; mx = 0; } tp.set(e.pointerId, { x: e.clientX, y: e.clientY }); mx = Math.max(mx, tp.size); }, true);
   document.addEventListener('pointermove', e => { const p = tp.get(e.pointerId); if (p && Math.hypot(e.clientX - p.x, e.clientY - p.y) > 14) moved = true; }, true);
   document.addEventListener('pointerup', e => {
     if (!tp.has(e.pointerId)) return; tp.delete(e.pointerId); if (tp.size) return; const dt = performance.now() - t0;
@@ -7839,12 +7910,38 @@ function ntZoom(f, cx, cy) {
 }
 function ntZoomBadge() { const b = $('#ntZoom'); if (b) { b.textContent = Math.round(NT.z * 100) + ' %'; b.hidden = Math.abs(NT.z - 1) < 0.02; } }
 /* pincer à deux doigts : zoom (sauf si le doigt dessine et qu'on n'est pas sur un outil de défilement) */
-{ const pz = new Map(); let d0 = 0, z0 = 1, cx = 0, cy = 0;
-  sc0().addEventListener('pointerdown', e => { if (e.pointerType !== 'touch' || ntPalm(e) || ntRulerBusy(e)) return; pz.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (pz.size === 2) { const p = [...pz.values()]; d0 = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) || 1; z0 = NT.z; cx = (p[0].x + p[1].x) / 2; cy = (p[0].y + p[1].y) / 2; } }, true);
-  sc0().addEventListener('pointermove', e => { const p = pz.get(e.pointerId); if (!p) return; p.x = e.clientX; p.y = e.clientY; if (pz.size === 2) { const q = [...pz.values()], d = Math.hypot(q[0].x - q[1].x, q[0].y - q[1].y); ntZoom((d / d0) / (NT.z / z0), cx, cy); if (ntStroke) { ntStroke = null; ntLiveDraw(null); } if (NT.pan) NT.pan = null; } }, true);
-  ['pointerup', 'pointercancel'].forEach(ev => sc0().addEventListener(ev, e => pz.delete(e.pointerId), true)); }
+/* ---------- gestes de la page au doigt ----------
+   Un doigt : la page défile (dans tous les sens quand elle est zoomée). Deux doigts : la page suit les doigts ET zoome, comme une carte :
+   le point de la page sous les doigts y reste. Le zoom ne démarre qu'après un vrai écartement (7 %) : deux doigts qui défilent ne zooment pas.
+   Dès que le deuxième doigt se pose, le défilement du premier s'arrête : plus jamais de défilement et de zoom qui se cumulent. */
+const NTG = { pts: new Map(), two: null };
+const ntWrapXY = (x, y) => { const r = document.getElementById('ntWrap').getBoundingClientRect(); return [x - r.left, y - r.top]; };
+function ntGestureBase() {
+  const sc = sc0(), ids = [...NTG.pts.keys()], p1 = NTG.pts.get(ids[0]), p2 = NTG.pts.get(ids[1]), [cx, cy] = ntWrapXY((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+  NTG.two = { d0: Math.hypot(p1.x - p2.x, p1.y - p2.y) || 1, z0: NT.z, zoom: false, wx: (sc.scrollLeft + cx) / NT.s, wy: (sc.scrollTop + cy) / NT.s };
+}
+sc0().addEventListener('pointerdown', e => {
+  if (e.pointerType !== 'touch' || ntPalm(e) || ntRulerBusy(e) || e.target.closest('#ntImgUi')) return;
+  NTG.pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (NTG.pts.size === 1) return;
+  e.stopImmediatePropagation(); if (NTG.pts.size > 2) return;
+  NT.pan = null; cancelAnimationFrame(NT.inr);
+  if (ntStroke && !ntStroke.pen) { clearTimeout(NT.qsT); clearTimeout(ntStrokeT); ntStroke = null; ntLiveDraw(null); }            /* un doigt qui dessinait : ce trait est abandonné */
+  ntGestureBase();
+}, true);
+sc0().addEventListener('pointermove', e => {
+  const p = NTG.pts.get(e.pointerId); if (!p) return; p.x = e.clientX; p.y = e.clientY; if (NTG.pts.size !== 2 || !NTG.two) return;
+  const ids = [...NTG.pts.keys()], a = NTG.pts.get(ids[0]), b = NTG.pts.get(ids[1]), d = Math.hypot(a.x - b.x, a.y - b.y), g = NTG.two, sc = sc0(), [cx, cy] = ntWrapXY((a.x + b.x) / 2, (a.y + b.y) / 2);
+  if (!g.zoom && Math.abs(d / g.d0 - 1) > 0.07) { g.zoom = true; g.d0 = d; g.z0 = NT.z; g.wx = (sc.scrollLeft + cx) / NT.s; g.wy = (sc.scrollTop + cy) / NT.s; }
+  if (g.zoom) { const z = ntClamp(g.z0 * d / g.d0, 0.5, 2.5); if (Math.abs(z - NT.z) > 0.002) { NT.z = z; ntLayout(); ntEnsure(); ntZoomBadge(); clearTimeout(NT.zT); NT.zT = setTimeout(() => { NT.zT = 0; ntRelayout(); }, 180); } }
+  sc.scrollLeft = g.wx * NT.s - cx; sc.scrollTop = Math.max(0, g.wy * NT.s - cy); ntRulerPlace(); e.stopImmediatePropagation(); e.preventDefault();
+}, true);
+['pointerup', 'pointercancel'].forEach(ev => sc0().addEventListener(ev, e => {
+  if (!NTG.pts.has(e.pointerId)) return; const was = NTG.pts.size; NTG.pts.delete(e.pointerId); if (was >= 2) e.stopImmediatePropagation();
+  if (NTG.pts.size < 2) NTG.two = null;
+  if (NTG.pts.size === 0 && NT.zT) { clearTimeout(NT.zT); NT.zT = 0; ntRelayout(); ntZoomBadge(); }                                /* le zoom retrouve sa netteté dès que les doigts se lèvent */
+}, true));
 sc0().addEventListener('lostpointercapture', e => { if (ntStroke && e.pointerId === ntStroke.id && !NT.down.has(e.pointerId)) ntStrokeCommit(); });
-let ntScrollRaf = 0; sc0().addEventListener('scroll', () => { if (ntScrollRaf) return; ntScrollRaf = requestAnimationFrame(() => { ntScrollRaf = 0; ntEnsure(); if (NT.cur) { NT.cur.sy = sc0().scrollTop; } }); });
+let ntScrollRaf = 0; sc0().addEventListener('scroll', () => { if (ntScrollRaf) return; ntScrollRaf = requestAnimationFrame(() => { ntScrollRaf = 0; ntEnsure(); ntRulerPlace(); if (NT.cur) { NT.cur.sy = sc0().scrollTop; } }); });
 $('#ntWrap').addEventListener('wheel', e => { if (!NT.on) return; if (e.ctrlKey || e.metaKey) { e.preventDefault(); ntZoom(Math.exp(-e.deltaY * 0.01), e.clientX, e.clientY); } }, { passive: false });
 let ntRsT = 0;
 function ntOnResize() { cancelAnimationFrame(ntRsT); ntRsT = requestAnimationFrame(() => { if (!NT.on) return; ntTop(); ntDockAutoApply(); if (NT.cur && !$('#ntEd').hidden) { const w = $('#ntWrap'); if (w.clientWidth > 0) ntSyncScale(); const lv = $('#ntLive'); if (Math.abs(lv.width - Math.round(w.clientWidth * NT.dpr)) > 1) ntLayout(); } }); }
@@ -7921,7 +8018,7 @@ ntBlocksEl.addEventListener('pointerdown', e => {
 const ntTb = (t, x, y, o = {}) => Object.assign({ id: ntId(), k: 'text', x, y, w: 800, z: 30, t, b: false }, o);
 const ntTd = (x, y, items, o = {}) => Object.assign({ id: ntId(), k: 'todo', x, y, w: 780, z: 30, items: items.map(t => ({ t, d: 0 })) }, o);
 const NT_TPL = [
-  ['blank', 'Note vierge', 'Page lignée à remplir', () => ({ title: 'Note du ' + ntDate(), paper: { k: 'ruled', c: 'white', m: true }, blocks: [] })],
+  ['blank', 'Note vierge', 'Page lignée à remplir', () => ({ title: 'Note du ' + ntDate(), paper: Object.assign({ k: 'ruled', c: 'white', m: true }, settings.ntPaper || {}), blocks: [] })],
   ['meeting', 'Réunion', 'Participants, ordre du jour, actions', () => ({ title: 'Réunion du ' + ntDate(), paper: { k: 'blank', c: 'white', m: false }, blocks: [ntTb('Réunion', 60, 56, { z: 64, b: true }), ntTb('Date : ' + ntDate() + '\nParticipants :', 60, 180), ntTb('Ordre du jour', 60, 340, { z: 40, b: true }), ntTd(60, 410, ['', '', '']), ntTb('Notes', 60, 660, { z: 40, b: true }), ntTb('Actions', 60, 1500, { z: 40, b: true }), ntTd(60, 1570, ['', '', ''])] })],
   ['tasks', 'Liste de tâches', 'Huit cases à cocher', () => ({ title: 'À faire du ' + ntDate(), paper: { k: 'blank', c: 'white', m: false }, blocks: [ntTb('À faire', 60, 56, { z: 64, b: true }), ntTd(60, 190, ['', '', '', '', '', '', '', ''], { z: 34 })] })],
   ['journal', 'Journal', 'Humeur, trois bonnes choses, notes', () => ({ title: 'Journal du ' + ntDate(), paper: { k: 'ruled', c: 'cream', m: true }, blocks: [ntTb('Journal', 150, 40, { z: 56, b: true }), ntTb(ntDate(), 150, 124, { z: 30 }), ntTb('Humeur :', 150, 200, { z: 34, b: true }), ntTb('Trois choses positives', 150, 330, { z: 34, b: true }), ntTd(150, 394, ['', '', ''], { w: 700 }), ntTb('Notes du jour', 150, 600, { z: 34, b: true })] })],
@@ -7931,7 +8028,7 @@ const ntNorm = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').t
 const ntRel = ts => new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: new Date(ts).getFullYear() === new Date().getFullYear() ? undefined : 'numeric' });
 function ntRenderList() {
   const q = ntNorm(NT.q.trim()), L = NT.list.filter(m => !q || ntNorm(m.title || '').includes(q)).sort((a, b) => (b.pin ? 1 : 0) - (a.pin ? 1 : 0) || b.ts - a.ts), g = $('#ntGrid');
-  const card = m => `<article class="nt-card" data-id="${m.id}"><button class="nt-open" data-open="${m.id}" aria-label="Ouvrir la note ${esc(m.title)}"><span class="nt-th"${m.thumb ? ` style="background-image:url('${m.thumb}')"` : ''}></span><b>${esc(m.title)}</b><small>${ntRel(m.ts)}</small></button><button class="nt-pinb${m.pin ? ' on' : ''}" data-pin="${m.id}" aria-pressed="${!!m.pin}" aria-label="${m.pin ? 'Désépingler' : 'Épingler'}">${ICO('pin')}</button></article>`;
+  const card = m => `<article class="nt-card" data-id="${m.id}"><button class="nt-open" data-open="${m.id}" aria-label="Ouvrir la note ${esc(m.title)}"><span class="nt-th"${m.thumb ? ` style="background-image:url('${m.thumb}')"` : ''}></span><b>${esc(m.title)}</b><small>${ntRel(m.ts)}</small></button><button class="nt-morb" data-more="${m.id}" aria-haspopup="menu" aria-label="Actions : renommer, exporter, supprimer">${ICO('more')}</button><button class="nt-pinb${m.pin ? ' on' : ''}" data-pin="${m.id}" aria-pressed="${!!m.pin}" aria-label="${m.pin ? 'Désépingler' : 'Épingler'}">${ICO('pin')}</button></article>`;
   if (!L.length) { g.innerHTML = `<p class="nt-empty">${q ? 'Aucune note ne porte ce titre.' : 'Aucune note pour l’instant.<br>Touche « Nouvelle note » pour commencer : page vierge, réunion, tâches, journal ou semainier.'}</p>`; return; }
   const pins = L.filter(m => m.pin), rest = L.filter(m => !m.pin);
   g.innerHTML = (pins.length && rest.length ? '<div class="nt-sec">Épinglées</div>' : '') + pins.map(card).join('') + (pins.length && rest.length ? '<div class="nt-sec">Récentes</div>' : '') + rest.map(card).join('');
@@ -8003,6 +8100,7 @@ function ntTool(t, btn) {
 function ntBarTap(e) {
   const b = e.target.closest('#ntBar [data-nt], #ntMenu [data-nt]'); if (!b) return; const a = b.dataset.nt;
   if (a === 'ruler') { e.preventDefault(); ntRulerToggle(); return; }
+  if (a === 'line') { e.preventDefault(); ntLineToggle(); return; }
   if (a === 'tool') { e.preventDefault(); ntTool(b.dataset.tool, b); return; }
   if (a === 'zoomin' || a === 'zoomout' || a === 'undo' || a === 'redo') { e.preventDefault(); if (a === 'zoomin') ntZoom(1.25); else if (a === 'zoomout') ntZoom(1 / 1.25); else if (a === 'undo') ntUndo(); else ntRedo(); }
 }
@@ -8144,6 +8242,7 @@ if (window.ResizeObserver) new ResizeObserver(() => { const p = document.getElem
     const bar = document.getElementById('ntBar'), from = bar.getBoundingClientRect(), d = dr.target, moved = dr.moved; dr = null; bar.style.transform = ''; bar.classList.remove('dragging'); document.getElementById('ntEd').classList.remove('dragging-bar');
     if (!moved) return; LS.set('nt:dock', d); NT.dockUser = true; ntDockMove(d, from);
   };
+  grab.addEventListener('click', e => e.preventDefault());                      /* un écouteur de clic : iPad vise alors la poignée plutôt que le bouton voisin */
   grab.addEventListener('pointerdown', e => {
     if (ntPalm(e)) return; e.preventDefault(); e.stopPropagation(); ntPopClose(); dr = { id: e.pointerId, x0: e.clientX, y0: e.clientY, moved: false, target: NT.dock };
     document.getElementById('ntBar').classList.add('dragging'); document.getElementById('ntEd').classList.add('dragging-bar'); ntZoneHi(NT.dock);
@@ -8156,16 +8255,16 @@ ntDockSet(NT.dockUser ? LS.get('nt:dock') : ntDockAuto());
    Formes : on garde le stylet immobile en fin de trait, le trait devient une ligne, un cercle, un rectangle…
    Règle : un doigt la déplace, deux doigts la tournent ; un trait qui démarre près d'un bord le suit.
    ====================================================================== */
-const NT_RW = 92, NT_RL = 3600, NT_CM = 40;                                  /* épaisseur et longueur de la règle ; 1 cm = 40 unités de page */
+/* (la règle est définie plus bas : mêmes dimensions que celle de Dessin) */
 NT.rl = Object.assign({ on: false, cx: 500, cy: 600, a: 0 }, LS.get('nt:ruler', null) || {}); NT.rl.on = !!NT.rl.on;
 /* ---------- formes parfaites ---------- */
 const ntQsOn = () => settings.qshape !== false;
 function ntQsNote(t) { const el = document.getElementById('ntQsn'); if (!el) return; el.textContent = t; el.hidden = false; clearTimeout(NT.qnT); NT.qnT = setTimeout(() => { el.hidden = true; }, 1900); }
-function ntQsArm(e) { const s = ntStroke; if (!s || s.rl || !ntQsOn()) return; s.qa = [e.clientX, e.clientY]; s.qe = { clientX: e.clientX, clientY: e.clientY, pointerType: e.pointerType }; ntQsReset(); }
+function ntQsArm(e) { const s = ntStroke; if (!s || s.rl || s.ln || !ntQsOn()) return; s.qa = [e.clientX, e.clientY]; s.qe = { clientX: e.clientX, clientY: e.clientY, pointerType: e.pointerType }; ntQsReset(); }
 function ntQsReset() { clearTimeout(NT.qsT); NT.qsT = setTimeout(ntQsFire, settings.qsDelay || 800); }
 function ntQsWatch(e) { const s = ntStroke; if (!s || !s.qa || s.snapped) return; s.qe = { clientX: e.clientX, clientY: e.clientY, pointerType: e.pointerType }; if (Math.hypot(e.clientX - s.qa[0], e.clientY - s.qa[1]) > 6) { s.qa = [e.clientX, e.clientY]; ntQsReset(); } }
 function ntQsFire() {
-  const s = ntStroke; if (!s || s.snapped || s.rl || !ntQsOn()) return; const a = s.st.a, n = a.length / 3; if (n < 6) return;
+  const s = ntStroke; if (!s || s.snapped || s.rl || s.ln || !ntQsOn()) return; const a = s.st.a, n = a.length / 3; if (n < 6) return;
   const pts = []; for (let i = 0; i < n; i++) pts.push([a[i * 3], a[i * 3 + 1]]); const sh = qsRecognize(pts); if (!sh) return;
   const snapTo = (p, q, step, tol) => { const dx = q[0] - p[0], dy = q[1] - p[1], l = Math.hypot(dx, dy), ang = Math.atan2(dy, dx), k = Math.round(ang / step) * step; return Math.abs(ang - k) < tol ? [p[0] + Math.cos(k) * l, p[1] + Math.sin(k) * l] : q; };
   if (sh.kind === 'line') sh.b = snapTo(sh.a, sh.b, Math.PI / 12, 3 * Math.PI / 180);                         /* droites presque horizontales, verticales ou à 15° près : redressées */
@@ -8182,18 +8281,16 @@ function ntQsAdjust(e) {
   else { const c = sh.c, v = [w.x - c[0], w.y - c[1]], l0 = Math.hypot(...s.qsV0), l = Math.hypot(...v); if (l0 < 4) return; s.qsS = ntClamp(l / l0, 0.05, 20); s.qsRot = sh.kind === 'circle' ? 0 : Math.atan2(v[1], v[0]) - Math.atan2(s.qsV0[1], s.qsV0[0]); }
   ntQsApply(s);
 }
-/* ---------- règle : affichage ---------- */
-const ntRulerEl = document.createElement('div'); ntRulerEl.id = 'ntRuler'; ntRulerEl.className = 'nt-ruler'; ntRulerEl.hidden = true;
-{ let nums = ''; for (let k = -24; k <= 24; k++) nums += `<span style="left:${NT_RL / 2 + k * NT_CM}px">${Math.abs(k)}</span>`;
-  ntRulerEl.innerHTML = `<div class="rl-ticks"></div><div class="rl-nums">${nums}</div><b class="rl-ang"></b><i class="rl-h rl-hm" data-rh="move" role="button" aria-label="Déplacer la règle"></i><i class="rl-h rl-hr" data-rh="rot" role="button" aria-label="Tourner la règle"></i>`; }
-document.getElementById('ntPage').appendChild(ntRulerEl);
-const ntReadEl = document.createElement('div'); ntReadEl.id = 'ntRead'; ntReadEl.className = 'nt-read'; ntReadEl.hidden = true; document.getElementById('ntPage').appendChild(ntReadEl);
-function ntReadShow(x, y, t) { ntReadEl.hidden = false; ntReadEl.textContent = t; ntReadEl.style.cssText = `left:${x}px;top:${y}px;--k:${1 / NT.s}`; }
-const ntReadHide = () => { ntReadEl.hidden = true; };
+/* ---------- règle : la même que dans Dessin (même apparence, même épaisseur à l'écran, mêmes gestes, même aimantation) ---------- */
+const NT_RW = 92;                                                   /* épaisseur à l'écran, comme en Dessin */
+const ntRW = () => NT_RW / NT.s;                                    /* … et en unités de page */
+const ntRulerEl = document.createElement('div'); ntRulerEl.id = 'ntRuler'; ntRulerEl.innerHTML = '<div class="rl-ticks"></div><b class="rl-ang"></b>'; document.getElementById('ntWrap').appendChild(ntRulerEl);
+const ntReadHide = () => { };
 const ntRulerSave = () => LS.set('nt:ruler', { on: NT.rl.on, cx: NT.rl.cx, cy: NT.rl.cy, a: NT.rl.a });
 function ntRulerPlace() {
-  const r = NT.rl, show = r.on && NT.cur && NT.view === 'ed'; ntRulerEl.hidden = !show; const b = document.getElementById('btnNtRuler'); if (b) { b.classList.toggle('on', !!r.on); b.setAttribute('aria-pressed', String(!!r.on)); }
-  if (!show) return; ntRulerEl.style.cssText = `width:${NT_RL}px;height:${NT_RW}px;left:${r.cx - NT_RL / 2}px;top:${r.cy - NT_RW / 2}px;transform:rotate(${r.a}rad);--k:${1 / NT.s}`;
+  const r = NT.rl, show = !!(r.on && NT.cur && NT.view === 'ed'); ntRulerEl.classList.toggle('show', show); const b = document.getElementById('btnNtRuler'); if (b) { b.classList.toggle('on', !!r.on); b.setAttribute('aria-pressed', String(!!r.on)); }
+  if (!show) return; const wr = document.getElementById('ntWrap').getBoundingClientRect(), sr = document.getElementById('ntSizer').getBoundingClientRect(), sx = sr.left - wr.left + r.cx * NT.s, sy = sr.top - wr.top + r.cy * NT.s, L = Math.hypot(innerWidth, innerHeight) * 2.2;
+  ntRulerEl.style.width = L + 'px'; ntRulerEl.style.height = NT_RW + 'px'; ntRulerEl.style.transform = `translate(${sx - L / 2}px, ${sy - NT_RW / 2}px) rotate(${r.a}rad)`;
   const deg = ((r.a * 180 / Math.PI) % 180 + 180) % 180; ntRulerEl.querySelector('.rl-ang').textContent = Math.round(deg > 90 ? 180 - deg : deg) + '°';
 }
 function ntRulerCenter(force) { const r = NT.rl, sc = sc0(), top = sc.scrollTop / NT.s, h = sc.clientHeight / NT.s; if (force || r.cy < top - 80 || r.cy > top + h + 80) { r.cx = 500; r.cy = Math.round(top + h * 0.45); } }
@@ -8203,18 +8300,15 @@ function ntRulerToggle(on) {
 }
 /* ---------- règle : géométrie et aimantation du trait ---------- */
 function ntRulerLocal(x, y) { const r = NT.rl, dx = x - r.cx, dy = y - r.cy, c = Math.cos(r.a), s = Math.sin(r.a); return { u: dx * c + dy * s, d: -dx * s + dy * c }; }
-const ntRulerHitPt = p => NT.rl.on && NT.cur && NT.view === 'ed' && Math.abs(ntRulerLocal(p.x, p.y).d) <= NT_RW / 2;
+const ntRulerHitPt = p => NT.rl.on && NT.cur && NT.view === 'ed' && Math.abs(ntRulerLocal(p.x, p.y).d) <= ntRW() / 2;
 function ntRulerArm(p) {
-  const s = ntStroke; if (!s || !NT.rl.on || NT.view !== 'ed') return; const l = ntRulerLocal(p.x, p.y), lim = NT_RW / 2 + 34 / NT.s; if (Math.abs(l.d) > lim) return;     /* le trait part près d'un bord : il suivra ce bord */
-  const r = NT.rl, side = l.d >= 0 ? 1 : -1, k = NT_RW / 2; s.rl = { ox: r.cx - Math.sin(r.a) * side * k, oy: r.cy + Math.cos(r.a) * side * k, ux: Math.cos(r.a), uy: Math.sin(r.a) };
+  const s = ntStroke; if (!s || !NT.rl.on || NT.view !== 'ed') return; const l = ntRulerLocal(p.x, p.y), lim = (NT_RW / 2 + 34) / NT.s; if (Math.abs(l.d) > lim) return;     /* le trait part près d'un bord : il suivra ce bord */
+  const r = NT.rl, side = l.d >= 0 ? 1 : -1, k = ntRW() / 2; s.rl = { ox: r.cx - Math.sin(r.a) * side * k, oy: r.cy + Math.cos(r.a) * side * k, ux: Math.cos(r.a), uy: Math.sin(r.a) };
   const q = ntRulerProj(s.rl, p.x, p.y); s.st.a[0] = q[0]; s.st.a[1] = q[1]; s.st.tp = 0; s.st.ps = Math.min(s.st.ps == null ? 0 : s.st.ps, 0.1); clearTimeout(NT.qsT);
 }
 const ntRulerProj = (rl, x, y) => { const t = (x - rl.ox) * rl.ux + (y - rl.oy) * rl.uy; return [rl.ox + rl.ux * t, rl.oy + rl.uy * t]; };
-function ntRlMove(s, e) {
-  const a = s.st.a, p = ntPt(e), q = ntRulerProj(s.rl, p.x, p.y); a.length = 3; a.push(q[0], q[1], p.p);
-  const len = Math.hypot(q[0] - a[0], q[1] - a[1]); ntLiveDraw(s.st); ntReadShow(q[0], q[1], (len / NT_CM).toFixed(1).replace('.', ',') + ' cm');
-}
-/* ---------- règle : gestes (un doigt déplace, deux doigts tournent), poignées pour le stylet et la souris ---------- */
+function ntRlMove(s, e) { const a = s.st.a, p = ntPt(e), q = ntRulerProj(s.rl, p.x, p.y); a.length = 3; a.push(q[0], q[1], p.p); ntLiveDraw(s.st); }
+/* ---------- règle : gestes (un doigt ou la souris déplace, deux doigts tournent ; le stylet, lui, dessine) ---------- */
 const NTRG = { ptrs: new Map(), base: null };
 function ntRulerBusy(e) { if (!NT.rl.on || !NT.cur) return false; if (NTRG.ptrs.size) return true; return ntRulerHitPt(ntPt(e)); }
 function ntRgTouch(e) { if (!NTRG.ptrs.size && !ntRulerHitPt(ntPt(e))) return false; e.preventDefault(); ntRgDown(e); return true; }
@@ -8224,7 +8318,7 @@ function ntRgMove(e) {
   if (ids.length === 1) { const p = NTRG.ptrs.get(ids[0]), q = B.P.get(ids[0]); if (!q) return; r.cx = B.cx + (p.x - q.x) / s; r.cy = B.cy + (p.y - q.y) / s; }
   else {
     const [i1, i2] = ids, p1 = NTRG.ptrs.get(i1), p2 = NTRG.ptrs.get(i2), q1 = B.P.get(i1), q2 = B.P.get(i2); if (!q1 || !q2) return;
-    let a = B.a + Math.atan2(p2.y - p1.y, p2.x - p1.x) - Math.atan2(q2.y - q1.y, q2.x - q1.x); const st = Math.PI / 12, near = Math.round(a / st) * st; if (Math.abs(a - near) < 0.045) a = near;      /* aimantée tous les 15° */
+    let a = B.a + Math.atan2(p2.y - p1.y, p2.x - p1.x) - Math.atan2(q2.y - q1.y, q2.x - q1.x); const st = Math.PI / 12, near = Math.round(a / st) * st; if (Math.abs(a - near) < 0.045) a = near;      /* aimantée tous les 15° (horizontale, verticale, 45°…) */
     r.a = a; r.cx = B.cx + ((p1.x + p2.x) / 2 - (q1.x + q2.x) / 2) / s; r.cy = B.cy + ((p1.y + p2.y) / 2 - (q1.y + q2.y) / 2) / s; ntRulerEl.classList.add('turn');
   }
   ntRulerPlace();
@@ -8234,19 +8328,113 @@ function ntRgUp(e) {
   if (NTRG.ptrs.size) { const r = NT.rl; NTRG.base = { cx: r.cx, cy: r.cy, a: r.a, P: new Map([...NTRG.ptrs].map(([k, v]) => [k, { ...v }])) }; } else { ntRulerEl.classList.remove('drag', 'turn'); ntRulerSave(); }
 }
 window.addEventListener('pointermove', ntRgMove); window.addEventListener('pointerup', ntRgUp); window.addEventListener('pointercancel', ntRgUp);
-ntRulerEl.addEventListener('pointerdown', e => {
-  const h = e.target.closest('.rl-h'); if (!h) return; e.preventDefault(); e.stopPropagation(); const r = NT.rl, mode = h.dataset.rh, o = { cx: r.cx, cy: r.cy }, id = e.pointerId, s = NT.s, x0 = e.clientX, y0 = e.clientY;
-  ntRulerEl.classList.add(mode === 'rot' ? 'turn' : 'drag');
-  const mv = ev => {
-    if (ev.pointerId !== id) return;
-    if (mode === 'move') { r.cx = o.cx + (ev.clientX - x0) / s; r.cy = o.cy + (ev.clientY - y0) / s; }
-    else { const pg = ntPt(ev); let a = Math.atan2(pg.y - r.cy, pg.x - r.cx); const st = Math.PI / 12, near = Math.round(a / st) * st; if (Math.abs(a - near) < 0.05) a = near; r.a = a; }
-    ntRulerPlace();
-  };
-  const up = ev => { if (ev.pointerId !== id) return; window.removeEventListener('pointermove', mv); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up); ntRulerEl.classList.remove('drag', 'turn'); ntRulerSave(); };
-  window.addEventListener('pointermove', mv); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
-});
 ntRulerPlace();
+/* ---------- traits droits : chaque trait devient une droite, du point posé à la pointe (aimantée près de 0°, 15°, 30°, 45°…) ---------- */
+NT.straight = !!LS.get('nt:straight', false);
+function ntLineSync() { const b = document.getElementById('btnNtLine'); if (b) { b.classList.toggle('on', !!NT.straight); b.setAttribute('aria-pressed', String(!!NT.straight)); } }
+function ntLineToggle(on) { NT.straight = on == null ? !NT.straight : on; LS.set('nt:straight', NT.straight); ntLineSync(); flash(NT.straight ? 'Traits droits : chaque trait devient une ligne droite.' : 'Traits libres'); }
+function ntLineArm() { const s = ntStroke; if (!s || s.rl || !NT.straight) return; s.ln = true; s.st.tp = 0; s.st.ps = Math.min(s.st.ps == null ? 0 : s.st.ps, 0.1); clearTimeout(NT.qsT); }
+function ntLnMove(s, e) {
+  const a = s.st.a, p = ntPt(e), x0 = a[0], y0 = a[1], dx = p.x - x0, dy = p.y - y0, l = Math.hypot(dx, dy), ang = Math.atan2(dy, dx), st = Math.PI / 12, q = Math.round(ang / st) * st, qa = Math.abs(ang - q) < 3 * Math.PI / 180 ? q : ang;
+  a.length = 3; a.push(x0 + Math.cos(qa) * l, y0 + Math.sin(qa) * l, p.p); ntLiveDraw(s.st);
+}
+ntLineSync();
+/* ---------- actions directes sur une note de la liste : renommer, exporter, épingler, supprimer ---------- */
+function ntCardMenuClose() { document.querySelectorAll('#ntList .nt-cm').forEach(x => x.remove()); }
+function ntCardMenu(btn, id) {
+  ntCardMenuClose(); const m = NT.list.find(x => x.id === id); if (!m) return; const list = document.getElementById('ntList'), p = document.createElement('div'); p.className = 'nt-pop glass nt-cm'; p.dataset.id = id; p.setAttribute('role', 'menu');
+  p.innerHTML = `<h4>${esc(m.title || 'Note')}</h4><div class="nt-menu"><button data-cm="ren">${ICO('edit')} Renommer</button><button data-cm="png">${ICO('image')} Exporter en PNG</button><button data-cm="pdf">${ICO('export')} Exporter en PDF</button><button data-cm="pin">${ICO('pin')} ${m.pin ? 'Désépingler' : 'Épingler'}</button><button data-cm="del" class="nt-mdel">${ICO('trash')} <span>Supprimer</span></button></div>`;
+  list.appendChild(p); const lr = list.getBoundingClientRect(), br = btn.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight;
+  p.style.left = ntClamp(br.left - lr.left, 8, Math.max(8, lr.width - w - 8)) + 'px'; p.style.top = ntClamp(br.bottom - lr.top + 6, 8, Math.max(8, lr.height - h - 8)) + 'px';
+}
+async function ntRenameNote(id, title) {
+  try { const n = await DB.get('nt:' + id); if (n) { n.title = title; await DB.set('nt:' + id, n); } } catch (e) { }
+  const m = NT.list.find(x => x.id === id); if (m) m.title = title; if (NT.cur && NT.cur.id === id) { NT.cur.title = title; const t = document.getElementById('ntTitle'); if (t) t.value = title; }
+  await ntSaveIndex(); ntRenderList(); flash('Note renommée');
+}
+function ntRenameStart(id) {
+  const card = document.querySelector(`#ntGrid .nt-card[data-id="${id}"]`), m = NT.list.find(x => x.id === id); if (!card || !m) return;
+  const inp = document.createElement('input'); inp.className = 'nt-ren'; inp.value = m.title || ''; inp.maxLength = 60; inp.setAttribute('aria-label', 'Nouveau nom de la note'); inp.enterKeyHint = 'done'; card.appendChild(inp); inp.focus(); inp.select();
+  let done = false; const fin = ok => { if (done) return; done = true; const v = inp.value.trim(); inp.remove(); if (ok && v && v !== m.title) ntRenameNote(id, v); };
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); fin(true); } else if (e.key === 'Escape') fin(false); }); inp.addEventListener('blur', () => fin(true));
+}
+async function ntExportById(id, kind) { let n = null; try { n = await DB.get('nt:' + id); } catch (e) { } if (!n) { flash('Note introuvable.'); return; } await ntExport(kind, ntNormalize(n)); }
+async function ntDeleteById(id) {
+  clearTimeout(ntSaveT); if (NT.cur && NT.cur.id === id) { NT.dirty = false; NT.cur = null; } try { await DB.del('nt:' + id); } catch (e) { } NT.list = NT.list.filter(x => x.id !== id); await ntSaveIndex(); ntRenderList(); flash('Note supprimée');
+}
+async function ntPinById(id) { const m = NT.list.find(x => x.id === id); if (!m) return; m.pin = !m.pin; ntSaveIndex(); try { const r = await DB.get('nt:' + id); if (r) { r.pin = m.pin; await DB.set('nt:' + id, r); } } catch (e) { } ntRenderList(); }
+let ntCmArm = 0;
+ntRoot.addEventListener('click', async e => {
+  const mo = e.target.closest('[data-more]'); if (mo) { e.stopPropagation(); const open = document.querySelector('#ntList .nt-cm'); if (open && open.dataset.id === mo.dataset.more) ntCardMenuClose(); else ntCardMenu(mo, mo.dataset.more); return; }
+  const cm = e.target.closest('[data-cm]'); if (!cm) return; e.stopPropagation(); const id = cm.closest('.nt-cm').dataset.id, a = cm.dataset.cm;
+  if (a === 'del') { if (!ntCmArm) { ntCmArm = 1; cm.classList.add('arm'); cm.querySelector('span').textContent = 'Toucher encore pour supprimer'; setTimeout(() => { ntCmArm = 0; if (cm.isConnected) { cm.classList.remove('arm'); cm.querySelector('span').textContent = 'Supprimer'; } }, 3500); return; } ntCmArm = 0; ntCardMenuClose(); return ntDeleteById(id); }
+  ntCardMenuClose(); if (a === 'ren') return ntRenameStart(id); if (a === 'pin') return ntPinById(id); if (a === 'png' || a === 'pdf') return ntExportById(id, a);
+}, true);
+ntRoot.addEventListener('contextmenu', e => { const c = e.target.closest('#ntGrid .nt-card'); if (c) { e.preventDefault(); ntCardMenu(c.querySelector('.nt-morb') || c, c.dataset.id); } });
+document.addEventListener('pointerdown', e => { if (!e.target.closest('.nt-cm,[data-more]')) ntCardMenuClose(); }, true);
+/* ---------- sauvegarde, stockage et Réglages des notes ---------- */
+const ntApproxBytes = n => n.strokes.reduce((a, st) => a + st.a.length * 8 + 60, 0) + n.blocks.reduce((a, b) => a + (b.src ? b.src.length : 0) + (b.t ? b.t.length : 0) + (b.items ? b.items.length * 60 : 0) + 80, 0);
+async function ntAllNotes() { const idx = (await DB.get('nt:index')) || [], out = []; for (const m of idx) { try { const n = await DB.get('nt:' + m.id); if (n) out.push(n); } catch (e) { } } return out; }
+async function ntRestoreNotes(arr) {
+  const idx = (await DB.get('nt:index')) || []; let n = 0;
+  for (const r of arr) {
+    if (!r || typeof r !== 'object' || !r.id || !Array.isArray(r.strokes) || !Array.isArray(r.blocks)) continue;
+    const id = String(r.id).replace(/[^\w-]/g, '').slice(0, 40); if (!id) continue; const have = idx.find(m => m.id === id); if (have && (have.ts || 0) >= (+r.ts || 0)) continue;       /* la version la plus récente gagne */
+    const rec = ntNormalize({ ...r, id }); await DB.set('nt:' + id, rec);
+    const meta = { id, title: rec.title, ts: rec.ts || Date.now(), pin: !!rec.pin, bytes: ntApproxBytes(rec) }, k = idx.findIndex(m => m.id === id); if (k >= 0) idx[k] = { ...idx[k], ...meta }; else idx.push(meta);
+    try { NT.list = idx; await ntThumb(rec); } catch (e) { } n++;
+  }
+  if (n) { NT.list = idx; await DB.set('nt:index', idx); } return n;
+}
+async function ntStorageInfo() {
+  const idx = (await DB.get('nt:index')) || []; let bytes = 0, dirty = false;
+  for (const m of idx) { if (m.bytes == null) { try { const r = await DB.get('nt:' + m.id); if (r) { m.bytes = ntApproxBytes(ntNormalize(r)); dirty = true; } } catch (e) { } } bytes += m.bytes || 0; }
+  if (dirty) { try { await DB.set('nt:index', idx); if (NT.list.length) NT.list.forEach(x => { const y = idx.find(z => z.id === x.id); if (y) x.bytes = y.bytes; }); } catch (e) { } } return { n: idx.length, bytes };
+}
+function setTabsForMode() { SET_TABS.length = 0; SET_TABS.push(NT.on ? ['notes', 'Notes'] : ['draw', 'Dessin'], ['view', 'Affichage'], ['data', 'Données'], ['about', 'À propos']); }
+/* une ligne de Réglages (avec ses éventuels sous-éléments) retrouvée par son libellé : on la reprend ou on la retire sans la réécrire */
+function ntRowSpan(h, lab) { const i = h.indexOf('<label class="t">' + lab); if (i < 0) return null; const a = h.lastIndexOf('<div class="row">', i), re = /<div\b|<\/div>/g; re.lastIndex = a; let d = 0, m; while ((m = re.exec(h))) { d += m[0] === '</div>' ? -1 : 1; if (!d) return [a, m.index + 6]; } return null; }
+const ntRowOf = (h, lab) => { const r = ntRowSpan(h, lab); return r ? h.slice(r[0], r[1]) : ''; };
+const ntCutRow = (h, lab) => { const r = ntRowSpan(h, lab); return r ? h.slice(0, r[0]) + h.slice(r[1]) : h; };
+function settingsPane(tab) {
+  if (tab === 'notes') return ntSettingsPane();
+  let h = settingsPaneBase(tab === 'notes' ? 'draw' : tab);
+  if (NT.on && tab === 'view') { h = ntCutRow(h, 'Grille de points').replace('<div class="sec">Feuille</div>', ''); h = ntCutRow(h, 'Barre d’outils'); h = h.replace('Les outils passent à droite et les panneaux à gauche.', 'La barre d’outils des notes passe à droite.'); }
+  return h;
+}
+function ntSettingsPane() {
+  const dr = settingsPaneBase('draw'), P = Object.assign({ k: 'ruled', c: 'white', m: true }, settings.ntPaper || {}), on = (o, d) => settings[o] === undefined ? d : !!settings[o];
+  const sw = (k, v, lab, hint) => `<div class="row"><label class="t">${lab}<span class="hint">${hint}</span></label><label class="sw"><input type="checkbox" data-ntopt="${k}"${v ? ' checked' : ''} aria-label="${lab}"><i></i></label></div>`;
+  const seg = (k, items, cur) => `<div class="seg sm">${items.map(([v, l]) => `<button data-ntset="${k}" data-val="${v}"${String(cur) === String(v) ? ' class="on"' : ''}>${l}</button>`).join('')}</div>`;
+  return `
+    <div class="sec">Écriture</div>
+    ${ntRowOf(dr, 'Formes parfaites')}${ntRowOf(dr, 'Temps d’arrêt')}
+    ${sw('straight', !!NT.straight, 'Traits droits', 'Chaque trait devient une ligne droite, aimantée tous les 15°. Le même réglage est dans la barre d’outils.')}
+    <div class="sec">Doigt et stylet</div>
+    ${ntRowOf(dr, 'Le doigt dessine')}
+    ${sw('palm', on('palm', true), 'Ignorer la paume pendant que j’écris', 'Un doigt posé pendant que le stylet écrit (ou juste après) est ignoré.')}
+    ${sw('ntTap', on('ntTap', true), 'Deux doigts : annuler, trois doigts : rétablir', 'Un tap rapide à deux doigts annule le dernier geste, à trois doigts il le rétablit.')}
+    <div class="sec">Page</div>
+    <div class="row"><label class="t">Papier des nouvelles notes<span class="hint">S’applique à la note vierge. Les modèles gardent leur propre papier.</span></label>${seg('ntpk', NT_PAPERS.map(([v, l]) => [v, l]), P.k)}</div>
+    <div class="row"><label class="t">Couleur du papier</label>${seg('ntpc', Object.entries(NT_PCOL).map(([v, c]) => [v, c[2]]), P.c)}</div>
+    ${sw('ntpm', !!P.m, 'Marge', 'Une marge verticale sur le papier.')}
+    <div class="sec">Barre d’outils</div>
+    <div class="row"><label class="t">Position<span class="hint">Auto : à gauche en paysage, en bas en portrait. Glisse la poignée de la barre pour la placer toi-même.</span></label>${seg('ntdock', [['auto', 'Auto'], ['left', 'Gauche'], ['right', 'Droite'], ['bottom', 'Bas']], NT.dockUser ? NT.dock : 'auto')}</div>
+    <div class="sec">Ouverture</div>
+    ${sw('ntLast', on('ntLast', true), 'Rouvrir la dernière note', 'En revenant dans Notes, on retrouve la note qu’on écrivait.')}`;
+}
+sheet.addEventListener('click', e => {
+  const b = e.target.closest('button[data-ntset]'); if (!b) return; const k = b.dataset.ntset, v = b.dataset.val;
+  if (k === 'ntpk' || k === 'ntpc') { settings.ntPaper = Object.assign({ k: 'ruled', c: 'white', m: true }, settings.ntPaper || {}, k === 'ntpk' ? { k: v } : { c: v }); LS.set('settings', settings); }
+  else if (k === 'ntdock') { if (v === 'auto') { NT.dockUser = false; LS.set('nt:dock', null); ntDockSet(ntDockAuto()); } else { NT.dockUser = true; LS.set('nt:dock', v); ntDockSet(v); } }
+  b.parentNode.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+});
+sheet.addEventListener('change', e => {
+  const o = e.target.dataset && e.target.dataset.ntopt; if (!o) return;
+  if (o === 'straight') ntLineToggle(e.target.checked);
+  else if (o === 'ntpm') { settings.ntPaper = Object.assign({ k: 'ruled', c: 'white', m: true }, settings.ntPaper || {}, { m: e.target.checked }); LS.set('settings', settings); }
+  else { settings[o] = e.target.checked; LS.set('settings', settings); }
+});
 /* ---------- boutons dédiés de la barre du haut : exporter, épingler, supprimer ---------- */
 function ntPinSync() { const b = $('#btnNtPin'), on = !!(NT.cur && NT.cur.pin); if (b) { b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); b.setAttribute('aria-label', on ? 'Désépingler la note' : 'Épingler la note'); b.title = on ? 'Désépingler la note' : 'Épingler la note'; } }
 $('#btnNtExp').addEventListener('click', e => { if (!NT.cur) return; ntPopToggle(e.currentTarget, ntExportPop(), 'export'); });
@@ -8270,7 +8458,7 @@ ntRoot.addEventListener('click', async e => {
   const tp = t.closest('[data-tpl]'); if (tp) { ntPopClose(); return ntCreate(tp.dataset.tpl); }
   const b = t.closest('[data-nt]'); if (b) {
     const a = b.dataset.nt;
-    if (a === 'back') return ntBack(); if (a === 'tool' || a === 'undo' || a === 'redo' || a === 'zoomin' || a === 'zoomout' || a === 'ruler') return;       /* déjà fait au pointerdown */
+    if (a === 'back') return ntBack(); if (a === 'tool' || a === 'undo' || a === 'redo' || a === 'zoomin' || a === 'zoomout' || a === 'ruler' || a === 'line') return;       /* déjà fait au pointerdown */
     if (a === 'img') { ntPopClose(); return ntFile.click(); }
     if (a === 'paper') return ntPopToggle(b, ntPaperPop(), 'paper');
   }
@@ -8313,10 +8501,10 @@ window.addEventListener('pagehide', () => { if (NT.cur) { NT.dirty = true; ntFlu
 document.addEventListener('visibilitychange', () => { if (document.hidden && NT.cur) { NT.dirty = true; ntFlush(); } });
 
 /* ---------- export PNG et PDF ---------- */
-async function ntMakePdf(cv, k, H) {
+async function ntMakePdf(cv, k, H, nt) {
   const PH = 1414, pages = Math.max(1, Math.ceil(H / PH)), imgs = [];
   for (let i = 0; i < pages; i++) {
-    const pc = document.createElement('canvas'); pc.width = cv.width; pc.height = Math.round(PH * k); const x = pc.getContext('2d'); x.fillStyle = ntPaperCol(NT.cur.paper.c); x.fillRect(0, 0, pc.width, pc.height); x.drawImage(cv, 0, Math.round(i * PH * k), cv.width, pc.height, 0, 0, pc.width, pc.height);
+    const pc = document.createElement('canvas'); pc.width = cv.width; pc.height = Math.round(PH * k); const x = pc.getContext('2d'); x.fillStyle = ntPaperCol((nt || NT.cur).paper.c); x.fillRect(0, 0, pc.width, pc.height); x.drawImage(cv, 0, Math.round(i * PH * k), cv.width, pc.height, 0, 0, pc.width, pc.height);
     const bl = await new Promise(r => pc.toBlob(r, 'image/jpeg', 0.9)); imgs.push({ w: pc.width, h: pc.height, d: new Uint8Array(await bl.arrayBuffer()) });
   }
   const enc = new TextEncoder(), parts = [], off = []; let len = 0; const put = b => { const u = typeof b === 'string' ? enc.encode(b) : b; parts.push(u); len += u.length; };
@@ -8331,12 +8519,12 @@ async function ntMakePdf(cv, k, H) {
   const xref = len, N = 3 + imgs.length * 3; put(`xref\n0 ${N}\n0000000000 65535 f \n`); for (let i = 1; i < N; i++) put(String(off[i]).padStart(10, '0') + ' 00000 n \n'); put(`trailer\n<< /Size ${N} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
   return new Blob(parts, { type: 'application/pdf' });
 }
-async function ntExport(kind) {
-  const n = NT.cur; if (!n) return; await ntFlush(); const exp = $('#ntExp'); exp.hidden = false; await new Promise(r => setTimeout(r, 30));
+async function ntExport(kind, note) {
+  const n = note || NT.cur; if (!n) return; if (!note) await ntFlush(); const exp = $('#ntExp'); exp.hidden = false; await new Promise(r => setTimeout(r, 30));
   try {
     const H = Math.max(1414, Math.ceil(ntContentBottom(n) + 120)), k = Math.min(1.6, Math.sqrt(16e6 / (1000 * H)), 15000 / H), cv = document.createElement('canvas'); cv.width = Math.round(1000 * k); cv.height = Math.round(H * k);
     const c = cv.getContext('2d'); c.setTransform(k, 0, 0, k, 0, 0); await ntPreload(n); ntDrawPaper(c, 0, H, n); ntDrawImages(c, n, 0, H, null); ntDrawStrokes(c, n, 0, H); await ntDrawBlocks(c, n); const name = slug(n.title || 'note') || 'note';
-    const blob = kind === 'png' ? await new Promise(r => cv.toBlob(r, 'image/png')) : await ntMakePdf(cv, k, H); await deliverFile(blob, name + (kind === 'png' ? '.png' : '.pdf'), n.title);
+    const blob = kind === 'png' ? await new Promise(r => cv.toBlob(r, 'image/png')) : await ntMakePdf(cv, k, H, n); await deliverFile(blob, name + (kind === 'png' ? '.png' : '.pdf'), n.title);
   } catch (err) { flash('Export impossible : ' + ((err && err.message) || 'erreur')); }
   exp.hidden = true;
 }
@@ -8348,7 +8536,7 @@ async function openNotes() {
   if (typeof G !== 'undefined' && G) { flash('Termine d’abord ta séance de dessin gestuel.'); return; }
   if (NT.on) return; if (typeof closeEditSessions === 'function') closeEditSessions(); if (typeof closeInsp === 'function') closeInsp(); setLayersOpen(false);
   const last = LS.get('nt:last', null); await ntLoadIndex(); NT.on = true; document.documentElement.classList.add('nt-on'); ntRoot.hidden = false; ntTop(); ntShowList(); requestAnimationFrame(() => ntRoot.classList.add('show')); navSync();
-  if (last && last.v === 'ed' && NT.list.some(m => m.id === last.id)) ntOpen(last.id);          /* on reprend la dernière note ouverte */
+  if (settings.ntLast !== false && last && last.v === 'ed' && NT.list.some(m => m.id === last.id)) ntOpen(last.id);          /* on reprend la dernière note ouverte */
 }
 function closeNotes() {
   if (!NT.on) return; document.documentElement.classList.remove('nt-ed'); if (NT.cur) { NT.cur.sy = sc0().scrollTop; NT.dirty = true; } const fl = ntFlush(); NT.on = false; document.documentElement.classList.remove('nt-on'); ntRoot.classList.remove('show'); ntPopClose(); navSync();
@@ -8356,6 +8544,24 @@ function closeNotes() {
 }
 
 
+/* ---------- stylet : un tap du stylet sur un bouton le déclenche toujours ----------
+   Sur iPad, un tap de Pencil n'envoie pas toujours de « clic » : les boutons du haut (qui réagissent au clic) restaient muets.
+   Si le stylet se lève sur le bouton où il s'est posé, sans bouger, et que le navigateur n'a envoyé aucun clic, on clique à sa place. */
+{ let down = null, last = null;
+  const btnOf = el => el && el.closest ? el.closest('button,[role=button],summary') : null;
+  document.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'pen' || !e.isPrimary) return; const b = btnOf(e.target);
+    down = b && !b.disabled && b.getAttribute('aria-disabled') !== 'true' ? { b, x: e.clientX, y: e.clientY, t: performance.now(), click: false } : null;
+  }, true);
+  document.addEventListener('click', e => { if (last && last.b.contains(e.target)) last.click = true; }, true);
+  document.addEventListener('pointerup', e => {
+    const d = down; down = null; if (!d || e.pointerType !== 'pen') return; last = d;
+    if (performance.now() - d.t > 700 || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 14) return;
+    const up = document.elementFromPoint(e.clientX, e.clientY); if (!up || !(d.b === up || d.b.contains(up))) return;
+    setTimeout(() => { if (!d.click && d.b.isConnected && !d.b.disabled) d.b.click(); }, 130);
+  }, true);
+  document.addEventListener('pointercancel', () => { down = null; }, true);
+}
 const GL = (() => {
   let state = 'idle';
   const wanted = () => settings.glasslib !== false && !/[?&]glasslib=0/.test(location.search) && (!navigator.webdriver || /[?&]glasslib=1/.test(location.search));
